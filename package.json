@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/dnimmo/project-arklay-client#readme",
   "dependencies": {
-    "react": "^15.3.1"
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1"
   },
   "devDependencies": {
     "babel": "^6.5.2",
