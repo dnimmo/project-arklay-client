@@ -16,7 +16,7 @@ module.exports = {
       },
       {
         test: /\.(scss|css)?$/,
-        loader: 'style!css?importLoaders=1&minimize|sass'
+        loader: 'style!css!sass'
       }
     ]
   }
