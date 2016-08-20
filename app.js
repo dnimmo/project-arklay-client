@@ -1,8 +1,11 @@
 require('./style/main.scss')
-import React from 'react'
-import ReactDom from 'react-dom'
+import {
+  roomDescription,
+  roomDetails,
+  directions
+} from './components/elements'
 
-const testApp = params => (<div>{params}</div>)
-const test2 = () => <span>Hello</span>
-                           
-ReactDom.render(testApp(test2()), document.getElementById('app'))
+const updateText = (element, update) => element.innerText = update
+
+updateText(roomDescription, 'hello!')
+updateText(roomDetails, 'goodbye!')

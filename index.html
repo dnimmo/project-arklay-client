@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-ng-app='projectArklay'
       data-ng-cloak
       xmlns="http://www.w3.org/1999/xhtml"
@@ -22,7 +22,12 @@
           type='text/css'>
   </head>
   <body data-ng-controller='MainCtrl'>
-    <main  id='app' data-ui-view data-ng-keyup='handleKeyboard($event)' tabindex="0" autofocus="true">
+    <main  id='app'>
+      <p id='roomDescription'></p>
+      <p id='roomDetails'></p>
+      <ul class='directionOptions' id='directions'>
+        
+      </ul>
     </main>
     <script src="bundle.js"></script>
     <script>
