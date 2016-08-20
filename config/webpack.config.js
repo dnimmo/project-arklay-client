@@ -1,0 +1,23 @@
+module.exports = {
+  module: {
+    entry: './app.js',
+    output: {
+      optimize: true,
+      filename: './bundle.js'
+    },
+    loaders: [
+      {
+        test: /\.js?$/,
+        exclude: ['/node_modules'],
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015']
+        }
+      },
+      {
+        test: /\.(scss|css)?$/,
+        loader: 'style!css?importLoaders=1&minimize|sass'
+      }
+    ]
+  }
+}
