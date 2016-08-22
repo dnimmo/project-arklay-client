@@ -1,6 +1,4 @@
 const { request } = require('./ajax')
-const { updateData, getData } = require('./store')()
-const update = data => updateData('room', data)
 
 module.exports = () => {
   // Initialise starting room
