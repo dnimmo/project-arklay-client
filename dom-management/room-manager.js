@@ -5,21 +5,21 @@ import {
   directions
 } from './elements'
 
-const tempManager = () => {
-  const updateText = (element, update) => element.innerText = update
-  const addClass = (element, classToAdd) => element.classList.add(classToAdd)
-  const removeClass = (element, classToRemove) => element.classList.remove(classToRemove)
-  const toggleClass = (element, classToToggle) => element.classList.toggle(classToToggle)
+import {
+  updateText,
+  addClass,
+  removeClass,
+  toggleClass
+} from './common-functions'
 
-  const toggleInventory = () => toggleClass(inventory, 'hidden')
+import { getData } from '../data-management/store'
 
-  inventoryToggle.addEventListener('click', toggleInventory)
-  closeInventory.addEventListener('click', toggleInventory)
-
-  updateText(roomDescription, 'hello!')
-  updateText(roomDetails, 'goodbye!')
+const updateRoomUI = () => {
+  const roomInfo = getData('room')
+  updateText(roomDescription, roomInfo.description)
+  updateText(roomDetails, roomInfo.surroundings)
 }
 
 module.exports = {
-  tempManager
+  updateRoomUI
 }

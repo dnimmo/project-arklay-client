@@ -1,8 +1,12 @@
 require('./style/main.scss')
-require('./data-management/inventory')()
+import { initialiseInventory } from './data-management/inventory'
 import { getRoom } from './data-management/room'
+import { updateRoomUI } from './dom-management/room-manager'
+import { updateInventoryUI } from './dom-management/inventory-manager'
 
-import { tempManager } from './dom-management/room-manager'
+document.addEventListener('data-updated', updateInventoryUI)
+document.addEventListener('data-updated', updateRoomUI)
 
-tempManager()
+// Start game
+initialiseInventory()
 getRoom('start')

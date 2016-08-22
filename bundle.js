@@ -46,15 +46,22 @@
 
 	'use strict';
 
-	var _room = __webpack_require__(1);
+	var _inventory = __webpack_require__(1);
 
-	var _roomManager = __webpack_require__(4);
+	var _room = __webpack_require__(4);
 
-	__webpack_require__(6);
-	__webpack_require__(10)();
+	var _roomManager = __webpack_require__(5);
+
+	var _inventoryManager = __webpack_require__(8);
+
+	__webpack_require__(9);
 
 
-	(0, _roomManager.tempManager)();
+	document.addEventListener('data-updated', _inventoryManager.updateInventoryUI);
+	document.addEventListener('data-updated', _roomManager.updateRoomUI);
+
+	// Start game
+	(0, _inventory.initialiseInventory)();
 	(0, _room.getRoom)('start');
 
 /***/ },
@@ -72,12 +79,17 @@
 	var getData = _require2.getData;
 
 
-	var getRoom = function getRoom(slug) {
-	  return request('POST', 'http://api.project-arklay.com/rooms/' + slug, getData('inventory').itemsUsed, 'room');
+	var initialiseInventory = function initialiseInventory() {
+	  return request('GET', 'http://api.project-arklay.com/inventory/initialise', '', 'inventory');
+	};
+
+	var addItem = function addItem(itemName) {
+	  return request('PATCH', 'http://api.project-arklay.com/inventory/add/' + itemName, getData('inventory'), 'inventory');
 	};
 
 	module.exports = {
-	  getRoom: getRoom
+	  initialiseInventory: initialiseInventory,
+	  addItem: addItem
 	};
 
 /***/ },
@@ -113,13 +125,11 @@
 
 	'use strict';
 
-	// All of the room/inventory data lives in here - all of the updates happen here, and any requests for the data come here
+	// All of the room/inventory data lives in here - all of the updates happen here, and any requests for the data come through here
 	var dataUpdated = new Event('data-updated');
-
-	// Listen for the event
-	document.addEventListener('data-updated', function (e) {
-	  console.log('update', getData('inventory'));
-	}, false);
+	var emitUpdateEvent = function emitUpdateEvent() {
+	  return document.dispatchEvent(dataUpdated);
+	};
 
 	var dataStore = {
 	  inventory: {},
@@ -129,9 +139,13 @@
 	var getData = function getData(attribute) {
 	  return dataStore[attribute];
 	};
+
 	var updateData = function updateData(type, data) {
-	  dataStore[type] = data;
-	  document.dispatchEvent(dataUpdated);
+	  // Update data, and emit event if updated data is different from pre-update data
+	  var preUpdate = getData(type);
+	  dataStore[type] = JSON.parse(data);
+	  var postUpdate = getData(type);
+	  if (preUpdate !== postUpdate) emitUpdateEvent();
 	};
 
 	module.exports = {
@@ -145,40 +159,48 @@
 
 	'use strict';
 
-	var _elements = __webpack_require__(5);
+	var _require = __webpack_require__(2);
 
-	var tempManager = function tempManager() {
-	  var updateText = function updateText(element, update) {
-	    return element.innerText = update;
-	  };
-	  var addClass = function addClass(element, classToAdd) {
-	    return element.classList.add(classToAdd);
-	  };
-	  var removeClass = function removeClass(element, classToRemove) {
-	    return element.classList.remove(classToRemove);
-	  };
-	  var toggleClass = function toggleClass(element, classToToggle) {
-	    return element.classList.toggle(classToToggle);
-	  };
+	var request = _require.request;
 
-	  var toggleInventory = function toggleInventory() {
-	    return toggleClass(inventory, 'hidden');
-	  };
+	var _require2 = __webpack_require__(3);
 
-	  inventoryToggle.addEventListener('click', toggleInventory);
-	  closeInventory.addEventListener('click', toggleInventory);
+	var getData = _require2.getData;
 
-	  updateText(_elements.roomDescription, 'hello!');
-	  updateText(_elements.roomDetails, 'goodbye!');
-	}; // Elements that need to be updated
 
+	var getRoom = function getRoom(slug) {
+	  return request('POST', 'http://api.project-arklay.com/rooms/' + slug, getData('inventory').itemsUsed, 'room');
+	};
 
 	module.exports = {
-	  tempManager: tempManager
+	  getRoom: getRoom
 	};
 
 /***/ },
 /* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _elements = __webpack_require__(6);
+
+	var _commonFunctions = __webpack_require__(7);
+
+	var _store = __webpack_require__(3);
+
+	var updateRoomUI = function updateRoomUI() {
+	  var roomInfo = (0, _store.getData)('room');
+	  (0, _commonFunctions.updateText)(_elements.roomDescription, roomInfo.description);
+	  (0, _commonFunctions.updateText)(_elements.roomDetails, roomInfo.surroundings);
+	}; // Elements that need to be updated
+
+
+	module.exports = {
+	  updateRoomUI: updateRoomUI
+	};
+
+/***/ },
+/* 6 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -198,16 +220,73 @@
 	var closeInventory = exports.closeInventory = getElement('closeInventory');
 
 /***/ },
-/* 6 */
+/* 7 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var updateText = exports.updateText = function updateText(element, update) {
+	  return element.innerText = update;
+	};
+	var addClass = exports.addClass = function addClass(element, classToAdd) {
+	  return element.classList.add(classToAdd);
+	};
+	var removeClass = exports.removeClass = function removeClass(element, classToRemove) {
+	  return element.classList.remove(classToRemove);
+	};
+	var toggleClass = exports.toggleClass = function toggleClass(element, classToToggle) {
+	  return element.classList.toggle(classToToggle);
+	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _elements = __webpack_require__(6);
+
+	var _commonFunctions = __webpack_require__(7);
+
+	var _store = __webpack_require__(3);
+
+	var _inventory = __webpack_require__(1);
+
+	// Elements that need to be updated
+	var toggleInventory = function toggleInventory() {
+	  return (0, _commonFunctions.toggleClass)(_elements.inventory, 'hidden');
+	};
+
+	_elements.inventoryToggle.addEventListener('click', toggleInventory);
+	_elements.closeInventory.addEventListener('click', toggleInventory);
+
+	var updateInventoryUI = function updateInventoryUI() {
+
+	  if (_elements.inventory['items'] && _elements.inventory.items.length > 0) {
+	    (0, _commonFunctions.removeClass)(_elements.inventoryToggle, 'hidden');
+	  } else {
+	    (0, _commonFunctions.addClass)(_elements.inventoryToggle, 'hidden');
+	  }
+	};
+
+	module.exports = {
+	  updateInventoryUI: updateInventoryUI
+	};
+
+/***/ },
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(7);
+	var content = __webpack_require__(10);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(9)(content, {});
+	var update = __webpack_require__(12)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -224,10 +303,10 @@
 	}
 
 /***/ },
-/* 7 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(8)();
+	exports = module.exports = __webpack_require__(11)();
 	// imports
 
 
@@ -238,7 +317,7 @@
 
 
 /***/ },
-/* 8 */
+/* 11 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -293,7 +372,7 @@
 	};
 
 /***/ },
-/* 9 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -543,22 +622,6 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _require = __webpack_require__(2);
-
-	var request = _require.request;
-
-
-	module.exports = function () {
-	  // Initialise inventory
-	  request('GET', 'http://api.project-arklay.com/inventory/initialise', '', 'inventory');
-	};
 
 /***/ }
 /******/ ]);

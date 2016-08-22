@@ -1,6 +1,11 @@
 const { request } = require('./ajax')
+const { getData } = require('./store')
 
-module.exports = () => {
-  // Initialise inventory
-  request('GET', 'http://api.project-arklay.com/inventory/initialise', '', 'inventory')
+const initialiseInventory = () => request('GET', 'http://api.project-arklay.com/inventory/initialise', '', 'inventory')
+
+const addItem = itemName => request('PATCH', `http://api.project-arklay.com/inventory/add/${itemName}`, getData('inventory'), 'inventory')
+
+module.exports = {
+  initialiseInventory,
+  addItem
 }
