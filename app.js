@@ -1,6 +1,6 @@
 require('./style/main.scss')
-const { gameInventory } = require('./components/inventory')()
-const { room } = require('./components/room')()
+require('./components/inventory')()
+require('./components/room')()
 
 // Elements that need to be updated
 import {

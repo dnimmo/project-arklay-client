@@ -1,4 +1,4 @@
-const { updateData } = require('./store')()
+const { updateData } = require('./store')
 
 const request = (type, url, body, dataType) => {
   // 'dataType' refers to either 'inventory' or 'room'

@@ -49,16 +49,11 @@
 	var _elements = __webpack_require__(1);
 
 	__webpack_require__(2);
-
-	var _require = __webpack_require__(6)();
-
-	var gameInventory = _require.gameInventory;
-
-	var _require2 = __webpack_require__(9)();
-
-	var room = _require2.room;
+	__webpack_require__(6)();
+	__webpack_require__(9)();
 
 	// Elements that need to be updated
+
 
 	var updateText = function updateText(element, update) {
 	  return element.innerText = update;
@@ -460,22 +455,10 @@
 
 	var request = _require.request;
 
-	var _require2 = __webpack_require__(8)();
-
-	var updateData = _require2.updateData;
-	var getData = _require2.getData;
-
-	var update = function update(data) {
-	  return updateData('inventory', data);
-	};
 
 	module.exports = function () {
 	  // Initialise inventory
 	  request('GET', 'http://api.project-arklay.com/inventory/initialise', '', 'inventory');
-
-	  return {
-	    // gameInventory
-	  };
 	};
 
 /***/ },
@@ -484,7 +467,7 @@
 
 	'use strict';
 
-	var _require = __webpack_require__(8)();
+	var _require = __webpack_require__(8);
 
 	var updateData = _require.updateData;
 
@@ -492,7 +475,7 @@
 	var request = function request(type, url, body, dataType) {
 	  // 'dataType' refers to either 'inventory' or 'room'
 	  function listener() {
-	    console.log('request body was', body);
+	    console.log('request body was ' + body);
 	    console.log('updating ' + dataType + ' with ' + this.responseText);
 	    updateData(dataType, this.responseText);
 	  }
@@ -513,24 +496,22 @@
 
 	"use strict";
 
-	module.exports = function () {
-	  var dataStore = {
-	    inventory: {},
-	    room: {}
-	  };
+	var dataStore = {
+	  inventory: {},
+	  room: {}
+	};
+	console.log(dataStore);
+	var getData = function getData(attribute) {
+	  return dataStore[attribute];
+	};
 
-	  var getData = function getData(attribute) {
-	    return dataStore[attribute];
-	  };
+	var updateData = function updateData(type, data) {
+	  dataStore[type] = data;
+	};
 
-	  var updateData = function updateData(type, data) {
-	    dataStore[type] = data;
-	  };
-
-	  return {
-	    getData: getData,
-	    updateData: updateData
-	  };
+	module.exports = {
+	  getData: getData,
+	  updateData: updateData
 	};
 
 /***/ },
@@ -543,20 +524,14 @@
 
 	var request = _require.request;
 
-	var _require2 = __webpack_require__(8)();
+	var _require2 = __webpack_require__(8);
 
-	var updateData = _require2.updateData;
 	var getData = _require2.getData;
 
-	var update = function update(data) {
-	  return updateData('room', data);
-	};
 
 	module.exports = function () {
 	  // Initialise starting room
 	  request('POST', 'http://api.project-arklay.com/rooms/start', getData('inventory').itemsUsed, 'room');
-
-	  return {};
 	};
 
 /***/ }
