@@ -1,25 +1,11 @@
-const { updateData, getDataStore } = require('./store')()
+const { request } = require('./ajax')
+const { updateData, getData } = require('./store')()
 const update = data => updateData('room', data)
 
 module.exports = () => {
-  let gameInventory
-  
-  (function initialiseInventory () {
-    function listener () {
-      update(this.responseText)
-    }
+  // Initialise starting room
+  request('POST', 'http://api.project-arklay.com/rooms/start', getData('inventory').itemsUsed, 'room')
 
-    const requester = new XMLHttpRequest()
-    requester.addEventListener('load', listener)
-    requester.open('POST', 'http://api.project-arklay.com/rooms/start')
-    requester.send(getDataStore().inventory.itemsUsed)
-  })()
-
-  const updateInventory = () => {
-    
-  }
-  
   return {
-    gameInventory
   }
 }

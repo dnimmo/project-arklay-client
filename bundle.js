@@ -54,7 +54,7 @@
 
 	var gameInventory = _require.gameInventory;
 
-	var _require2 = __webpack_require__(8)();
+	var _require2 = __webpack_require__(9)();
 
 	var room = _require2.room;
 
@@ -456,41 +456,62 @@
 
 	'use strict';
 
-	var _require = __webpack_require__(7)();
+	var _require = __webpack_require__(7);
 
-	var updateData = _require.updateData;
-	var getDataStore = _require.getDataStore;
+	var request = _require.request;
+
+	var _require2 = __webpack_require__(8)();
+
+	var updateData = _require2.updateData;
+	var getData = _require2.getData;
 
 	var update = function update(data) {
 	  return updateData('inventory', data);
 	};
 
 	module.exports = function () {
-	  var gameInventory = void 0;
-
-	  (function initialiseInventory() {
-	    function listener() {
-	      update(this.responseText);
-	    }
-
-	    var requester = new XMLHttpRequest();
-	    requester.addEventListener('load', listener);
-	    requester.open('GET', 'http://api.project-arklay.com/inventory/initialise');
-	    requester.send();
-	  })();
-
-	  var updateInventory = function updateInventory() {};
+	  // Initialise inventory
+	  request('GET', 'http://api.project-arklay.com/inventory/initialise', '', 'inventory');
 
 	  return {
-	    gameInventory: gameInventory
+	    // gameInventory
 	  };
 	};
 
 /***/ },
 /* 7 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	var _require = __webpack_require__(8)();
+
+	var updateData = _require.updateData;
+
+
+	var request = function request(type, url, body, dataType) {
+	  // 'dataType' refers to either 'inventory' or 'room'
+	  function listener() {
+	    console.log('request body was', body);
+	    console.log('updating ' + dataType + ' with ' + this.responseText);
+	    updateData(dataType, this.responseText);
+	  }
+
+	  var requester = new XMLHttpRequest();
+	  requester.addEventListener('load', listener);
+	  requester.open(type, url);
+	  requester.send(body);
+	};
+
+	module.exports = {
+	  request: request
+	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	"use strict";
 
 	module.exports = function () {
 	  var dataStore = {
@@ -498,65 +519,44 @@
 	    room: {}
 	  };
 
-	  var getDataStore = function getDataStore() {
-	    return dataStore;
+	  var getData = function getData(attribute) {
+	    return dataStore[attribute];
 	  };
 
 	  var updateData = function updateData(type, data) {
-	    console.log('type', type);
-	    switch (type) {
-	      case 'inventory':
-	        dataStore.inventory = data;
-	        break;
-	      case 'room':
-	        dataStore.room = data;
-	        break;
-	    }
-	    console.log(dataStore);
+	    dataStore[type] = data;
 	  };
 
-	  app.addEventListener('click', getDataStore);
-
 	  return {
-	    getDataStore: getDataStore,
+	    getData: getData,
 	    updateData: updateData
 	  };
 	};
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _require = __webpack_require__(7)();
+	var _require = __webpack_require__(7);
 
-	var updateData = _require.updateData;
-	var getDataStore = _require.getDataStore;
+	var request = _require.request;
+
+	var _require2 = __webpack_require__(8)();
+
+	var updateData = _require2.updateData;
+	var getData = _require2.getData;
 
 	var update = function update(data) {
 	  return updateData('room', data);
 	};
 
 	module.exports = function () {
-	  var gameInventory = void 0;
+	  // Initialise starting room
+	  request('POST', 'http://api.project-arklay.com/rooms/start', getData('inventory').itemsUsed, 'room');
 
-	  (function initialiseInventory() {
-	    function listener() {
-	      update(this.responseText);
-	    }
-
-	    var requester = new XMLHttpRequest();
-	    requester.addEventListener('load', listener);
-	    requester.open('POST', 'http://api.project-arklay.com/rooms/start');
-	    requester.send(getDataStore().inventory.itemsUsed);
-	  })();
-
-	  var updateInventory = function updateInventory() {};
-
-	  return {
-	    gameInventory: gameInventory
-	  };
+	  return {};
 	};
 
 /***/ }
