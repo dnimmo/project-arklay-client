@@ -1,3 +1,8 @@
-export const roomDescription = document.getElementById('roomDescription')
-export const roomDetails = document.getElementById('roomDetails')
-export const directions = document.getElementById('directionOptions')
+const getElement = id => document.getElementById(id)
+
+export const roomDescription = getElement('roomDescription')
+export const roomDetails = getElement('roomDetails')
+export const directions = getElement('directionOptions')
+export const inventoryToggle = getElement('inventoryToggle')
+export const inventory = getElement('inventory')
+export const closeInventory = getElement('closeInventory')

@@ -29,6 +29,37 @@
         
       </ul>
     </main>
+    <!-- Inventory start -->
+    <div class='inventory-toggle' id='inventoryToggle' data-ng-show='inventory.usableItems.length !== 0' >
+      <svg class='inventory-icon' alt='Inventory'>
+        <use xlink:href='/images/defs.svg#inventory'></use>
+      </svg>
+      <span class='inventory-count' data-ng-show="!inventory.open">
+        {{inventory.usableItems.length}}
+      </span>
+    </div>
+    <section class='inventory hidden' id='inventory' data-ng-show='inventory.open'>
+      <!--Put into separate partial-->
+      <div class='inventory-contents'>
+        <ul data-ng-if='!inventory.itemOptionsOpen'>
+          <li class='button inv' data-ng-class='{"selected" : item === inventory.selectedItem}' data-ng-repeat='item in inventory.usableItems' data-ng-click='inventory.selectItem(item)'>
+            <svg class='item'>
+              <use xlink:href='{{item.image}}'></use>
+            </svg>
+            <p>{{item.name}}</p>
+          </li>
+        </ul>
+        <p id='closeInventory' class="button" data-ng-if='!inventory.itemOptionsOpen' data-ng-click='inventory.toggleOpen()'>Close Inventory</p>
+        <p>{{inventory.selectedItem.description}}</p>
+        <ul class='itemOptions' data-ng-if='inventory.itemOptionsOpen'>
+          <li class='button' data-ng-click='inventory.selectedItem.checkIfUsableInCurrentRoom(current, inventory)'>Use</li>
+          <li class='button' data-ng-click='inventory.clearSelectedItem()'>Cancel</li>
+        </ul>
+        <p class="additional-info extra-message" data-ng-show='inventory.message && inventory.message != ""'>{{inventory.message}}</p>
+      </div>
+    </section>
+    <!-- Inventory end -->
+
     <script src="bundle.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

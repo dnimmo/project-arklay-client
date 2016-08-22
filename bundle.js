@@ -50,10 +50,35 @@
 
 	__webpack_require__(2);
 
+	var _require = __webpack_require__(6)();
+
+	var gameInventory = _require.gameInventory;
+
+	var _require2 = __webpack_require__(8)();
+
+	var room = _require2.room;
+
+	// Elements that need to be updated
 
 	var updateText = function updateText(element, update) {
 	  return element.innerText = update;
 	};
+	var addClass = function addClass(element, classToAdd) {
+	  return element.classList.add(classToAdd);
+	};
+	var removeClass = function removeClass(element, classToRemove) {
+	  return element.classList.remove(classToRemove);
+	};
+	var toggleClass = function toggleClass(element, classToToggle) {
+	  return element.classList.toggle(classToToggle);
+	};
+
+	var toggleInventory = function toggleInventory() {
+	  return toggleClass(_elements.inventory, 'hidden');
+	};
+
+	_elements.inventoryToggle.addEventListener('click', toggleInventory);
+	_elements.closeInventory.addEventListener('click', toggleInventory);
 
 	updateText(_elements.roomDescription, 'hello!');
 	updateText(_elements.roomDetails, 'goodbye!');
@@ -67,9 +92,16 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var roomDescription = exports.roomDescription = document.getElementById('roomDescription');
-	var roomDetails = exports.roomDetails = document.getElementById('roomDetails');
-	var directions = exports.directions = document.getElementById('directionOptions');
+	var getElement = function getElement(id) {
+	  return document.getElementById(id);
+	};
+
+	var roomDescription = exports.roomDescription = getElement('roomDescription');
+	var roomDetails = exports.roomDetails = getElement('roomDetails');
+	var directions = exports.directions = getElement('directionOptions');
+	var inventoryToggle = exports.inventoryToggle = getElement('inventoryToggle');
+	var inventory = exports.inventory = getElement('inventory');
+	var closeInventory = exports.closeInventory = getElement('closeInventory');
 
 /***/ },
 /* 2 */
@@ -106,7 +138,7 @@
 
 
 	// module
-	exports.push([module.id, "@-webkit-keyframes fadeIn {\n  0% {\n    opacity: .25; }\n  100% {\n    opacity: 1; } }\n\n@-moz-keyframes fadeIn {\n  0% {\n    opacity: .25; }\n  100% {\n    opacity: 1; } }\n\n@-o-keyframes fadeIn {\n  0% {\n    opacity: .25; }\n  100% {\n    opacity: 1; } }\n\n@keyframes fadeIn {\n  0% {\n    opacity: .25; }\n  100% {\n    opacity: 1; } }\n\n@-webkit-keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@-moz-keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@-o-keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@-webkit-keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@-moz-keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@-o-keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@-webkit-keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n@-moz-keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n@-o-keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n@keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0; }\n\nhtml {\n  font-size: 62.5%; }\n\nbody {\n  background-color: #000;\n  color: #fff;\n  font-family: 'PT Serif', serif;\n  font-size: 2rem;\n  line-height: 3.5rem;\n  transition: all linear 0.3s; }\n  @media (min-width: 1000px) {\n    body {\n      font-size: 3rem;\n      line-height: 4.5rem; } }\n\nmain {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s;\n  margin-top: 6rem;\n  overflow: hidden;\n  padding-left: 2rem;\n  padding-right: 2rem;\n  text-align: center; }\n  @media (min-width: 700px) {\n    main {\n      margin-top: 8rem;\n      padding: 5%; } }\n  main:focus {\n    outline-color: #000; }\n\nh1 {\n  font-size: 4rem;\n  margin: 2rem 0; }\n\nh2 {\n  margin: 2rem 0; }\n\n.button {\n  border: 0.1rem solid #fff;\n  color: #fff;\n  display: inline-block;\n  font-size: .7em;\n  letter-spacing: .07em;\n  margin: 2rem;\n  min-width: 8rem;\n  padding: .3rem 1rem;\n  text-decoration: none;\n  transition: all linear 0.3s; }\n  .button:hover {\n    background-color: #fff;\n    color: #000;\n    cursor: pointer;\n    transform: scale(1.1); }\n\n.emphasis {\n  font-weight: bold; }\n\n.extra-message {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s; }\n\nlabel {\n  margin: 1rem 0; }\n\ninput {\n  background-color: #000;\n  border-width: 0 0 .1rem;\n  color: #fff;\n  font-size: 2rem;\n  margin-bottom: 5rem;\n  text-align: center; }\n\n.direction-options {\n  border-top: 0.2rem solid #fff;\n  list-style: none;\n  margin: 5rem 0 0;\n  padding-top: 2rem; }\n  .direction-options li {\n    border: 0.2rem solid #000;\n    cursor: pointer;\n    font-size: 2rem;\n    height: 6rem;\n    margin: 1rem auto;\n    min-width: 12rem;\n    padding: 1rem;\n    text-transform: capitalize;\n    transition: all linear 0.3s; }\n    .direction-options li:hover {\n      font-weight: bolder;\n      transform: scale(1.3); }\n  .direction-options .east,\n  .direction-options .west {\n    display: inline-block; }\n\n@-webkit-keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n@-moz-keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n@-o-keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n@keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n.credits-container {\n  height: 80vh;\n  overflow: hidden;\n  padding: 5vw; }\n  .credits-container .credits {\n    -webkit-animation: roll-credits 20s linear;\n    -moz-animation: roll-credits 20s linear;\n    -o-animation: roll-credits 20s linear;\n    animation: roll-credits 20s linear;\n    margin: auto;\n    text-align: center;\n    transform: translate3d(0, -10000000rem, 0); }\n    .credits-container .credits li {\n      list-style: none;\n      margin-bottom: 4rem; }\n\n.inventory-icon {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s;\n  right: 1rem;\n  transition: all linear 0.3s; }\n  @media (min-width: 700px) {\n    .inventory-icon {\n      right: .5rem; } }\n  @media (min-width: 1000px) {\n    .inventory-icon {\n      margin-right: 1rem; } }\n  .inventory-icon:hover {\n    transform: scale(1.2); }\n\n.inventory-count {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s;\n  border-radius: .5rem;\n  color: #000;\n  cursor: pointer;\n  display: inline-block;\n  font-size: 1.6rem;\n  font-weight: bold;\n  padding: .2rem .8rem 0;\n  pointer-events: none;\n  position: fixed;\n  right: 2.1rem;\n  top: 2.8rem; }\n  @media (min-width: 700px) {\n    .inventory-count {\n      font-size: 1.8rem;\n      right: 2.1rem;\n      top: 3.3rem; } }\n  @media (min-width: 1000px) {\n    .inventory-count {\n      font-size: 2.5rem;\n      right: 3.7rem;\n      top: 5.3rem; } }\n\n.inventory {\n  border-left: 0.1rem solid #fff;\n  right: 0;\n  width: 90%; }\n  @media (min-width: 700px) {\n    .inventory {\n      width: 45%; }\n      .inventory p {\n        color: #fff; } }\n  .inventory .inventory-contents {\n    -webkit-animation: fadeIn 0.5s;\n    -moz-animation: fadeIn 0.5s;\n    -o-animation: fadeIn 0.5s;\n    animation: fadeIn 0.5s;\n    padding: 2rem 2rem 0; }\n  .inventory .item-options {\n    border-bottom: 0; }\n  .inventory .inventory-toggle {\n    color: #fff;\n    cursor: pointer;\n    display: block;\n    font-size: 2.2rem;\n    margin: 0;\n    transition: all linear 0.3s; }\n  .inventory li.inv {\n    border: 0; }\n  .inventory li .item {\n    height: 7rem;\n    transition: all linear 0.3s;\n    width: 7rem; }\n  .inventory li p {\n    transition: all linear 0.3s; }\n  .inventory li:hover, .inventory li.selected {\n    background-color: #fff;\n    border-radius: .1rem;\n    color: #323232;\n    transform: scale(1.1); }\n    .inventory li:hover svg, .inventory li.selected svg {\n      background-color: #323232;\n      border-radius: 50rem; }\n    .inventory li:hover p, .inventory li.selected p {\n      color: #323232; }\n\n.inventory-icon {\n  background-color: #000;\n  border-radius: 5rem;\n  cursor: pointer;\n  height: 7rem;\n  position: fixed;\n  top: 0;\n  width: 5rem; }\n  @media (min-width: 700px) {\n    .inventory-icon {\n      height: 8rem;\n      position: fixed;\n      top: 0;\n      width: 6rem; } }\n  @media (min-width: 1000px) {\n    .inventory-icon {\n      height: 10rem;\n      margin-top: 1rem;\n      width: 8rem; } }\n\n.inventory {\n  -webkit-animation: slideIn 0.2s;\n  -moz-animation: slideIn 0.2s;\n  -o-animation: slideIn 0.2s;\n  animation: slideIn 0.2s;\n  background-color: #323232;\n  min-height: 100vh;\n  position: fixed;\n  right: 0;\n  text-align: center;\n  top: 0;\n  z-index: 1340; }\n", ""]);
+	exports.push([module.id, "@-webkit-keyframes fadeIn {\n  0% {\n    opacity: .25; }\n  100% {\n    opacity: 1; } }\n\n@-moz-keyframes fadeIn {\n  0% {\n    opacity: .25; }\n  100% {\n    opacity: 1; } }\n\n@-o-keyframes fadeIn {\n  0% {\n    opacity: .25; }\n  100% {\n    opacity: 1; } }\n\n@keyframes fadeIn {\n  0% {\n    opacity: .25; }\n  100% {\n    opacity: 1; } }\n\n@-webkit-keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@-moz-keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@-o-keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@-webkit-keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@-moz-keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@-o-keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@-webkit-keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n@-moz-keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n@-o-keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n@keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0; }\n\nhtml {\n  font-size: 62.5%; }\n\nbody {\n  background-color: #000;\n  color: #fff;\n  font-family: 'PT Serif', serif;\n  font-size: 2rem;\n  line-height: 3.5rem;\n  transition: all linear 0.3s; }\n  @media (min-width: 1000px) {\n    body {\n      font-size: 3rem;\n      line-height: 4.5rem; } }\n\nmain {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s;\n  margin-top: 6rem;\n  overflow: hidden;\n  padding-left: 2rem;\n  padding-right: 2rem;\n  text-align: center; }\n  @media (min-width: 700px) {\n    main {\n      margin-top: 8rem;\n      padding: 5%; } }\n  main:focus {\n    outline-color: #000; }\n\nh1 {\n  font-size: 4rem;\n  margin: 2rem 0; }\n\nh2 {\n  margin: 2rem 0; }\n\n.button {\n  border: 0.1rem solid #fff;\n  color: #fff;\n  display: inline-block;\n  font-size: .7em;\n  letter-spacing: .07em;\n  margin: 2rem;\n  min-width: 8rem;\n  padding: .3rem 1rem;\n  text-decoration: none;\n  transition: all linear 0.3s; }\n  .button:hover {\n    background-color: #fff;\n    color: #000;\n    cursor: pointer;\n    transform: scale(1.1); }\n\n.emphasis {\n  font-weight: bold; }\n\n.extra-message {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s; }\n\nlabel {\n  margin: 1rem 0; }\n\ninput {\n  background-color: #000;\n  border-width: 0 0 .1rem;\n  color: #fff;\n  font-size: 2rem;\n  margin-bottom: 5rem;\n  text-align: center; }\n\n.direction-options {\n  border-top: 0.2rem solid #fff;\n  list-style: none;\n  margin: 5rem 0 0;\n  padding-top: 2rem; }\n  .direction-options li {\n    border: 0.2rem solid #000;\n    cursor: pointer;\n    font-size: 2rem;\n    height: 6rem;\n    margin: 1rem auto;\n    min-width: 12rem;\n    padding: 1rem;\n    text-transform: capitalize;\n    transition: all linear 0.3s; }\n    .direction-options li:hover {\n      font-weight: bolder;\n      transform: scale(1.3); }\n  .direction-options .east,\n  .direction-options .west {\n    display: inline-block; }\n\n.hidden {\n  display: none; }\n\n@-webkit-keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n@-moz-keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n@-o-keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n@keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n.credits-container {\n  height: 80vh;\n  overflow: hidden;\n  padding: 5vw; }\n  .credits-container .credits {\n    -webkit-animation: roll-credits 20s linear;\n    -moz-animation: roll-credits 20s linear;\n    -o-animation: roll-credits 20s linear;\n    animation: roll-credits 20s linear;\n    margin: auto;\n    text-align: center;\n    transform: translate3d(0, -10000000rem, 0); }\n    .credits-container .credits li {\n      list-style: none;\n      margin-bottom: 4rem; }\n\n.inventory-icon {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s;\n  right: 1rem;\n  transition: all linear 0.3s; }\n  @media (min-width: 700px) {\n    .inventory-icon {\n      right: .5rem; } }\n  @media (min-width: 1000px) {\n    .inventory-icon {\n      margin-right: 1rem; } }\n  .inventory-icon:hover {\n    transform: scale(1.2); }\n\n.inventory-count {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s;\n  border-radius: .5rem;\n  color: #000;\n  cursor: pointer;\n  display: inline-block;\n  font-size: 1.6rem;\n  font-weight: bold;\n  padding: .2rem .8rem 0;\n  pointer-events: none;\n  position: fixed;\n  right: 2.1rem;\n  top: 2.8rem; }\n  @media (min-width: 700px) {\n    .inventory-count {\n      font-size: 1.8rem;\n      right: 2.1rem;\n      top: 3.3rem; } }\n  @media (min-width: 1000px) {\n    .inventory-count {\n      font-size: 2.5rem;\n      right: 3.7rem;\n      top: 5.3rem; } }\n\n.inventory {\n  border-left: 0.1rem solid #fff;\n  right: 0;\n  width: 90%; }\n  @media (min-width: 700px) {\n    .inventory {\n      width: 45%; }\n      .inventory p {\n        color: #fff; } }\n  .inventory .inventory-contents {\n    -webkit-animation: fadeIn 0.5s;\n    -moz-animation: fadeIn 0.5s;\n    -o-animation: fadeIn 0.5s;\n    animation: fadeIn 0.5s;\n    padding: 2rem 2rem 0; }\n  .inventory .item-options {\n    border-bottom: 0; }\n  .inventory .inventory-toggle {\n    color: #fff;\n    cursor: pointer;\n    display: block;\n    font-size: 2.2rem;\n    margin: 0;\n    transition: all linear 0.3s; }\n  .inventory li.inv {\n    border: 0; }\n  .inventory li .item {\n    height: 7rem;\n    transition: all linear 0.3s;\n    width: 7rem; }\n  .inventory li p {\n    transition: all linear 0.3s; }\n  .inventory li:hover, .inventory li.selected {\n    background-color: #fff;\n    border-radius: .1rem;\n    color: #323232;\n    transform: scale(1.1); }\n    .inventory li:hover svg, .inventory li.selected svg {\n      background-color: #323232;\n      border-radius: 50rem; }\n    .inventory li:hover p, .inventory li.selected p {\n      color: #323232; }\n\n.inventory-icon {\n  background-color: #000;\n  border-radius: 5rem;\n  cursor: pointer;\n  height: 7rem;\n  position: fixed;\n  top: 0;\n  width: 5rem; }\n  @media (min-width: 700px) {\n    .inventory-icon {\n      height: 8rem;\n      position: fixed;\n      top: 0;\n      width: 6rem; } }\n  @media (min-width: 1000px) {\n    .inventory-icon {\n      height: 10rem;\n      margin-top: 1rem;\n      width: 8rem; } }\n\n.inventory {\n  -webkit-animation: slideIn 0.2s;\n  -moz-animation: slideIn 0.2s;\n  -o-animation: slideIn 0.2s;\n  animation: slideIn 0.2s;\n  background-color: #323232;\n  min-height: 100vh;\n  position: fixed;\n  right: 0;\n  text-align: center;\n  top: 0;\n  z-index: 1340; }\n", ""]);
 
 	// exports
 
@@ -417,6 +449,115 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _require = __webpack_require__(7)();
+
+	var updateData = _require.updateData;
+	var getDataStore = _require.getDataStore;
+
+	var update = function update(data) {
+	  return updateData('inventory', data);
+	};
+
+	module.exports = function () {
+	  var gameInventory = void 0;
+
+	  (function initialiseInventory() {
+	    function listener() {
+	      update(this.responseText);
+	    }
+
+	    var requester = new XMLHttpRequest();
+	    requester.addEventListener('load', listener);
+	    requester.open('GET', 'http://api.project-arklay.com/inventory/initialise');
+	    requester.send();
+	  })();
+
+	  var updateInventory = function updateInventory() {};
+
+	  return {
+	    gameInventory: gameInventory
+	  };
+	};
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function () {
+	  var dataStore = {
+	    inventory: {},
+	    room: {}
+	  };
+
+	  var getDataStore = function getDataStore() {
+	    return dataStore;
+	  };
+
+	  var updateData = function updateData(type, data) {
+	    console.log('type', type);
+	    switch (type) {
+	      case 'inventory':
+	        dataStore.inventory = data;
+	        break;
+	      case 'room':
+	        dataStore.room = data;
+	        break;
+	    }
+	    console.log(dataStore);
+	  };
+
+	  app.addEventListener('click', getDataStore);
+
+	  return {
+	    getDataStore: getDataStore,
+	    updateData: updateData
+	  };
+	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _require = __webpack_require__(7)();
+
+	var updateData = _require.updateData;
+	var getDataStore = _require.getDataStore;
+
+	var update = function update(data) {
+	  return updateData('room', data);
+	};
+
+	module.exports = function () {
+	  var gameInventory = void 0;
+
+	  (function initialiseInventory() {
+	    function listener() {
+	      update(this.responseText);
+	    }
+
+	    var requester = new XMLHttpRequest();
+	    requester.addEventListener('load', listener);
+	    requester.open('POST', 'http://api.project-arklay.com/rooms/start');
+	    requester.send(getDataStore().inventory.itemsUsed);
+	  })();
+
+	  var updateInventory = function updateInventory() {};
+
+	  return {
+	    gameInventory: gameInventory
+	  };
+	};
 
 /***/ }
 /******/ ]);
