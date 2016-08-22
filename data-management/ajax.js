@@ -3,8 +3,6 @@ const { updateData } = require('./store')
 const request = (type, url, body, dataType) => {
   // 'dataType' refers to either 'inventory' or 'room'
   function listener () {
-    console.log(`request body was ${body}`)
-    console.log(`updating ${dataType} with ${this.responseText}`)
     updateData(dataType, this.responseText)
   }
 

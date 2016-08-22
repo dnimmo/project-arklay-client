@@ -1,6 +1,6 @@
 require('./style/main.scss')
-require('./components/inventory')()
-require('./components/room')()
+require('./data-management/inventory')()
+require('./data-management/room')()
 
 // Elements that need to be updated
 import {
@@ -10,7 +10,7 @@ import {
   inventoryToggle,
   inventory,
   closeInventory
-} from './components/elements'
+} from './dom-management/elements'
 
 const updateText = (element, update) => element.innerText = update
 const addClass = (element, classToAdd) => element.classList.add(classToAdd)

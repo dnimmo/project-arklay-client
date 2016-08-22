@@ -500,7 +500,7 @@
 	  inventory: {},
 	  room: {}
 	};
-	console.log(dataStore);
+
 	var getData = function getData(attribute) {
 	  return dataStore[attribute];
 	};
