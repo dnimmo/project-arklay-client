@@ -46,40 +46,139 @@
 
 	'use strict';
 
-	var _elements = __webpack_require__(1);
+	var _room = __webpack_require__(1);
 
-	__webpack_require__(2);
-	__webpack_require__(6)();
-	__webpack_require__(9)();
+	var _roomManager = __webpack_require__(4);
 
-	// Elements that need to be updated
+	__webpack_require__(6);
+	__webpack_require__(10)();
 
 
-	var updateText = function updateText(element, update) {
-	  return element.innerText = update;
-	};
-	var addClass = function addClass(element, classToAdd) {
-	  return element.classList.add(classToAdd);
-	};
-	var removeClass = function removeClass(element, classToRemove) {
-	  return element.classList.remove(classToRemove);
-	};
-	var toggleClass = function toggleClass(element, classToToggle) {
-	  return element.classList.toggle(classToToggle);
-	};
-
-	var toggleInventory = function toggleInventory() {
-	  return toggleClass(_elements.inventory, 'hidden');
-	};
-
-	_elements.inventoryToggle.addEventListener('click', toggleInventory);
-	_elements.closeInventory.addEventListener('click', toggleInventory);
-
-	updateText(_elements.roomDescription, 'hello!');
-	updateText(_elements.roomDetails, 'goodbye!');
+	(0, _roomManager.tempManager)();
+	(0, _room.getRoom)('start');
 
 /***/ },
 /* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _require = __webpack_require__(2);
+
+	var request = _require.request;
+
+	var _require2 = __webpack_require__(3);
+
+	var getData = _require2.getData;
+
+
+	var getRoom = function getRoom(slug) {
+	  return request('POST', 'http://api.project-arklay.com/rooms/' + slug, getData('inventory').itemsUsed, 'room');
+	};
+
+	module.exports = {
+	  getRoom: getRoom
+	};
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _require = __webpack_require__(3);
+
+	var updateData = _require.updateData;
+
+
+	var request = function request(type, url, body, dataType) {
+	  // 'dataType' refers to either 'inventory' or 'room'
+	  function listener() {
+	    updateData(dataType, this.responseText);
+	  }
+
+	  var requester = new XMLHttpRequest();
+	  requester.addEventListener('load', listener);
+	  requester.open(type, url);
+	  requester.send(body);
+	};
+
+	module.exports = {
+	  request: request
+	};
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	// All of the room/inventory data lives in here - all of the updates happen here, and any requests for the data come here
+	var dataUpdated = new Event('data-updated');
+
+	// Listen for the event
+	document.addEventListener('data-updated', function (e) {
+	  console.log('update', getData('inventory'));
+	}, false);
+
+	var dataStore = {
+	  inventory: {},
+	  room: {}
+	};
+
+	var getData = function getData(attribute) {
+	  return dataStore[attribute];
+	};
+	var updateData = function updateData(type, data) {
+	  dataStore[type] = data;
+	  document.dispatchEvent(dataUpdated);
+	};
+
+	module.exports = {
+	  getData: getData,
+	  updateData: updateData
+	};
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _elements = __webpack_require__(5);
+
+	var tempManager = function tempManager() {
+	  var updateText = function updateText(element, update) {
+	    return element.innerText = update;
+	  };
+	  var addClass = function addClass(element, classToAdd) {
+	    return element.classList.add(classToAdd);
+	  };
+	  var removeClass = function removeClass(element, classToRemove) {
+	    return element.classList.remove(classToRemove);
+	  };
+	  var toggleClass = function toggleClass(element, classToToggle) {
+	    return element.classList.toggle(classToToggle);
+	  };
+
+	  var toggleInventory = function toggleInventory() {
+	    return toggleClass(inventory, 'hidden');
+	  };
+
+	  inventoryToggle.addEventListener('click', toggleInventory);
+	  closeInventory.addEventListener('click', toggleInventory);
+
+	  updateText(_elements.roomDescription, 'hello!');
+	  updateText(_elements.roomDetails, 'goodbye!');
+	}; // Elements that need to be updated
+
+
+	module.exports = {
+	  tempManager: tempManager
+	};
+
+/***/ },
+/* 5 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -99,16 +198,16 @@
 	var closeInventory = exports.closeInventory = getElement('closeInventory');
 
 /***/ },
-/* 2 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(3);
+	var content = __webpack_require__(7);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(5)(content, {});
+	var update = __webpack_require__(9)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -125,10 +224,10 @@
 	}
 
 /***/ },
-/* 3 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(4)();
+	exports = module.exports = __webpack_require__(8)();
 	// imports
 
 
@@ -139,7 +238,7 @@
 
 
 /***/ },
-/* 4 */
+/* 8 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -194,7 +293,7 @@
 	};
 
 /***/ },
-/* 5 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -446,12 +545,12 @@
 
 
 /***/ },
-/* 6 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _require = __webpack_require__(7);
+	var _require = __webpack_require__(2);
 
 	var request = _require.request;
 
@@ -459,79 +558,6 @@
 	module.exports = function () {
 	  // Initialise inventory
 	  request('GET', 'http://api.project-arklay.com/inventory/initialise', '', 'inventory');
-	};
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _require = __webpack_require__(8);
-
-	var updateData = _require.updateData;
-
-
-	var request = function request(type, url, body, dataType) {
-	  // 'dataType' refers to either 'inventory' or 'room'
-	  function listener() {
-	    console.log('request body was ' + body);
-	    console.log('updating ' + dataType + ' with ' + this.responseText);
-	    updateData(dataType, this.responseText);
-	  }
-
-	  var requester = new XMLHttpRequest();
-	  requester.addEventListener('load', listener);
-	  requester.open(type, url);
-	  requester.send(body);
-	};
-
-	module.exports = {
-	  request: request
-	};
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var dataStore = {
-	  inventory: {},
-	  room: {}
-	};
-
-	var getData = function getData(attribute) {
-	  return dataStore[attribute];
-	};
-
-	var updateData = function updateData(type, data) {
-	  dataStore[type] = data;
-	};
-
-	module.exports = {
-	  getData: getData,
-	  updateData: updateData
-	};
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _require = __webpack_require__(7);
-
-	var request = _require.request;
-
-	var _require2 = __webpack_require__(8);
-
-	var getData = _require2.getData;
-
-
-	module.exports = function () {
-	  // Initialise starting room
-	  request('POST', 'http://api.project-arklay.com/rooms/start', getData('inventory').itemsUsed, 'room');
 	};
 
 /***/ }
