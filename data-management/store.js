@@ -4,10 +4,7 @@ const dataStore = {
 }
 
 const getData = attribute => dataStore[attribute]
-
-const updateData = (type, data) => {
-  dataStore[type] = data
-}
+const updateData = (type, data) => dataStore[type] = data
 
 module.exports = {
   getData,
