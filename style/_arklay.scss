@@ -130,6 +130,10 @@ input {
   .north + .east {
     margin-left: 12rem;
   }
+
+  .north + .south {
+    margin-top: 8rem;
+  }
 }
 
 .hidden {
