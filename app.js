@@ -4,8 +4,8 @@ import { getRoom } from './data-management/room'
 import { updateRoomUI } from './dom-management/room-manager'
 import { updateInventoryUI } from './dom-management/inventory-manager'
 
-document.addEventListener('data-updated', updateInventoryUI)
-document.addEventListener('data-updated', updateRoomUI)
+document.addEventListener('data-updated-inventory', updateInventoryUI)
+document.addEventListener('data-updated-room', updateRoomUI)
 
 // Start game
 initialiseInventory()

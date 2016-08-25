@@ -1,20 +1,21 @@
 // All of the room/inventory data lives in here - all of the updates happen here, and any requests for the data come through here
-const dataUpdated = new Event('data-updated')
-const emitUpdateEvent = () => document.dispatchEvent(dataUpdated)
+const dataUpdated = {
+  inventory: new Event('data-updated-inventory'),
+  room: new Event('data-updated-room')
+}
+const emitUpdateEvent = type => document.dispatchEvent(dataUpdated[type])
 
 const dataStore = {
   inventory: {},
   room: {}
 }
 
-const getData = attribute => dataStore[attribute]
+const getData = type => dataStore[type]
 
 const updateData = (type, data) => {
   // Update data, and emit event if updated data is different from pre-update data
-  const preUpdate = getData(type)
   dataStore[type] = JSON.parse(data)
-  const postUpdate = getData(type)
-  if (preUpdate !== postUpdate) emitUpdateEvent()
+  emitUpdateEvent(type)
 }
 
 module.exports = {

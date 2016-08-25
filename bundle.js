@@ -57,8 +57,8 @@
 	__webpack_require__(9);
 
 
-	document.addEventListener('data-updated', _inventoryManager.updateInventoryUI);
-	document.addEventListener('data-updated', _roomManager.updateRoomUI);
+	document.addEventListener('data-updated-inventory', _inventoryManager.updateInventoryUI);
+	document.addEventListener('data-updated-room', _roomManager.updateRoomUI);
 
 	// Start game
 	(0, _inventory.initialiseInventory)();
@@ -106,6 +106,7 @@
 	var request = function request(type, url, body, dataType) {
 	  // 'dataType' refers to either 'inventory' or 'room'
 	  function listener() {
+	    requester.removeEventListener('load', listener);
 	    updateData(dataType, this.responseText);
 	  }
 
@@ -126,9 +127,12 @@
 	'use strict';
 
 	// All of the room/inventory data lives in here - all of the updates happen here, and any requests for the data come through here
-	var dataUpdated = new Event('data-updated');
-	var emitUpdateEvent = function emitUpdateEvent() {
-	  return document.dispatchEvent(dataUpdated);
+	var dataUpdated = {
+	  inventory: new Event('data-updated-inventory'),
+	  room: new Event('data-updated-room')
+	};
+	var emitUpdateEvent = function emitUpdateEvent(type) {
+	  return document.dispatchEvent(dataUpdated[type]);
 	};
 
 	var dataStore = {
@@ -136,16 +140,14 @@
 	  room: {}
 	};
 
-	var getData = function getData(attribute) {
-	  return dataStore[attribute];
+	var getData = function getData(type) {
+	  return dataStore[type];
 	};
 
 	var updateData = function updateData(type, data) {
 	  // Update data, and emit event if updated data is different from pre-update data
-	  var preUpdate = getData(type);
 	  dataStore[type] = JSON.parse(data);
-	  var postUpdate = getData(type);
-	  if (preUpdate !== postUpdate) emitUpdateEvent();
+	  emitUpdateEvent(type);
 	};
 
 	module.exports = {
@@ -186,14 +188,48 @@
 
 	var _commonFunctions = __webpack_require__(7);
 
+	var _room = __webpack_require__(4);
+
 	var _store = __webpack_require__(3);
 
+	// Elements that need to be updated
+	function clearContents(element) {
+	  element.innerHTML = '';
+	}
+
+	function addButton(_ref) {
+	  var displayText = _ref.displayText;
+	  var rel = _ref.rel;
+	  var link = _ref.link;
+
+	  var button = document.createElement("li");
+	  (0, _commonFunctions.addClass)(button, rel);
+	  // If 'displayText' exists on direction, use that instead of rel
+	  (0, _commonFunctions.updateText)(button, displayText || rel);
+	  _elements.directions.appendChild(button);
+	  button.addEventListener('click', listener);
+
+	  function listener() {
+	    // destroy 'directions' document
+	    return (0, _room.getRoom)(link);
+	  }
+	}
+
 	var updateRoomUI = function updateRoomUI() {
+	  clearContents(_elements.directions);
 	  var roomInfo = (0, _store.getData)('room');
 	  (0, _commonFunctions.updateText)(_elements.roomDescription, roomInfo.description);
 	  (0, _commonFunctions.updateText)(_elements.roomDetails, roomInfo.surroundings);
-	}; // Elements that need to be updated
 
+	  if (!roomInfo.directions) {
+	    return;
+	  }
+
+	  // Set up each direction in the UI
+	  roomInfo.directions.forEach(function (direction) {
+	    return addButton(direction);
+	  });
+	};
 
 	module.exports = {
 	  updateRoomUI: updateRoomUI
@@ -208,26 +244,33 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var getElement = function getElement(id) {
+	var getElement = exports.getElement = function getElement(id) {
 	  return document.getElementById(id);
 	};
 
+	// Room
 	var roomDescription = exports.roomDescription = getElement('roomDescription');
 	var roomDetails = exports.roomDetails = getElement('roomDetails');
-	var directions = exports.directions = getElement('directionOptions');
+	var directions = exports.directions = getElement('directions');
+
+	// Inventory
 	var inventoryToggle = exports.inventoryToggle = getElement('inventoryToggle');
 	var inventory = exports.inventory = getElement('inventory');
 	var closeInventory = exports.closeInventory = getElement('closeInventory');
 
 /***/ },
 /* 7 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.toggleClass = exports.removeClass = exports.addClass = exports.updateText = undefined;
+
+	var _elements = __webpack_require__(6);
+
 	var updateText = exports.updateText = function updateText(element, update) {
 	  return element.innerText = update;
 	};
