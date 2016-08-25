@@ -1,4 +1,4 @@
-const { request } = require('./ajax')
+const { request } = require('./api-caller')
 const { getData } = require('./store')
 
 const initialiseInventory = () => request('GET', 'http://api.project-arklay.com/inventory/initialise', '', 'inventory')

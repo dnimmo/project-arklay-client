@@ -1,14 +1,13 @@
-// All of the room/inventory data lives in here - all of the updates happen here, and any requests for the data come through here
+const dataStore = {
+  inventory: {},
+  room: {}
+}
+
 const dataUpdated = {
   inventory: new Event('data-updated-inventory'),
   room: new Event('data-updated-room')
 }
 const emitUpdateEvent = type => document.dispatchEvent(dataUpdated[type])
-
-const dataStore = {
-  inventory: {},
-  room: {}
-}
 
 const getData = type => dataStore[type]
 
