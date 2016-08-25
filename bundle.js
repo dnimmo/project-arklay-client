@@ -126,18 +126,17 @@
 
 	'use strict';
 
-	// All of the room/inventory data lives in here - all of the updates happen here, and any requests for the data come through here
+	var dataStore = {
+	  inventory: {},
+	  room: {}
+	};
+
 	var dataUpdated = {
 	  inventory: new Event('data-updated-inventory'),
 	  room: new Event('data-updated-room')
 	};
 	var emitUpdateEvent = function emitUpdateEvent(type) {
 	  return document.dispatchEvent(dataUpdated[type]);
-	};
-
-	var dataStore = {
-	  inventory: {},
-	  room: {}
 	};
 
 	var getData = function getData(type) {
@@ -193,10 +192,6 @@
 	var _store = __webpack_require__(3);
 
 	// Elements that need to be updated
-	function clearContents(element) {
-	  element.innerHTML = '';
-	}
-
 	function addButton(_ref) {
 	  var displayText = _ref.displayText;
 	  var rel = _ref.rel;
@@ -216,7 +211,7 @@
 	}
 
 	var updateRoomUI = function updateRoomUI() {
-	  clearContents(_elements.directions);
+	  (0, _commonFunctions.clearContents)(_elements.directions);
 	  var roomInfo = (0, _store.getData)('room');
 	  (0, _commonFunctions.updateText)(_elements.roomDescription, roomInfo.description);
 	  (0, _commonFunctions.updateText)(_elements.roomDetails, roomInfo.surroundings);
@@ -267,7 +262,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.toggleClass = exports.removeClass = exports.addClass = exports.updateText = undefined;
+	exports.clearContents = exports.toggleClass = exports.removeClass = exports.addClass = exports.updateText = undefined;
 
 	var _elements = __webpack_require__(6);
 
@@ -282,6 +277,9 @@
 	};
 	var toggleClass = exports.toggleClass = function toggleClass(element, classToToggle) {
 	  return element.classList.toggle(classToToggle);
+	};
+	var clearContents = exports.clearContents = function clearContents(element) {
+	  return element.innerHTML = '';
 	};
 
 /***/ },
