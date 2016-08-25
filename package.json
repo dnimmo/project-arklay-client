@@ -2,7 +2,7 @@
   "name": "project-arklay-client",
   "version": "2.0.0",
   "description": "A web-based text adventure game",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "build": "webpack ./app.js ./bundle.js --config ./config/webpack.config.js",
     "check-standards": "standard",
