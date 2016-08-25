@@ -2,7 +2,7 @@
 
 The client-side app for v2 of http://project-arklay.com
 
-This application uses Webpack to create a single file (`bundle.js`) for all of its JS and CSS. Run `npm run build` (after running `npm install` to create this file.
+This application uses Webpack to create a single file (`bundle.js`) for all of its JS and CSS. Run `npm run build` (after running `npm install`) to create this file.
 
 Project Arklay's client-side application is written in plain JavaScript (ES6), and does not use any frameworks or libraries. I've tried to keep this simple in terms of the data flow through the application, so initial setup happens in `app.js` (in the root directory). This file initialises the player's inventory, and gets the starting room from the Project Arklay API.
 
