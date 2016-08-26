@@ -1,7 +1,7 @@
 const { request } = require('./api-caller')
 const { getData } = require('./store')
 
-const getRoom = slug => request('POST', `http://api.project-arklay.com/rooms/${slug}`, getData('inventory').itemsUsed, 'room')
+const getRoom = slug => request('POST', `http://localhost:8081/rooms/${slug}`, getData('inventory'), 'room')
 
 module.exports = {
   getRoom

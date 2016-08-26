@@ -10,7 +10,8 @@ const request = (type, url, body, dataType) => {
   const requester = new XMLHttpRequest()
   requester.addEventListener('load', listener)
   requester.open(type, url)
-  requester.send(body)
+  requester.setRequestHeader('content-type', 'application/json')
+  requester.send(JSON.stringify(body))
 }
 
 module.exports = {
