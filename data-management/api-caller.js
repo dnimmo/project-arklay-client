@@ -10,7 +10,11 @@ const request = (type, url, body, dataType) => {
   const requester = new XMLHttpRequest()
   requester.addEventListener('load', listener)
   requester.open(type, url)
-  requester.setRequestHeader('content-type', 'application/json')
+
+  if (type === 'POST') {
+    requester.setRequestHeader('content-type', 'application/json')
+  }
+  
   requester.send(JSON.stringify(body))
 }
 
