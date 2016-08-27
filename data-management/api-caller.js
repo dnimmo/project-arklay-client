@@ -11,10 +11,10 @@ const request = (type, url, body, dataType) => {
   requester.addEventListener('load', listener)
   requester.open(type, url)
 
-  if (type === 'POST') {
+  if (type === 'POST' || type === 'PATCH') {
     requester.setRequestHeader('content-type', 'application/json')
   }
-  
+
   requester.send(JSON.stringify(body))
 }
 

@@ -33,7 +33,7 @@
       <svg class='inventory-icon' alt='Inventory'>
         <use xlink:href='/images/defs.svg#inventory'></use>
       </svg>
-      <span class='inventory-count' data-ng-show="!inventory.open">
+      <span id='inventoryCount' class='inventory-count' data-ng-show="!inventory.open">
         {{inventory.usableItems.length}}
       </span>
     </div>

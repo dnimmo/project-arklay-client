@@ -1,7 +1,7 @@
 const { request } = require('./api-caller')
 const { getData } = require('./store')
 
-const rootUrl = 'http://api.project-arklay/inventory'
+const rootUrl = 'http://api.project-arklay.com/inventory'
 
 const initialiseInventory = () => request('GET', `${rootUrl}/initialise`, '', 'inventory')
 

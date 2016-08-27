@@ -14,6 +14,7 @@ import {
 } from './common-functions'
 
 import { getRoom } from '../data-management/room'
+import { addItem } from '../data-management/inventory'
 import { getData } from '../data-management/store'
 
 function addButton ({displayText, rel, link}) {
@@ -34,6 +35,11 @@ const updateRoomUI = () => {
   const roomInfo = getData('room')
   updateText(roomDescription, roomInfo.description)
   updateText(roomDetails, roomInfo.surroundings)
+
+  if (roomInfo.item) {
+    // Eventually this should change to happen on examineRoom rather than automatically
+    addItem(roomInfo.item)
+  }
 
   if (!roomInfo.directions) {
     return

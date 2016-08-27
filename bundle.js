@@ -79,12 +79,14 @@
 	var getData = _require2.getData;
 
 
+	var rootUrl = 'http://api.project-arklay.com/inventory';
+
 	var initialiseInventory = function initialiseInventory() {
-	  return request('GET', 'http://api.project-arklay.com/inventory/initialise', '', 'inventory');
+	  return request('GET', rootUrl + '/initialise', '', 'inventory');
 	};
 
 	var addItem = function addItem(itemName) {
-	  return request('PATCH', 'http://api.project-arklay.com/inventory/add/' + itemName, getData('inventory'), 'inventory');
+	  return request('PATCH', rootUrl + '/add/' + itemName, getData('inventory'), 'inventory');
 	};
 
 	module.exports = {
@@ -113,7 +115,11 @@
 	  var requester = new XMLHttpRequest();
 	  requester.addEventListener('load', listener);
 	  requester.open(type, url);
-	  requester.setRequestHeader('content-type', 'application/json');
+
+	  if (type === 'POST' || type === 'PATCH') {
+	    requester.setRequestHeader('content-type', 'application/json');
+	  }
+
 	  requester.send(JSON.stringify(body));
 	};
 
@@ -136,6 +142,7 @@
 	  inventory: new Event('data-updated-inventory'),
 	  room: new Event('data-updated-room')
 	};
+
 	var emitUpdateEvent = function emitUpdateEvent(type) {
 	  return document.dispatchEvent(dataUpdated[type]);
 	};
@@ -192,9 +199,10 @@
 
 	var _room = __webpack_require__(4);
 
+	var _inventory = __webpack_require__(1);
+
 	var _store = __webpack_require__(3);
 
-	// Elements that need to be updated
 	function addButton(_ref) {
 	  var displayText = _ref.displayText;
 	  var rel = _ref.rel;
@@ -208,16 +216,21 @@
 	  button.addEventListener('click', listener);
 
 	  function listener() {
-	    // destroy 'directions' document
 	    return (0, _room.getRoom)(link);
 	  }
-	}
+	} // Elements that need to be updated
+
 
 	var updateRoomUI = function updateRoomUI() {
 	  (0, _commonFunctions.clearContents)(_elements.directions);
 	  var roomInfo = (0, _store.getData)('room');
 	  (0, _commonFunctions.updateText)(_elements.roomDescription, roomInfo.description);
 	  (0, _commonFunctions.updateText)(_elements.roomDetails, roomInfo.surroundings);
+
+	  if (roomInfo.item) {
+	    // Eventually this should change to happen on examineRoom rather than automatically
+	    (0, _inventory.addItem)(roomInfo.item);
+	  }
 
 	  if (!roomInfo.directions) {
 	    return;
@@ -253,6 +266,7 @@
 
 	// Inventory
 	var inventoryToggle = exports.inventoryToggle = getElement('inventoryToggle');
+	var inventoryCount = exports.inventoryCount = getElement('inventoryCount');
 	var inventory = exports.inventory = getElement('inventory');
 	var closeInventory = exports.closeInventory = getElement('closeInventory');
 
@@ -307,9 +321,14 @@
 	_elements.inventoryToggle.addEventListener('click', toggleInventory);
 	_elements.closeInventory.addEventListener('click', toggleInventory);
 
-	var updateInventoryUI = function updateInventoryUI() {
+	function displayInventoryToggle(count) {
+	  return count > 0;
+	}
 
-	  if (_elements.inventory['items'] && _elements.inventory.items.length > 0) {
+	var updateInventoryUI = function updateInventoryUI() {
+	  var inventory = (0, _store.getData)('inventory');
+
+	  if (displayInventoryToggle(inventory.items.length)) {
 	    (0, _commonFunctions.removeClass)(_elements.inventoryToggle, 'hidden');
 	  } else {
 	    (0, _commonFunctions.addClass)(_elements.inventoryToggle, 'hidden');

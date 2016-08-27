@@ -7,5 +7,6 @@ export const directions = getElement('directions')
 
 // Inventory
 export const inventoryToggle = getElement('inventoryToggle')
+export const inventoryCount = getElement('inventoryCount')
 export const inventory = getElement('inventory')
 export const closeInventory = getElement('closeInventory')
