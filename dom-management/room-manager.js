@@ -25,7 +25,6 @@ function addButton ({displayText, rel, link}) {
   button.addEventListener('click', listener)
 
   function listener () {
-    // destroy 'directions' document
     return getRoom(link)
   }
 }
