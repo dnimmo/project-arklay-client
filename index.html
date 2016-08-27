@@ -29,18 +29,17 @@
       </ul>
     </main>
     <!-- Inventory start -->
-    <div class='inventory-toggle hidden' id='inventoryToggle' data-ng-show='inventory.usableItems.length !== 0' >
+    <div class='inventory-toggle hidden' id='inventoryToggle'>
       <svg class='inventory-icon' alt='Inventory'>
         <use xlink:href='/images/defs.svg#inventory'></use>
       </svg>
-      <span id='inventoryCount' class='inventory-count' data-ng-show="!inventory.open">
-        {{inventory.usableItems.length}}
+      <span id='inventoryCount' class='inventory-count'>
       </span>
     </div>
-    <section class='inventory hidden' id='inventory' data-ng-show='inventory.open'>
+    <section class='inventory hidden' id='inventory'>
       <!--Put into separate partial-->
       <div class='inventory-contents'>
-        <ul data-ng-if='!inventory.itemOptionsOpen'>
+        <ul>
           <li class='button inv' data-ng-class='{"selected" : item === inventory.selectedItem}' data-ng-repeat='item in inventory.usableItems' data-ng-click='inventory.selectItem(item)'>
             <svg class='item'>
               <use xlink:href='{{item.image}}'></use>

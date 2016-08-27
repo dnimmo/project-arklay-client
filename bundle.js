@@ -327,6 +327,7 @@
 
 	var updateInventoryUI = function updateInventoryUI() {
 	  var inventory = (0, _store.getData)('inventory');
+	  (0, _commonFunctions.updateText)(_elements.inventoryCount, inventory.items.length);
 
 	  if (displayInventoryToggle(inventory.items.length)) {
 	    (0, _commonFunctions.removeClass)(_elements.inventoryToggle, 'hidden');

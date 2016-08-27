@@ -28,7 +28,8 @@ function displayInventoryToggle (count) {
 
 const updateInventoryUI = () => {
   const inventory = getData('inventory')
-
+  updateText(inventoryCount, inventory.items.length)
+  
   if (displayInventoryToggle(inventory.items.length)) {
     removeClass(inventoryToggle, 'hidden')
   } else {
