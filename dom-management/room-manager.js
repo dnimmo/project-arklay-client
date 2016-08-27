@@ -18,7 +18,7 @@ import { addItem } from '../data-management/inventory'
 import { getData } from '../data-management/store'
 
 function addButton ({displayText, rel, link}) {
-  const button = document.createElement("li")
+  const button = document.createElement('li')
   addClass(button, rel)
   // If 'displayText' exists on direction, use that instead of rel
   updateText(button, displayText || rel)
