@@ -1,9 +1,11 @@
 const { request } = require('./api-caller')
 const { getData } = require('./store')
 
-const initialiseInventory = () => request('GET', 'http://api.project-arklay.com/inventory/initialise', '', 'inventory')
+const rootUrl = 'http://api.project-arklay/inventory'
 
-const addItem = itemName => request('PATCH', `http://api.project-arklay.com/inventory/add/${itemName}`, getData('inventory'), 'inventory')
+const initialiseInventory = () => request('GET', `${rootUrl}/initialise`, '', 'inventory')
+
+const addItem = itemName => request('PATCH', `${rootUrl}/add/${itemName}`, getData('inventory'), 'inventory')
 
 module.exports = {
   initialiseInventory,
