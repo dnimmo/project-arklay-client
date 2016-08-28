@@ -5,7 +5,8 @@ const dataStore = {
 
 const dataUpdated = {
   inventory: new Event('data-updated-inventory'),
-  room: new Event('data-updated-room')
+  room: new Event('data-updated-room'),
+  item: new Event('data-updated-item')
 }
 
 const emitUpdateEvent = type => document.dispatchEvent(dataUpdated[type])

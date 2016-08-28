@@ -22,12 +22,13 @@ function addButton ({displayText, rel, link}) {
   addClass(button, rel)
   // If 'displayText' exists on direction, use that instead of rel
   updateText(button, displayText || rel)
-  directions.appendChild(button)
   button.addEventListener('click', listener)
 
   function listener () {
     return getRoom(link)
   }
+
+  return button
 }
 
 const updateRoomUI = () => {
@@ -46,7 +47,8 @@ const updateRoomUI = () => {
   }
 
   // Set up each direction in the UI
-  roomInfo.directions.forEach(direction => addButton(direction))
+  roomInfo.directions.forEach(direction =>
+  directions.appendChild(addButton(direction)))
 }
 
 module.exports = {

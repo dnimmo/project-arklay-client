@@ -140,7 +140,8 @@
 
 	var dataUpdated = {
 	  inventory: new Event('data-updated-inventory'),
-	  room: new Event('data-updated-room')
+	  room: new Event('data-updated-room'),
+	  item: new Event('data-updated-item')
 	};
 
 	var emitUpdateEvent = function emitUpdateEvent(type) {
@@ -208,16 +209,17 @@
 	  var rel = _ref.rel;
 	  var link = _ref.link;
 
-	  var button = document.createElement("li");
+	  var button = document.createElement('li');
 	  (0, _commonFunctions.addClass)(button, rel);
 	  // If 'displayText' exists on direction, use that instead of rel
 	  (0, _commonFunctions.updateText)(button, displayText || rel);
-	  _elements.directions.appendChild(button);
 	  button.addEventListener('click', listener);
 
 	  function listener() {
 	    return (0, _room.getRoom)(link);
 	  }
+
+	  return button;
 	} // Elements that need to be updated
 
 
@@ -238,7 +240,7 @@
 
 	  // Set up each direction in the UI
 	  roomInfo.directions.forEach(function (direction) {
-	    return addButton(direction);
+	    return _elements.directions.appendChild(addButton(direction));
 	  });
 	};
 
@@ -268,6 +270,7 @@
 	var inventoryToggle = exports.inventoryToggle = getElement('inventoryToggle');
 	var inventoryCount = exports.inventoryCount = getElement('inventoryCount');
 	var inventory = exports.inventory = getElement('inventory');
+	var itemList = exports.itemList = getElement('itemList');
 	var closeInventory = exports.closeInventory = getElement('closeInventory');
 
 /***/ },
@@ -286,8 +289,14 @@
 	var updateText = exports.updateText = function updateText(element, update) {
 	  return element.innerText = update;
 	};
-	var addClass = exports.addClass = function addClass(element, classToAdd) {
-	  return element.classList.add(classToAdd);
+	var addClass = exports.addClass = function addClass(element) {
+	  for (var _len = arguments.length, classesToAdd = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	    classesToAdd[_key - 1] = arguments[_key];
+	  }
+
+	  return classesToAdd.forEach(function (classToAdd) {
+	    return element.classList.add(classToAdd);
+	  });
 	};
 	var removeClass = exports.removeClass = function removeClass(element, classToRemove) {
 	  return element.classList.remove(classToRemove);
@@ -325,9 +334,47 @@
 	  return count > 0;
 	}
 
+	function addItemButton(item) {
+	  var button = document.createElement('li');
+	  (0, _commonFunctions.addClass)(button, 'button', 'inv');
+	  var buttonText = createText(item);
+	  var image = createImage(item);
+	  button.appendChild(image);
+	  button.appendChild(buttonText);
+	  button.addEventListener('click', listener);
+
+	  function listener() {
+	    console.log('clicked');
+	  }
+
+	  return button;
+	}
+
+	function createText(item) {
+	  var buttonText = document.createElement('p');
+	  (0, _commonFunctions.updateText)(buttonText, item);
+	  return buttonText;
+	}
+
+	function createImage(item) {
+	  // Need to actually add the image!
+	  var image = document.createElement('svg');
+	  var use = document.createElement('use');
+	  use.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+	  use.setAttribute('xlink:href', item);
+	  image.appendChild(use);
+	  (0, _commonFunctions.addClass)(image, 'item');
+
+	  return image;
+	}
+
 	var updateInventoryUI = function updateInventoryUI() {
 	  var inventory = (0, _store.getData)('inventory');
 	  (0, _commonFunctions.updateText)(_elements.inventoryCount, inventory.items.length);
+
+	  inventory.items.forEach(function (item) {
+	    return _elements.itemList.appendChild(addItemButton(item));
+	  });
 
 	  if (displayInventoryToggle(inventory.items.length)) {
 	    (0, _commonFunctions.removeClass)(_elements.inventoryToggle, 'hidden');
