@@ -62,15 +62,22 @@
 	document.addEventListener('data-updated-inventory', _inventoryManager.updateInventoryUI);
 	document.addEventListener('data-updated-room', _roomManager.updateRoomUI);
 
-	// Start game
-	var loadData = (0, _saveGame.loadGame)();
-	if (loadData) {
-	  (0, _inventory.initialiseInventory)(loadData.inventory);
-	  (0, _room.getRoom)(loadData.room.slug);
-	} else {
+	function startNewGame() {
 	  (0, _inventory.initialiseInventory)();
 	  (0, _room.getRoom)('start');
 	}
+
+	function loadGame(_ref) {
+	  var room = _ref.room;
+	  var inventory = _ref.inventory;
+
+	  (0, _inventory.initialiseSavedInventory)(inventory);
+	  (0, _room.getRoom)(room.slug);
+	}
+
+	// Start game
+	var loadedData = (0, _saveGame.loadGame)();
+	loadedData ? loadGame(loadedData) : startNewGame();
 
 /***/ },
 /* 1 */
@@ -93,6 +100,10 @@
 	  return request('GET', rootUrl + '/initialise', '', 'inventory');
 	};
 
+	var initialiseSavedInventory = function initialiseSavedInventory(data) {
+	  return request('POST', rootUrl + '/initialise', data, 'inventory');
+	};
+
 	var addItem = function addItem(itemName) {
 	  return request('PATCH', rootUrl + '/add/' + itemName, getData('inventory'), 'inventory');
 	};
@@ -103,6 +114,7 @@
 
 	module.exports = {
 	  initialiseInventory: initialiseInventory,
+	  initialiseSavedInventory: initialiseSavedInventory,
 	  addItem: addItem,
 	  useItem: useItem
 	};
