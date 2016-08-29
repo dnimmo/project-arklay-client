@@ -10,7 +10,7 @@ const saveGame = data => {
 
 const loadGame = () => {
   if(typeof(localStorage) !== 'undefined'){
-    let saveData = JSON.parse(localStorage.getItem('dataStore')
+    const saveData = JSON.parse(localStorage.getItem('dataStore'))
     return saveData !== null ? saveData : false
   } else {
     // Can't load
@@ -18,7 +18,7 @@ const loadGame = () => {
   }
 }
 
-module.exports {
+module.exports = {
   saveGame,
   loadGame
 }

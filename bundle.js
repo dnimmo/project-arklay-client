@@ -48,21 +48,29 @@
 
 	var _inventory = __webpack_require__(1);
 
-	var _room = __webpack_require__(4);
+	var _room = __webpack_require__(5);
 
-	var _roomManager = __webpack_require__(5);
+	var _roomManager = __webpack_require__(6);
 
-	var _inventoryManager = __webpack_require__(8);
+	var _inventoryManager = __webpack_require__(9);
 
-	__webpack_require__(10);
+	var _saveGame = __webpack_require__(4);
+
+	__webpack_require__(11);
 
 
 	document.addEventListener('data-updated-inventory', _inventoryManager.updateInventoryUI);
 	document.addEventListener('data-updated-room', _roomManager.updateRoomUI);
 
 	// Start game
-	(0, _inventory.initialiseInventory)();
-	(0, _room.getRoom)('start');
+	var loadData = (0, _saveGame.loadGame)();
+	if (loadData) {
+	  (0, _inventory.initialiseInventory)(loadData.inventory);
+	  (0, _room.getRoom)(loadData.room.slug);
+	} else {
+	  (0, _inventory.initialiseInventory)();
+	  (0, _room.getRoom)('start');
+	}
 
 /***/ },
 /* 1 */
@@ -134,9 +142,11 @@
 
 /***/ },
 /* 3 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	var _saveGame = __webpack_require__(4);
 
 	var dataStore = {
 	  inventory: {},
@@ -160,6 +170,7 @@
 	  // Update data, and emit event if updated data is different from pre-update data
 	  dataStore[type] = JSON.parse(data);
 	  emitUpdateEvent(type);
+	  (0, _saveGame.saveGame)(dataStore);
 	};
 
 	module.exports = {
@@ -169,6 +180,37 @@
 
 /***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var saveGame = function saveGame(data) {
+	  if (typeof localStorage !== 'undefined') {
+	    localStorage.setItem('dataStore', JSON.stringify(data));
+	    return true;
+	  } else {
+	    // Can't save
+	    return false;
+	  }
+	};
+
+	var loadGame = function loadGame() {
+	  if (typeof localStorage !== 'undefined') {
+	    var saveData = JSON.parse(localStorage.getItem('dataStore'));
+	    return saveData !== null ? saveData : false;
+	  } else {
+	    // Can't load
+	    return false;
+	  }
+	};
+
+	module.exports = {
+	  saveGame: saveGame,
+	  loadGame: loadGame
+	};
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -193,16 +235,16 @@
 	};
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _elements = __webpack_require__(6);
+	var _elements = __webpack_require__(7);
 
-	var _commonFunctions = __webpack_require__(7);
+	var _commonFunctions = __webpack_require__(8);
 
-	var _room = __webpack_require__(4);
+	var _room = __webpack_require__(5);
 
 	var _inventory = __webpack_require__(1);
 
@@ -253,7 +295,7 @@
 	};
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -286,7 +328,7 @@
 	var itemNotUsedMessage = exports.itemNotUsedMessage = getElement('itemNotUsedMessage');
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -296,7 +338,7 @@
 	});
 	exports.clearContents = exports.toggleClass = exports.removeClass = exports.addClass = exports.updateText = undefined;
 
-	var _elements = __webpack_require__(6);
+	var _elements = __webpack_require__(7);
 
 	var updateText = exports.updateText = function updateText(element, update) {
 	  return element.innerText = update;
@@ -321,20 +363,20 @@
 	};
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _elements = __webpack_require__(6);
+	var _elements = __webpack_require__(7);
 
-	var _commonFunctions = __webpack_require__(7);
+	var _commonFunctions = __webpack_require__(8);
 
 	var _store = __webpack_require__(3);
 
 	var _inventory = __webpack_require__(1);
 
-	var _itemOptionsManager = __webpack_require__(9);
+	var _itemOptionsManager = __webpack_require__(10);
 
 	var toggleInventory = function toggleInventory() {
 	  return (0, _commonFunctions.toggleClass)(_elements.inventory, 'hidden');
@@ -408,16 +450,16 @@
 	};
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _elements = __webpack_require__(6);
+	var _elements = __webpack_require__(7);
 
-	var _commonFunctions = __webpack_require__(7);
+	var _commonFunctions = __webpack_require__(8);
 
-	var _room = __webpack_require__(4);
+	var _room = __webpack_require__(5);
 
 	var _store = __webpack_require__(3);
 
@@ -476,16 +518,16 @@
 	// useButton.onclick = listener
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(11);
+	var content = __webpack_require__(12);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(13)(content, {});
+	var update = __webpack_require__(14)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -502,10 +544,10 @@
 	}
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(12)();
+	exports = module.exports = __webpack_require__(13)();
 	// imports
 
 
@@ -516,7 +558,7 @@
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -571,7 +613,7 @@
 	};
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
