@@ -4,7 +4,9 @@ import {
   inventoryCount,
   inventory,
   itemList,
-  closeInventory
+  closeInventory,
+  itemOptions,
+  useButton
 } from './elements'
 
 import {
@@ -12,11 +14,15 @@ import {
   addClass,
   removeClass,
   toggleClass,
-  updateClasses
+  updateClasses,
+  clearContents
 } from './common-functions'
 
 import { getData } from '../data-management/store'
-import { addItem } from '../data-management/inventory'
+import {
+  addItem,
+  useItem
+} from '../data-management/inventory'
 
 const toggleInventory = () => toggleClass(inventory, 'hidden')
 
@@ -27,34 +33,49 @@ function displayInventoryToggle (count) {
   return count > 0
 }
 
+function itemCanBeUsed(itemInfo) {
+  console.log(getData('room'))
+  return getData('room').slug === itemInfo
+}
+
 function addItemButton (item) {
   const button = document.createElement('li')
   addClass(button, 'button', 'inv')
-  const buttonText = createText(item)
-  const image = createImage(item)
+  const buttonText = createText(item.displayName)
+  const image = createImage(item.image)
   button.appendChild(image)
   button.appendChild(buttonText)
   button.addEventListener('click', listener)
 
   function listener () {
-    console.log('clicked')
+    // toggleClass(itemOptions, 'hidden')
+    // toggleClass(itemList, 'hidden')
+    // toggleClass(closeInventory, 'hidden')
+    const listener = () => {
+      if(itemCanBeUsed(item)) {
+        useItem(item.canBeUsedIn)
+      } else {
+        console.log('item can not be used')
+      }
+    }
+    useButton.onclick = listener
   }
 
   return button
 }
 
-function createText (item) {
+function createText (displayName) {
   const buttonText = document.createElement('p')
-  updateText(buttonText, item)
+  updateText(buttonText, displayName)
   return buttonText
 }
 
-function createImage (item) {
+function createImage (itemImage) {
   // Need to actually add the image!
   const image = document.createElement('svg')
   const use = document.createElement('use')
   use.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
-  use.setAttribute('xlink:href', item)
+  use.setAttribute('xlink:href', itemImage)
   image.appendChild(use)
   addClass(image, 'item')
 
@@ -62,6 +83,7 @@ function createImage (item) {
 }
 
 const updateInventoryUI = () => {
+  clearContents(itemList)
   const inventory = getData('inventory')
   updateText(inventoryCount, inventory.items.length)
 

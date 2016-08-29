@@ -7,7 +7,10 @@ const initialiseInventory = () => request('GET', `${rootUrl}/initialise`, '', 'i
 
 const addItem = itemName => request('PATCH', `${rootUrl}/add/${itemName}`, getData('inventory'), 'inventory')
 
+const useItem = itemName => request('PATCH', `${rootUrl}/remove/${itemName}`, getData('inventory'), 'inventory')
+
 module.exports = {
   initialiseInventory,
-  addItem
+  addItem,
+  useItem
 }

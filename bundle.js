@@ -89,9 +89,14 @@
 	  return request('PATCH', rootUrl + '/add/' + itemName, getData('inventory'), 'inventory');
 	};
 
+	var useItem = function useItem(itemName) {
+	  return request('PATCH', rootUrl + '/remove/' + itemName, getData('inventory'), 'inventory');
+	};
+
 	module.exports = {
 	  initialiseInventory: initialiseInventory,
-	  addItem: addItem
+	  addItem: addItem,
+	  useItem: useItem
 	};
 
 /***/ },
@@ -140,8 +145,7 @@
 
 	var dataUpdated = {
 	  inventory: new Event('data-updated-inventory'),
-	  room: new Event('data-updated-room'),
-	  item: new Event('data-updated-item')
+	  room: new Event('data-updated-room')
 	};
 
 	var emitUpdateEvent = function emitUpdateEvent(type) {
@@ -272,6 +276,8 @@
 	var inventory = exports.inventory = getElement('inventory');
 	var itemList = exports.itemList = getElement('itemList');
 	var closeInventory = exports.closeInventory = getElement('closeInventory');
+	var itemOptions = exports.itemOptions = getElement('itemOptions');
+	var useButton = exports.useButton = getElement('useItem');
 
 /***/ },
 /* 7 */
@@ -334,34 +340,49 @@
 	  return count > 0;
 	}
 
+	function itemCanBeUsed(itemInfo) {
+	  console.log((0, _store.getData)('room'));
+	  return (0, _store.getData)('room').slug === itemInfo;
+	}
+
 	function addItemButton(item) {
 	  var button = document.createElement('li');
 	  (0, _commonFunctions.addClass)(button, 'button', 'inv');
-	  var buttonText = createText(item);
-	  var image = createImage(item);
+	  var buttonText = createText(item.displayName);
+	  var image = createImage(item.image);
 	  button.appendChild(image);
 	  button.appendChild(buttonText);
 	  button.addEventListener('click', listener);
 
 	  function listener() {
-	    console.log('clicked');
+	    // toggleClass(itemOptions, 'hidden')
+	    // toggleClass(itemList, 'hidden')
+	    // toggleClass(closeInventory, 'hidden')
+	    var listener = function listener() {
+	      if (itemCanBeUsed(item)) {
+	        (0, _inventory.useItem)(item.canBeUsedIn);
+	      } else {
+	        console.log('item can not be used');
+	      }
+	    };
+	    _elements.useButton.onclick = listener;
 	  }
 
 	  return button;
 	}
 
-	function createText(item) {
+	function createText(displayName) {
 	  var buttonText = document.createElement('p');
-	  (0, _commonFunctions.updateText)(buttonText, item);
+	  (0, _commonFunctions.updateText)(buttonText, displayName);
 	  return buttonText;
 	}
 
-	function createImage(item) {
+	function createImage(itemImage) {
 	  // Need to actually add the image!
 	  var image = document.createElement('svg');
 	  var use = document.createElement('use');
 	  use.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-	  use.setAttribute('xlink:href', item);
+	  use.setAttribute('xlink:href', itemImage);
 	  image.appendChild(use);
 	  (0, _commonFunctions.addClass)(image, 'item');
 
@@ -369,6 +390,7 @@
 	}
 
 	var updateInventoryUI = function updateInventoryUI() {
+	  (0, _commonFunctions.clearContents)(_elements.itemList);
 	  var inventory = (0, _store.getData)('inventory');
 	  (0, _commonFunctions.updateText)(_elements.inventoryCount, inventory.items.length);
 
