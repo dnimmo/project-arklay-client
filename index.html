@@ -27,6 +27,7 @@
       <p id='roomDetails'></p>
       <ul class='direction-options' id='directions'>
       </ul>
+      <p id='itemUsedMessage' class='additional-info extra-message'></p>
     </main>
     <!-- Inventory start -->
     <div class='inventory-toggle hidden' id='inventoryToggle'>
@@ -42,16 +43,15 @@
         </ul>
         <p id='closeInventory' class="button">Close Inventory</p>
 
-        <ul class='itemOptions' data-ng-if='inventory.itemOptionsOpen'>
-          <li class='button' id='useItem' data-ng-click='inventory.selectedItem.checkIfUsableInCurrentRoom(current, inventory)'>Use</li>
-          <li class='button' data-ng-click='inventory.clearSelectedItem()'>Cancel</li>
-        </ul>
-
-        <!--
-        <p>{{inventory.selectedItem.description}}</p>
-
-        <p class="additional-info extra-message" data-ng-show='inventory.message && inventory.message != ""'>{{inventory.message}}</p>
-      -->
+        <div id='itemOptions' class='hidden'>
+          <p id='itemName'></p>
+          <p id='itemDescription'></p>
+          <ul class='itemOptions'>
+            <li class='button' id='useItemButton'>Use</li>
+            <li class='button'>Cancel</li>
+          </ul>
+          <p id='itemNotUsedMessage' class='additional-info extra-message'></p>
+        </div>
       </div>
     </section>
     <!-- Inventory end -->

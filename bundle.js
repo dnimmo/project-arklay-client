@@ -54,7 +54,7 @@
 
 	var _inventoryManager = __webpack_require__(8);
 
-	__webpack_require__(9);
+	__webpack_require__(10);
 
 
 	document.addEventListener('data-updated-inventory', _inventoryManager.updateInventoryUI);
@@ -276,8 +276,14 @@
 	var inventory = exports.inventory = getElement('inventory');
 	var itemList = exports.itemList = getElement('itemList');
 	var closeInventory = exports.closeInventory = getElement('closeInventory');
+
+	// Item
 	var itemOptions = exports.itemOptions = getElement('itemOptions');
-	var useButton = exports.useButton = getElement('useItem');
+	var useItemButton = exports.useItemButton = getElement('useItemButton');
+	var itemDescription = exports.itemDescription = getElement('itemDescription');
+	var itemName = exports.itemName = getElement('itemName');
+	var itemUsedMessage = exports.itemUsedMessage = getElement('itemUsedMessage');
+	var itemNotUsedMessage = exports.itemNotUsedMessage = getElement('itemNotUsedMessage');
 
 /***/ },
 /* 7 */
@@ -328,10 +334,12 @@
 
 	var _inventory = __webpack_require__(1);
 
-	// Elements that need to be updated
+	var _itemOptionsManager = __webpack_require__(9);
+
 	var toggleInventory = function toggleInventory() {
 	  return (0, _commonFunctions.toggleClass)(_elements.inventory, 'hidden');
-	};
+	}; // Elements that need to be updated
+
 
 	_elements.inventoryToggle.addEventListener('click', toggleInventory);
 	_elements.closeInventory.addEventListener('click', toggleInventory);
@@ -355,17 +363,7 @@
 	  button.addEventListener('click', listener);
 
 	  function listener() {
-	    // toggleClass(itemOptions, 'hidden')
-	    // toggleClass(itemList, 'hidden')
-	    // toggleClass(closeInventory, 'hidden')
-	    var listener = function listener() {
-	      if (itemCanBeUsed(item)) {
-	        (0, _inventory.useItem)(item.canBeUsedIn);
-	      } else {
-	        console.log('item can not be used');
-	      }
-	    };
-	    _elements.useButton.onclick = listener;
+	    return (0, _itemOptionsManager.updateItemOptionsUI)(item);
 	  }
 
 	  return button;
@@ -413,13 +411,81 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var _elements = __webpack_require__(6);
+
+	var _commonFunctions = __webpack_require__(7);
+
+	var _room = __webpack_require__(4);
+
+	var _store = __webpack_require__(3);
+
+	var _inventory = __webpack_require__(1);
+
+	function canItemBeUsed(item, slug) {
+	  return item === slug;
+	}
+
+	var updateItemOptionsUI = function updateItemOptionsUI(_ref) {
+	  var name = _ref.name;
+	  var displayName = _ref.displayName;
+	  var description = _ref.description;
+	  var canBeUsedIn = _ref.canBeUsedIn;
+	  var messageWhenNotUsed = _ref.messageWhenNotUsed;
+	  var messageWhenUsed = _ref.messageWhenUsed;
+
+	  (0, _commonFunctions.updateText)(_elements.itemName, displayName);
+	  (0, _commonFunctions.updateText)(_elements.itemDescription, description);
+	  (0, _commonFunctions.toggleClass)(_elements.itemOptions, 'hidden');
+	  (0, _commonFunctions.toggleClass)(_elements.itemList, 'hidden');
+	  (0, _commonFunctions.toggleClass)(_elements.closeInventory, 'hidden');
+
+	  function listener() {
+	    if (canItemBeUsed(canBeUsedIn, (0, _store.getData)('room').slug)) {
+	      (0, _inventory.useItem)(name);
+	      // update room now that item has been used
+	      (0, _room.getRoom)((0, _store.getData)('room').slug);
+	      // close the inventory
+	      (0, _commonFunctions.toggleClass)(_elements.itemOptions, 'hidden');
+	      (0, _commonFunctions.toggleClass)(_elements.itemList, 'hidden');
+	      (0, _commonFunctions.toggleClass)(_elements.closeInventory, 'hidden');
+	      (0, _commonFunctions.toggleClass)(inventory, 'hidden');
+	    } else {
+	      (0, _commonFunctions.updateText)(_elements.itemNotUsedMessage, '==' + messageWhenNotUsed + '==');
+	    }
+	  }
+
+	  // Override onclick event with whichever item has been selected
+	  _elements.useItemButton.onclick = listener;
+	};
+
+	module.exports = {
+	  updateItemOptionsUI: updateItemOptionsUI
+	};
+
+	//
+
+	// const listener = () => {
+	//   if(itemCanBeUsed(item)) {
+	//     useItem(item.canBeUsedIn)
+	//   } else {
+	//     console.log('item can not be used')
+	//   }
+	// }
+	// useButton.onclick = listener
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(10);
+	var content = __webpack_require__(11);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(12)(content, {});
+	var update = __webpack_require__(13)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -436,10 +502,10 @@
 	}
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(11)();
+	exports = module.exports = __webpack_require__(12)();
 	// imports
 
 
@@ -450,7 +516,7 @@
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -505,7 +571,7 @@
 	};
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

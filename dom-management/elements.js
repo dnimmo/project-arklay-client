@@ -11,5 +11,11 @@ export const inventoryCount = getElement('inventoryCount')
 export const inventory = getElement('inventory')
 export const itemList = getElement('itemList')
 export const closeInventory = getElement('closeInventory')
+
+// Item
 export const itemOptions = getElement('itemOptions')
-export const useButton = getElement('useItem')
+export const useItemButton = getElement('useItemButton')
+export const itemDescription = getElement('itemDescription')
+export const itemName = getElement('itemName')
+export const itemUsedMessage = getElement('itemUsedMessage')
+export const itemNotUsedMessage = getElement('itemNotUsedMessage')

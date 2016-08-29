@@ -4,9 +4,7 @@ import {
   inventoryCount,
   inventory,
   itemList,
-  closeInventory,
-  itemOptions,
-  useButton
+  closeInventory
 } from './elements'
 
 import {
@@ -19,10 +17,13 @@ import {
 } from './common-functions'
 
 import { getData } from '../data-management/store'
+
 import {
   addItem,
   useItem
 } from '../data-management/inventory'
+
+import { updateItemOptionsUI } from './item-options-manager'
 
 const toggleInventory = () => toggleClass(inventory, 'hidden')
 
@@ -48,17 +49,7 @@ function addItemButton (item) {
   button.addEventListener('click', listener)
 
   function listener () {
-    // toggleClass(itemOptions, 'hidden')
-    // toggleClass(itemList, 'hidden')
-    // toggleClass(closeInventory, 'hidden')
-    const listener = () => {
-      if(itemCanBeUsed(item)) {
-        useItem(item.canBeUsedIn)
-      } else {
-        console.log('item can not be used')
-      }
-    }
-    useButton.onclick = listener
+    return updateItemOptionsUI(item)
   }
 
   return button
