@@ -15,8 +15,7 @@ const emitUpdateEvent = type => document.dispatchEvent(dataUpdated[type])
 const getData = type => dataStore[type]
 
 const updateData = (type, data) => {
-  // Update data, and emit event if updated data is different from pre-update data
-  dataStore[type] = JSON.parse(data)
+  dataStore[type] = data
   emitUpdateEvent(type)
   saveGame(dataStore)
 }

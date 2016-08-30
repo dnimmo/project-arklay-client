@@ -20,7 +20,6 @@ const hasItemBeenPickedUp = itemName => {
 
 module.exports = {
   initialiseInventory,
-  initialiseSavedInventory,
   addItem,
   useItem,
   hasItemBeenPickedUp

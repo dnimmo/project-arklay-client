@@ -1,7 +1,6 @@
 require('./style/main.scss')
 import {
-  initialiseInventory,
-  initialiseSavedInventory
+  initialiseInventory
 } from './data-management/inventory'
 import { getRoom } from './data-management/room'
 import { updateRoomUI } from './dom-management/room-manager'
@@ -19,9 +18,10 @@ function startNewGame () {
 
 function loadGame ({room, inventory}) {
   updateData('inventory', inventory)
-  updataData('room', room)
+  updateData('room', room)
 }
 
 // Start game
 const loadedData = load()
+console.log(loadedData)
 loadedData ? loadGame(loadedData) : startNewGame()

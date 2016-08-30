@@ -56,6 +56,8 @@
 
 	var _saveGame = __webpack_require__(4);
 
+	var _store = __webpack_require__(3);
+
 	__webpack_require__(11);
 
 
@@ -71,12 +73,13 @@
 	  var room = _ref.room;
 	  var inventory = _ref.inventory;
 
-	  (0, _inventory.initialiseSavedInventory)(inventory);
-	  (0, _room.getRoom)(room.slug);
+	  (0, _store.updateData)('inventory', inventory);
+	  (0, _store.updateData)('room', room);
 	}
 
 	// Start game
 	var loadedData = (0, _saveGame.loadGame)();
+	console.log(loadedData);
 	loadedData ? loadGame(loadedData) : startNewGame();
 
 /***/ },
@@ -100,10 +103,6 @@
 	  return request('GET', rootUrl + '/initialise', '', 'inventory');
 	};
 
-	var initialiseSavedInventory = function initialiseSavedInventory(data) {
-	  return request('POST', rootUrl + '/initialise', data, 'inventory');
-	};
-
 	var addItem = function addItem(itemName) {
 	  return request('PATCH', rootUrl + '/add/' + itemName, getData('inventory'), 'inventory');
 	};
@@ -125,7 +124,6 @@
 
 	module.exports = {
 	  initialiseInventory: initialiseInventory,
-	  initialiseSavedInventory: initialiseSavedInventory,
 	  addItem: addItem,
 	  useItem: useItem,
 	  hasItemBeenPickedUp: hasItemBeenPickedUp
@@ -146,7 +144,7 @@
 	  // 'dataType' refers to either 'inventory' or 'room'
 	  function listener() {
 	    requester.removeEventListener('load', listener);
-	    updateData(dataType, this.responseText);
+	    updateData(dataType, JSON.parse(this.responseText));
 	  }
 
 	  var requester = new XMLHttpRequest();
@@ -191,8 +189,7 @@
 	};
 
 	var updateData = function updateData(type, data) {
-	  // Update data, and emit event if updated data is different from pre-update data
-	  dataStore[type] = JSON.parse(data);
+	  dataStore[type] = data;
 	  emitUpdateEvent(type);
 	  (0, _saveGame.saveGame)(dataStore);
 	};
