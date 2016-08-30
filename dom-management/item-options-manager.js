@@ -52,14 +52,3 @@ const updateItemOptionsUI = ({name, displayName, description, canBeUsedIn, messa
 module.exports = {
   updateItemOptionsUI
 }
-
-//
-
-// const listener = () => {
-//   if(itemCanBeUsed(item)) {
-//     useItem(item.canBeUsedIn)
-//   } else {
-//     console.log('item can not be used')
-//   }
-// }
-// useButton.onclick = listener
