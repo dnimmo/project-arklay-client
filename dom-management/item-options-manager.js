@@ -5,6 +5,7 @@ import {
   closeInventory,
   itemDescription,
   useItemButton,
+  cancelItemButton,
   itemUsedMessage,
   itemNotUsedMessage
 } from './elements'
@@ -23,12 +24,20 @@ function canItemBeUsed (item, slug) {
   return item === slug
 }
 
-const updateItemOptionsUI = ({name, displayName, description, canBeUsedIn, messageWhenNotUsed, messageWhenUsed}) => {
-  updateText(itemName, displayName)
-  updateText(itemDescription, description)
+function toggleItemOptions () {
   toggleClass(itemOptions, 'hidden')
   toggleClass(itemList, 'hidden')
   toggleClass(closeInventory, 'hidden')
+  updateText(itemNotUsedMessage, '')
+}
+
+// Cancel button always does the same thing, no need to assign this inside the updateItemOptionsUI function
+cancelItemButton.addEventListener('click', toggleItemOptions)
+
+const updateItemOptionsUI = ({name, displayName, description, canBeUsedIn, messageWhenNotUsed, messageWhenUsed}) => {
+  updateText(itemName, displayName)
+  updateText(itemDescription, description)
+  toggleItemOptions()
 
   function listener () {
     if (canItemBeUsed(canBeUsedIn, getData('room').slug)) {
@@ -36,9 +45,7 @@ const updateItemOptionsUI = ({name, displayName, description, canBeUsedIn, messa
       // update room now that item has been used
       getRoom(getData('room').slug)
       // close the inventory
-      toggleClass(itemOptions, 'hidden')
-      toggleClass(itemList, 'hidden')
-      toggleClass(closeInventory, 'hidden')
+      toggleItemOptions()
       toggleClass(inventory, 'hidden')
     } else {
       updateText(itemNotUsedMessage, `==${messageWhenNotUsed}==`)

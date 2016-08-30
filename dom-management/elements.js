@@ -15,6 +15,7 @@ export const closeInventory = getElement('closeInventory')
 // Item
 export const itemOptions = getElement('itemOptions')
 export const useItemButton = getElement('useItemButton')
+export const cancelItemButton = getElement('cancelItemButton')
 export const itemDescription = getElement('itemDescription')
 export const itemName = getElement('itemName')
 export const itemUsedMessage = getElement('itemUsedMessage')

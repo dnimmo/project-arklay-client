@@ -334,6 +334,7 @@
 	// Item
 	var itemOptions = exports.itemOptions = getElement('itemOptions');
 	var useItemButton = exports.useItemButton = getElement('useItemButton');
+	var cancelItemButton = exports.cancelItemButton = getElement('cancelItemButton');
 	var itemDescription = exports.itemDescription = getElement('itemDescription');
 	var itemName = exports.itemName = getElement('itemName');
 	var itemUsedMessage = exports.itemUsedMessage = getElement('itemUsedMessage');
@@ -481,6 +482,16 @@
 	  return item === slug;
 	}
 
+	function toggleItemOptions() {
+	  (0, _commonFunctions.toggleClass)(_elements.itemOptions, 'hidden');
+	  (0, _commonFunctions.toggleClass)(_elements.itemList, 'hidden');
+	  (0, _commonFunctions.toggleClass)(_elements.closeInventory, 'hidden');
+	  (0, _commonFunctions.updateText)(_elements.itemNotUsedMessage, '');
+	}
+
+	// Cancel button always does the same thing, no need to assign this inside the updateItemOptionsUI function
+	_elements.cancelItemButton.addEventListener('click', toggleItemOptions);
+
 	var updateItemOptionsUI = function updateItemOptionsUI(_ref) {
 	  var name = _ref.name;
 	  var displayName = _ref.displayName;
@@ -491,9 +502,7 @@
 
 	  (0, _commonFunctions.updateText)(_elements.itemName, displayName);
 	  (0, _commonFunctions.updateText)(_elements.itemDescription, description);
-	  (0, _commonFunctions.toggleClass)(_elements.itemOptions, 'hidden');
-	  (0, _commonFunctions.toggleClass)(_elements.itemList, 'hidden');
-	  (0, _commonFunctions.toggleClass)(_elements.closeInventory, 'hidden');
+	  toggleItemOptions();
 
 	  function listener() {
 	    if (canItemBeUsed(canBeUsedIn, (0, _store.getData)('room').slug)) {
@@ -501,9 +510,7 @@
 	      // update room now that item has been used
 	      (0, _room.getRoom)((0, _store.getData)('room').slug);
 	      // close the inventory
-	      (0, _commonFunctions.toggleClass)(_elements.itemOptions, 'hidden');
-	      (0, _commonFunctions.toggleClass)(_elements.itemList, 'hidden');
-	      (0, _commonFunctions.toggleClass)(_elements.closeInventory, 'hidden');
+	      toggleItemOptions();
 	      (0, _commonFunctions.toggleClass)(inventory, 'hidden');
 	    } else {
 	      (0, _commonFunctions.updateText)(_elements.itemNotUsedMessage, '==' + messageWhenNotUsed + '==');
@@ -517,17 +524,6 @@
 	module.exports = {
 	  updateItemOptionsUI: updateItemOptionsUI
 	};
-
-	//
-
-	// const listener = () => {
-	//   if(itemCanBeUsed(item)) {
-	//     useItem(item.canBeUsedIn)
-	//   } else {
-	//     console.log('item can not be used')
-	//   }
-	// }
-	// useButton.onclick = listener
 
 /***/ },
 /* 11 */
