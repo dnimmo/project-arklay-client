@@ -1,10 +1,3 @@
-import {
-  northButton,
-  eastButton,
-  westButton,
-  southButton
-} from './elements'
-
 export const updateText = (element, update) => element.innerText = update
 export const addClass = (element, ...classesToAdd) => classesToAdd.forEach(classToAdd => element.classList.add(classToAdd))
 export const removeClass = (element, classToRemove) => element.classList.remove(classToRemove)
