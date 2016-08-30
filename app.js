@@ -23,5 +23,4 @@ function loadGame ({room, inventory}) {
 
 // Start game
 const loadedData = load()
-console.log(loadedData)
 loadedData ? loadGame(loadedData) : startNewGame()
