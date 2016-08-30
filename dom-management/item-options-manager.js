@@ -13,7 +13,7 @@ import {
 import {
   updateText,
   toggleClass,
-
+  clearContents
 } from './common-functions'
 
 import { getRoom } from '../data-management/room'
@@ -28,7 +28,7 @@ function toggleItemOptions () {
   toggleClass(itemOptions, 'hidden')
   toggleClass(itemList, 'hidden')
   toggleClass(closeInventory, 'hidden')
-  updateText(itemNotUsedMessage, '')
+  clearContents(itemNotUsedMessage)
 }
 
 // Cancel button always does the same thing, no need to assign this inside the updateItemOptionsUI function

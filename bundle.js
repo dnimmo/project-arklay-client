@@ -112,11 +112,23 @@
 	  return request('PATCH', rootUrl + '/remove/' + itemName, getData('inventory'), 'inventory');
 	};
 
+	var hasItemBeenPickedUp = function hasItemBeenPickedUp(itemName) {
+	  var inventory = getData('inventory');
+	  var items = inventory.items;
+	  var itemsUsed = inventory.itemsUsed;
+	  // if items is undefined, then the game has just loaded and hasn't had time to insantiate the items - re-call this function
+	  // Note this can lead to maximum call stack size being exceeded, not ideal
+	  return items ? items.map(function (item) {
+	    return item.name;
+	  }).includes(itemName) || itemsUsed.includes(itemName) : hasItemBeenPickedUp(itemName);
+	};
+
 	module.exports = {
 	  initialiseInventory: initialiseInventory,
 	  initialiseSavedInventory: initialiseSavedInventory,
 	  addItem: addItem,
-	  useItem: useItem
+	  useItem: useItem,
+	  hasItemBeenPickedUp: hasItemBeenPickedUp
 	};
 
 /***/ },
@@ -239,7 +251,7 @@
 	var rootUrl = 'http://api.project-arklay.com/rooms';
 
 	var getRoom = function getRoom(slug) {
-	  return request('POST', rootUrl + '/' + slug, getData('inventory'), 'room');
+	  return request('POST', rootUrl + '/' + slug, getData('inventory').itemsUsed, 'room');
 	};
 
 	module.exports = {
@@ -283,13 +295,15 @@
 
 	var updateRoomUI = function updateRoomUI() {
 	  (0, _commonFunctions.clearContents)(_elements.directions);
+	  (0, _commonFunctions.clearContents)(_elements.itemMessage);
 	  var roomInfo = (0, _store.getData)('room');
 	  (0, _commonFunctions.updateText)(_elements.roomDescription, roomInfo.description);
 	  (0, _commonFunctions.updateText)(_elements.roomDetails, roomInfo.surroundings);
 
-	  if (roomInfo.item) {
+	  if (roomInfo.item && !(0, _inventory.hasItemBeenPickedUp)(roomInfo.item)) {
 	    // Eventually this should change to happen on examineRoom rather than automatically
 	    (0, _inventory.addItem)(roomInfo.item);
+	    (0, _commonFunctions.updateText)(_elements.itemMessage, '== Item added to inventory ==');
 	  }
 
 	  if (!roomInfo.directions) {
@@ -337,7 +351,7 @@
 	var cancelItemButton = exports.cancelItemButton = getElement('cancelItemButton');
 	var itemDescription = exports.itemDescription = getElement('itemDescription');
 	var itemName = exports.itemName = getElement('itemName');
-	var itemUsedMessage = exports.itemUsedMessage = getElement('itemUsedMessage');
+	var itemMessage = exports.itemMessage = getElement('itemMessage');
 	var itemNotUsedMessage = exports.itemNotUsedMessage = getElement('itemNotUsedMessage');
 
 /***/ },
@@ -486,7 +500,7 @@
 	  (0, _commonFunctions.toggleClass)(_elements.itemOptions, 'hidden');
 	  (0, _commonFunctions.toggleClass)(_elements.itemList, 'hidden');
 	  (0, _commonFunctions.toggleClass)(_elements.closeInventory, 'hidden');
-	  (0, _commonFunctions.updateText)(_elements.itemNotUsedMessage, '');
+	  (0, _commonFunctions.clearContents)(_elements.itemNotUsedMessage);
 	}
 
 	// Cancel button always does the same thing, no need to assign this inside the updateItemOptionsUI function

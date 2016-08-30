@@ -3,6 +3,7 @@ import {
   roomDescription,
   roomDetails,
   directions,
+  itemMessage
 } from './elements'
 
 import {
@@ -14,7 +15,7 @@ import {
 } from './common-functions'
 
 import { getRoom } from '../data-management/room'
-import { addItem } from '../data-management/inventory'
+import { addItem, hasItemBeenPickedUp } from '../data-management/inventory'
 import { getData } from '../data-management/store'
 
 function addButton ({displayText, rel, link}) {
@@ -33,13 +34,15 @@ function addButton ({displayText, rel, link}) {
 
 const updateRoomUI = () => {
   clearContents(directions)
+  clearContents(itemMessage)
   const roomInfo = getData('room')
   updateText(roomDescription, roomInfo.description)
   updateText(roomDetails, roomInfo.surroundings)
 
-  if (roomInfo.item) {
+  if (roomInfo.item && !hasItemBeenPickedUp(roomInfo.item)) {
     // Eventually this should change to happen on examineRoom rather than automatically
     addItem(roomInfo.item)
+    updateText(itemMessage, '== Item added to inventory ==')
   }
 
   if (!roomInfo.directions) {
