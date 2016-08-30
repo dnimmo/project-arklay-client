@@ -6,7 +6,8 @@ import {
 import { getRoom } from './data-management/room'
 import { updateRoomUI } from './dom-management/room-manager'
 import { updateInventoryUI } from './dom-management/inventory-manager'
-import { loadGame as load } from './data-management/save-game.js'
+import { loadGame as load } from './data-management/save-game'
+import { updateData } from './data-management/store'
 
 document.addEventListener('data-updated-inventory', updateInventoryUI)
 document.addEventListener('data-updated-room', updateRoomUI)
@@ -17,8 +18,8 @@ function startNewGame () {
 }
 
 function loadGame ({room, inventory}) {
-  initialiseSavedInventory(inventory)
-  getRoom(room.slug)
+  updateData('inventory', inventory)
+  updataData('room', room)
 }
 
 // Start game
