@@ -28,7 +28,10 @@ function processDirections (directions) {
 
 const updateRoomUI = () => {
   const roomInfo = getData('room')
-  const roomObject = component('div', false, false, [component('p', false, false, false, roomInfo.description), component('p', false, false, false, roomInfo.surroundings), processItem(roomInfo.item), processDirections(roomInfo.directions)], false)
+  const description = component('p', false, false, false, roomInfo.description)
+  const surroundings = component('p', false, false, false, roomInfo.surroundings)
+  const directions = processDirections(roomInfo.directions)
+  const roomObject = component('div', false, false, [description, surroundings, directions, processItem(roomInfo.item)], false)
 
   render(room, roomObject)
 }
