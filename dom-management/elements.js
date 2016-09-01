@@ -4,6 +4,7 @@ export const getElement = id => document.getElementById(id)
 export const roomDescription = getElement('roomDescription')
 export const roomDetails = getElement('roomDetails')
 export const directions = getElement('directions')
+export const room = getElement('room')
 
 // Inventory
 export const inventoryToggle = getElement('inventoryToggle')

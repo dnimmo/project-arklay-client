@@ -1,17 +1,10 @@
 // Elements that need to be updated
-import {
-  roomDescription,
-  roomDetails,
-  directions,
-  itemMessage
-} from './elements'
+import { room } from './elements'
 
 import {
-  updateText,
-  addClass,
-  removeClass,
-  toggleClass,
-  clearContents
+  component,
+  render,
+  toggleClass
 } from './common-functions'
 
 import { getRoom } from '../data-management/room'
@@ -19,39 +12,27 @@ import { addItem, hasItemBeenPickedUp } from '../data-management/inventory'
 import { getData } from '../data-management/store'
 
 function addButton ({displayText, rel, link}) {
-  const button = document.createElement('li')
-  addClass(button, rel)
-  // If 'displayText' exists on direction, use that instead of rel
-  updateText(button, displayText || rel)
-  button.addEventListener('click', listener)
-
-  function listener () {
-    return getRoom(link)
-  }
-
+  const func = () => getRoom(link)
+  const button = component('li', [rel], [{key: 'onclick', value: func}], false, displayText || rel)
+  console.log(button)
   return button
 }
 
+function processItem (item) {
+  if (!item || hasItemBeenPickedUp(item)) return {}
+  addItem(item)
+  return component('p', ['additional-info', 'extra-message'], false, false, '== Item added to inventory ==')
+}
+
+function processDirections (directions) {
+  return component('ul', ['direction-options'], [{key: 'id', value: 'directions'}],   directions.map(direction => addButton(direction)), false)
+}
+
 const updateRoomUI = () => {
-  clearContents(directions)
-  clearContents(itemMessage)
   const roomInfo = getData('room')
-  updateText(roomDescription, roomInfo.description)
-  updateText(roomDetails, roomInfo.surroundings)
+  const roomObject = component('div', false, false, [component('p', false, false, false, roomInfo.description), component('p', false, false, false, roomInfo.surroundings), processItem(roomInfo.item), processDirections(roomInfo.directions)], false)
 
-  if (roomInfo.item && !hasItemBeenPickedUp(roomInfo.item)) {
-    // Eventually this should change to happen on examineRoom rather than automatically
-    addItem(roomInfo.item)
-    updateText(itemMessage, '== Item added to inventory ==')
-  }
-
-  if (!roomInfo.directions) {
-    return
-  }
-
-  // Set up each direction in the UI
-  roomInfo.directions.forEach(direction =>
-  directions.appendChild(addButton(direction)))
+  render(room, roomObject)
 }
 
 module.exports = {

@@ -58,7 +58,7 @@
 
 	var _store = __webpack_require__(3);
 
-	__webpack_require__(11);
+	__webpack_require__(10);
 
 
 	document.addEventListener('data-updated-inventory', _inventoryManager.updateInventoryUI);
@@ -275,41 +275,32 @@
 	  var rel = _ref.rel;
 	  var link = _ref.link;
 
-	  var button = document.createElement('li');
-	  (0, _commonFunctions.addClass)(button, rel);
-	  // If 'displayText' exists on direction, use that instead of rel
-	  (0, _commonFunctions.updateText)(button, displayText || rel);
-	  button.addEventListener('click', listener);
-
-	  function listener() {
+	  var func = function func() {
 	    return (0, _room.getRoom)(link);
-	  }
-
+	  };
+	  var button = (0, _commonFunctions.component)('li', [rel], [{ key: 'onclick', value: func }], false, displayText || rel);
+	  console.log(button);
 	  return button;
 	} // Elements that need to be updated
 
 
+	function processItem(item) {
+	  if (!item || (0, _inventory.hasItemBeenPickedUp)(item)) return {};
+	  (0, _inventory.addItem)(item);
+	  return (0, _commonFunctions.component)('p', ['additional-info', 'extra-message'], false, false, '== Item added to inventory ==');
+	}
+
+	function processDirections(directions) {
+	  return (0, _commonFunctions.component)('ul', ['direction-options'], [{ key: 'id', value: 'directions' }], directions.map(function (direction) {
+	    return addButton(direction);
+	  }), false);
+	}
+
 	var updateRoomUI = function updateRoomUI() {
-	  (0, _commonFunctions.clearContents)(_elements.directions);
-	  (0, _commonFunctions.clearContents)(_elements.itemMessage);
 	  var roomInfo = (0, _store.getData)('room');
-	  (0, _commonFunctions.updateText)(_elements.roomDescription, roomInfo.description);
-	  (0, _commonFunctions.updateText)(_elements.roomDetails, roomInfo.surroundings);
+	  var roomObject = (0, _commonFunctions.component)('div', false, false, [(0, _commonFunctions.component)('p', false, false, false, roomInfo.description), (0, _commonFunctions.component)('p', false, false, false, roomInfo.surroundings), processItem(roomInfo.item), processDirections(roomInfo.directions)], false);
 
-	  if (roomInfo.item && !(0, _inventory.hasItemBeenPickedUp)(roomInfo.item)) {
-	    // Eventually this should change to happen on examineRoom rather than automatically
-	    (0, _inventory.addItem)(roomInfo.item);
-	    (0, _commonFunctions.updateText)(_elements.itemMessage, '== Item added to inventory ==');
-	  }
-
-	  if (!roomInfo.directions) {
-	    return;
-	  }
-
-	  // Set up each direction in the UI
-	  roomInfo.directions.forEach(function (direction) {
-	    return _elements.directions.appendChild(addButton(direction));
-	  });
+	  (0, _commonFunctions.render)(_elements.room, roomObject);
 	};
 
 	module.exports = {
@@ -333,6 +324,7 @@
 	var roomDescription = exports.roomDescription = getElement('roomDescription');
 	var roomDetails = exports.roomDetails = getElement('roomDetails');
 	var directions = exports.directions = getElement('directions');
+	var room = exports.room = getElement('room');
 
 	// Inventory
 	var inventoryToggle = exports.inventoryToggle = getElement('inventoryToggle');
@@ -354,194 +346,159 @@
 /* 8 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var updateText = exports.updateText = function updateText(element, update) {
-	  return element.innerText = update;
-	};
-	var addClass = exports.addClass = function addClass(element) {
-	  for (var _len = arguments.length, classesToAdd = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	    classesToAdd[_key - 1] = arguments[_key];
-	  }
+	function createElement(_ref) {
+	  var type = _ref.type;
+	  var classes = _ref.classes;
+	  var attributes = _ref.attributes;
+	  var children = _ref.children;
+	  var content = _ref.content;
 
-	  return classesToAdd.forEach(function (classToAdd) {
+	  var element = document.createElement(type);
+	  if (classes) classes.forEach(function (classToAdd) {
 	    return element.classList.add(classToAdd);
 	  });
+	  if (attributes) attributes.forEach(function (attribute) {
+	    return element.setAttribute(attribute.key, attribute.value);
+	  });
+	  if (children) children.forEach(function (child) {
+	    return element.appendChild(createElement(child));
+	  });
+	  if (content) element.innerText = content;
+
+	  return element;
+	}
+
+	var component = function component(type, classes, attributes, children, content) {
+	  return {
+	    type: type, classes: classes, attributes: attributes, children: children, content: content
+	  };
 	};
-	var removeClass = exports.removeClass = function removeClass(element, classToRemove) {
-	  return element.classList.remove(classToRemove);
+
+	var render = function render(target, htmlObject) {
+	  return target.appendChild(createElement(htmlObject));
 	};
-	var toggleClass = exports.toggleClass = function toggleClass(element, classToToggle) {
+
+	var toggleClass = function toggleClass(element, classToToggle) {
 	  return element.classList.toggle(classToToggle);
 	};
-	var clearContents = exports.clearContents = function clearContents(element) {
-	  return element.innerHTML = '';
+
+	module.exports = {
+	  component: component,
+	  render: render,
+	  toggleClass: toggleClass
 	};
 
 /***/ },
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
-
-	var _elements = __webpack_require__(7);
-
-	var _commonFunctions = __webpack_require__(8);
-
-	var _store = __webpack_require__(3);
-
-	var _inventory = __webpack_require__(1);
-
-	var _itemOptionsManager = __webpack_require__(10);
-
-	var toggleInventory = function toggleInventory() {
-	  return (0, _commonFunctions.toggleClass)(_elements.inventory, 'hidden');
-	}; // Elements that need to be updated
-
-
-	_elements.inventoryToggle.addEventListener('click', toggleInventory);
-	_elements.closeInventory.addEventListener('click', toggleInventory);
-
-	function displayInventoryToggle(count) {
-	  return count > 0;
-	}
-
-	function itemCanBeUsed(itemInfo) {
-	  console.log((0, _store.getData)('room'));
-	  return (0, _store.getData)('room').slug === itemInfo;
-	}
-
-	function addItemButton(item) {
-	  var button = document.createElement('li');
-	  (0, _commonFunctions.addClass)(button, 'button', 'inv');
-	  var buttonText = createText(item.displayName);
-	  var image = createImage(item.image);
-	  button.appendChild(image);
-	  button.appendChild(buttonText);
-	  button.addEventListener('click', listener);
-
-	  function listener() {
-	    return (0, _itemOptionsManager.updateItemOptionsUI)(item);
-	  }
-
-	  return button;
-	}
-
-	function createText(displayName) {
-	  var buttonText = document.createElement('p');
-	  (0, _commonFunctions.updateText)(buttonText, displayName);
-	  return buttonText;
-	}
-
-	function createImage(itemImage) {
-	  // Need to actually add the image!
-	  var image = document.createElement('svg');
-	  var use = document.createElement('use');
-	  use.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-	  use.setAttribute('xlink:href', itemImage);
-	  image.appendChild(use);
-	  (0, _commonFunctions.addClass)(image, 'item');
-
-	  return image;
-	}
-
-	var updateInventoryUI = function updateInventoryUI() {
-	  (0, _commonFunctions.clearContents)(_elements.itemList);
-	  var inventory = (0, _store.getData)('inventory');
-	  (0, _commonFunctions.updateText)(_elements.inventoryCount, inventory.items.length);
-
-	  inventory.items.forEach(function (item) {
-	    return _elements.itemList.appendChild(addItemButton(item));
-	  });
-
-	  if (displayInventoryToggle(inventory.items.length)) {
-	    (0, _commonFunctions.removeClass)(_elements.inventoryToggle, 'hidden');
-	  } else {
-	    (0, _commonFunctions.addClass)(_elements.inventoryToggle, 'hidden');
-	  }
-	};
-
-	module.exports = {
-	  updateInventoryUI: updateInventoryUI
-	};
+	// // Elements that need to be updated
+	// import {
+	//   inventoryToggle,
+	//   inventoryCount,
+	//   inventory,
+	//   itemList,
+	//   closeInventory
+	// } from './elements'
+	//
+	// import {
+	//   updateText,
+	//   addClass,
+	//   removeClass,
+	//   toggleClass,
+	//   updateClasses,
+	//   clearContents
+	// } from './common-functions'
+	//
+	// import { getData } from '../data-management/store'
+	//
+	// import {
+	//   addItem,
+	//   useItem
+	// } from '../data-management/inventory'
+	//
+	// import { updateItemOptionsUI } from './item-options-manager'
+	//
+	// const toggleInventory = () => toggleClass(inventory, 'hidden')
+	//
+	// inventoryToggle.addEventListener('click', toggleInventory)
+	// closeInventory.addEventListener('click', toggleInventory)
+	//
+	// function displayInventoryToggle (count) {
+	//   return count > 0
+	// }
+	//
+	// function itemCanBeUsed(itemInfo) {
+	//   console.log(getData('room'))
+	//   return getData('room').slug === itemInfo
+	// }
+	//
+	// function addItemButton (item) {
+	//   const button = document.createElement('li')
+	//   addClass(button, 'button', 'inv')
+	//   const buttonText = createText(item.displayName)
+	//   const image = createImage(item.image)
+	//   button.appendChild(image)
+	//   button.appendChild(buttonText)
+	//   button.addEventListener('click', listener)
+	//
+	//   function listener () {
+	//     return updateItemOptionsUI(item)
+	//   }
+	//
+	//   return button
+	// }
+	//
+	// function createText (displayName) {
+	//   const buttonText = document.createElement('p')
+	//   updateText(buttonText, displayName)
+	//   return buttonText
+	// }
+	//
+	// function createImage (itemImage) {
+	//   // Need to actually add the image!
+	//   const image = document.createElement('svg')
+	//   const use = document.createElement('use')
+	//   use.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+	//   use.setAttribute('xlink:href', itemImage)
+	//   image.appendChild(use)
+	//   addClass(image, 'item')
+	//
+	//   return image
+	// }
+	//
+	// const updateInventoryUI = () => {
+	//   clearContents(itemList)
+	//   const inventory = getData('inventory')
+	//   updateText(inventoryCount, inventory.items.length)
+	//
+	//   inventory.items.forEach(item =>   itemList.appendChild(addItemButton(item)))
+	//
+	//   if (displayInventoryToggle(inventory.items.length)) {
+	//     removeClass(inventoryToggle, 'hidden')
+	//   } else {
+	//     addClass(inventoryToggle, 'hidden')
+	//   }
+	// }
+	//
+	// module.exports = {
+	//   updateInventoryUI
+	// }
+	"use strict";
 
 /***/ },
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	var _elements = __webpack_require__(7);
-
-	var _commonFunctions = __webpack_require__(8);
-
-	var _room = __webpack_require__(5);
-
-	var _store = __webpack_require__(3);
-
-	var _inventory = __webpack_require__(1);
-
-	function canItemBeUsed(item, slug) {
-	  return item === slug;
-	}
-
-	function toggleItemOptions() {
-	  (0, _commonFunctions.toggleClass)(_elements.itemOptions, 'hidden');
-	  (0, _commonFunctions.toggleClass)(_elements.itemList, 'hidden');
-	  (0, _commonFunctions.toggleClass)(_elements.closeInventory, 'hidden');
-	  (0, _commonFunctions.clearContents)(_elements.itemNotUsedMessage);
-	}
-
-	// Cancel button always does the same thing, no need to assign this inside the updateItemOptionsUI function
-	_elements.cancelItemButton.addEventListener('click', toggleItemOptions);
-
-	var updateItemOptionsUI = function updateItemOptionsUI(_ref) {
-	  var name = _ref.name;
-	  var displayName = _ref.displayName;
-	  var description = _ref.description;
-	  var canBeUsedIn = _ref.canBeUsedIn;
-	  var messageWhenNotUsed = _ref.messageWhenNotUsed;
-	  var messageWhenUsed = _ref.messageWhenUsed;
-
-	  (0, _commonFunctions.updateText)(_elements.itemName, displayName);
-	  (0, _commonFunctions.updateText)(_elements.itemDescription, description);
-	  toggleItemOptions();
-
-	  function listener() {
-	    if (canItemBeUsed(canBeUsedIn, (0, _store.getData)('room').slug)) {
-	      (0, _inventory.useItem)(name);
-	      // update room now that item has been used
-	      (0, _room.getRoom)((0, _store.getData)('room').slug);
-	      // close the inventory
-	      toggleItemOptions();
-	      (0, _commonFunctions.toggleClass)(inventory, 'hidden');
-	    } else {
-	      (0, _commonFunctions.updateText)(_elements.itemNotUsedMessage, '==' + messageWhenNotUsed + '==');
-	    }
-	  }
-
-	  // Override onclick event with whichever item has been selected
-	  _elements.useItemButton.onclick = listener;
-	};
-
-	module.exports = {
-	  updateItemOptionsUI: updateItemOptionsUI
-	};
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(12);
+	var content = __webpack_require__(11);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(14)(content, {});
+	var update = __webpack_require__(13)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -558,10 +515,10 @@
 	}
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(13)();
+	exports = module.exports = __webpack_require__(12)();
 	// imports
 
 
@@ -572,7 +529,7 @@
 
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -627,7 +584,7 @@
 	};
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
