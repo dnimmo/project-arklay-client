@@ -3,8 +3,7 @@ import { room } from './elements'
 
 import {
   component,
-  render,
-  toggleClass
+  render
 } from './common-functions'
 
 import { getRoom } from '../data-management/room'
