@@ -275,30 +275,59 @@
 	  var rel = _ref.rel;
 	  var link = _ref.link;
 
-	  var func = function func() {
+	  var getNewRoom = function getNewRoom() {
 	    return (0, _room.getRoom)(link);
 	  };
-	  var button = (0, _commonFunctions.component)('li', [rel], [{ key: 'onclick', value: func }], false, displayText || rel);
-	  console.log(button);
-	  return button;
+
+	  return (0, _commonFunctions.component)({
+	    type: 'li',
+	    classes: [rel],
+	    attributes: [{ key: 'onclick', value: getNewRoom }],
+	    content: displayText || rel
+	  });
 	} // Elements that need to be updated
 
 
 	function processItem(item) {
 	  if (!item || (0, _inventory.hasItemBeenPickedUp)(item)) return {};
 	  (0, _inventory.addItem)(item);
-	  return (0, _commonFunctions.component)('p', ['additional-info', 'extra-message'], false, false, '== Item added to inventory ==');
+
+	  return (0, _commonFunctions.component)({
+	    type: 'p',
+	    classes: ['additional-info', 'extra-message'],
+	    content: '== Item added to inventory =='
+	  });
 	}
 
 	function processDirections(directions) {
-	  return (0, _commonFunctions.component)('ul', ['direction-options'], [{ key: 'id', value: 'directions' }], directions.map(function (direction) {
+	  var buttons = directions.map(function (direction) {
 	    return addButton(direction);
-	  }), false);
+	  });
+	  return (0, _commonFunctions.component)({
+	    type: 'ul',
+	    classes: ['direction-options'],
+	    attributes: [{ key: 'id', value: 'directions' }],
+	    children: buttons
+	  });
 	}
 
 	var updateRoomUI = function updateRoomUI() {
 	  var roomInfo = (0, _store.getData)('room');
-	  var roomObject = (0, _commonFunctions.component)('div', false, false, [(0, _commonFunctions.component)('p', false, false, false, roomInfo.description), (0, _commonFunctions.component)('p', false, false, false, roomInfo.surroundings), processItem(roomInfo.item), processDirections(roomInfo.directions)], false);
+	  var description = (0, _commonFunctions.component)({
+	    type: 'p',
+	    content: roomInfo.description
+	  });
+	  var surroundings = (0, _commonFunctions.component)({
+	    type: 'p',
+	    content: roomInfo.surroundings
+	  });
+	  var directions = processDirections(roomInfo.directions);
+	  var itemMessage = processItem(roomInfo.item);
+
+	  var roomObject = (0, _commonFunctions.component)({
+	    type: 'div',
+	    children: [description, surroundings, directions, itemMessage]
+	  });
 
 	  (0, _commonFunctions.render)(_elements.room, roomObject);
 	};
@@ -370,7 +399,13 @@
 	  return element;
 	}
 
-	var component = function component(type, classes, attributes, children, content) {
+	var component = function component(_ref2) {
+	  var type = _ref2.type;
+	  var classes = _ref2.classes;
+	  var attributes = _ref2.attributes;
+	  var children = _ref2.children;
+	  var content = _ref2.content;
+
 	  return {
 	    type: type, classes: classes, attributes: attributes, children: children, content: content
 	  };

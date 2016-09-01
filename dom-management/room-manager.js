@@ -12,29 +12,53 @@ import { getData } from '../data-management/store'
 
 function addButton ({displayText, rel, link}) {
   const getNewRoom = () => getRoom(link)
-  const button = component('li', [rel], [{key: 'onclick', value: getNewRoom}], false, displayText || rel)
-  return button
+
+  return component({
+    type: 'li',
+    classes: [rel],
+    attributes: [{key: 'onclick', value: getNewRoom}],
+    content: displayText || rel
+  })
 }
 
 function processItem (item) {
   if (!item || hasItemBeenPickedUp(item)) return {}
   addItem(item)
-  return component('p', ['additional-info', 'extra-message'], false, false, '== Item added to inventory ==')
+
+  return component({
+    type: 'p',
+    classes: ['additional-info', 'extra-message'],
+    content: '== Item added to inventory =='
+  })
 }
 
 function processDirections (directions) {
   const buttons = directions.map(direction => addButton(direction))
-  return component('ul', ['direction-options'], [{key: 'id', value: 'directions'}], buttons, false)
+  return component({
+      type: 'ul',
+      classes: ['direction-options'],
+      attributes: [{key: 'id', value: 'directions'}],
+      children: buttons
+    })
 }
 
 const updateRoomUI = () => {
   const roomInfo = getData('room')
-  const description = component('p', false, false, false, roomInfo.description)
-  const surroundings = component('p', false, false, false, roomInfo.surroundings)
+  const description = component({
+    type: 'p',
+    content: roomInfo.description
+  })
+  const surroundings = component({
+    type: 'p',
+    content: roomInfo.surroundings
+  })
   const directions = processDirections(roomInfo.directions)
   const itemMessage = processItem(roomInfo.item)
 
-  const roomObject = component('div', false, false, [description, surroundings, directions, itemMessage], false)
+  const roomObject = component({
+    type: 'div',
+    children: [description, surroundings, directions, itemMessage]
+  })
 
   render(room, roomObject)
 }

@@ -1,4 +1,4 @@
-function createElement ({type, classes, attributes, children, content}) {
+function createElement ({ type, classes, attributes, children, content }) {
   const element = document.createElement(type)
   if (classes) classes.forEach(classToAdd => element.classList.add(classToAdd))
   if (attributes) attributes.forEach(attribute => element.setAttribute(attribute.key, attribute.value))
@@ -8,7 +8,7 @@ function createElement ({type, classes, attributes, children, content}) {
   return element
 }
 
-const component = (type, classes, attributes, children, content) => {
+const component = ({ type, classes, attributes, children, content }) => {
   return {
     type, classes, attributes, children, content
   }
