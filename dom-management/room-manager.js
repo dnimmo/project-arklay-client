@@ -24,7 +24,7 @@ function processItem (item) {
 
 function processDirections (directions) {
   const buttons = directions.map(direction => addButton(direction))
-  return component('ul', ['direction-options'], [{key: 'id', value: 'directions'}], buttons), false)
+  return component('ul', ['direction-options'], [{key: 'id', value: 'directions'}], buttons, false)
 }
 
 const updateRoomUI = () => {
@@ -32,7 +32,9 @@ const updateRoomUI = () => {
   const description = component('p', false, false, false, roomInfo.description)
   const surroundings = component('p', false, false, false, roomInfo.surroundings)
   const directions = processDirections(roomInfo.directions)
-  const roomObject = component('div', false, false, [description, surroundings, directions, processItem(roomInfo.item)], false)
+  const itemMessage = processItem(roomInfo.item)
+
+  const roomObject = component('div', false, false, [description, surroundings, directions, itemMessage], false)
 
   render(room, roomObject)
 }
