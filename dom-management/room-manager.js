@@ -11,8 +11,8 @@ import { addItem, hasItemBeenPickedUp } from '../data-management/inventory'
 import { getData } from '../data-management/store'
 
 function addButton ({displayText, rel, link}) {
-  const func = () => getRoom(link)
-  const button = component('li', [rel], [{key: 'onclick', value: func}], false, displayText || rel)
+  const getNewRoom = () => getRoom(link)
+  const button = component('li', [rel], [{key: 'onclick', value: getNewRoom}], false, displayText || rel)
   return button
 }
 
