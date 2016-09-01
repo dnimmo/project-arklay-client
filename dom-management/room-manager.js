@@ -14,7 +14,6 @@ import { getData } from '../data-management/store'
 function addButton ({displayText, rel, link}) {
   const func = () => getRoom(link)
   const button = component('li', [rel], [{key: 'onclick', value: func}], false, displayText || rel)
-  console.log(button)
   return button
 }
 
