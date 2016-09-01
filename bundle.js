@@ -282,7 +282,7 @@
 	  return (0, _commonFunctions.component)({
 	    type: 'li',
 	    classes: [rel],
-	    attributes: [{ key: 'onclick', value: getNewRoom }],
+	    eventListeners: [{ event: 'click', function: getNewRoom }],
 	    content: displayText || rel
 	  });
 	} // Elements that need to be updated
@@ -303,6 +303,7 @@
 	  var buttons = directions.map(function (direction) {
 	    return addButton(direction);
 	  });
+
 	  return (0, _commonFunctions.component)({
 	    type: 'ul',
 	    classes: ['direction-options'],
@@ -313,6 +314,7 @@
 
 	var updateRoomUI = function updateRoomUI() {
 	  var roomInfo = (0, _store.getData)('room');
+
 	  var description = (0, _commonFunctions.component)({
 	    type: 'p',
 	    content: roomInfo.description
@@ -375,12 +377,13 @@
 /* 8 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	function createElement(_ref) {
 	  var type = _ref.type;
 	  var classes = _ref.classes;
 	  var attributes = _ref.attributes;
+	  var eventListeners = _ref.eventListeners;
 	  var children = _ref.children;
 	  var content = _ref.content;
 
@@ -390,6 +393,9 @@
 	  });
 	  if (attributes) attributes.forEach(function (attribute) {
 	    return element.setAttribute(attribute.key, attribute.value);
+	  });
+	  if (eventListeners) eventListeners.forEach(function (listener) {
+	    return element.addEventListener(listener.event, listener.function);
 	  });
 	  if (children) children.forEach(function (child) {
 	    return element.appendChild(createElement(child));
@@ -403,16 +409,18 @@
 	  var type = _ref2.type;
 	  var classes = _ref2.classes;
 	  var attributes = _ref2.attributes;
+	  var eventListeners = _ref2.eventListeners;
 	  var children = _ref2.children;
 	  var content = _ref2.content;
 
 	  return {
-	    type: type, classes: classes, attributes: attributes, children: children, content: content
+	    type: type, classes: classes, attributes: attributes, eventListeners: eventListeners, children: children, content: content
 	  };
 	};
 
 	var render = function render(target, htmlObject) {
-	  return target.appendChild(createElement(htmlObject));
+	  target.innerHTML = '';
+	  target.appendChild(createElement(htmlObject));
 	};
 
 	var toggleClass = function toggleClass(element, classToToggle) {

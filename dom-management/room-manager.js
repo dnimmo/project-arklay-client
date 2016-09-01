@@ -16,7 +16,7 @@ function addButton ({displayText, rel, link}) {
   return component({
     type: 'li',
     classes: [rel],
-    attributes: [{key: 'onclick', value: getNewRoom}],
+    eventListeners: [{event: 'click', function: getNewRoom}],
     content: displayText || rel
   })
 }
@@ -34,6 +34,7 @@ function processItem (item) {
 
 function processDirections (directions) {
   const buttons = directions.map(direction => addButton(direction))
+
   return component({
       type: 'ul',
       classes: ['direction-options'],
@@ -44,6 +45,7 @@ function processDirections (directions) {
 
 const updateRoomUI = () => {
   const roomInfo = getData('room')
+
   const description = component({
     type: 'p',
     content: roomInfo.description
