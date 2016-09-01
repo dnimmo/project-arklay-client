@@ -79,7 +79,6 @@
 
 	// Start game
 	var loadedData = (0, _saveGame.loadGame)();
-	console.log(loadedData);
 	loadedData ? loadGame(loadedData) : startNewGame();
 
 /***/ },
@@ -248,7 +247,7 @@
 	var rootUrl = 'http://api.project-arklay.com/rooms';
 
 	var getRoom = function getRoom(slug) {
-	  return request('POST', rootUrl + '/' + slug, getData('inventory').itemsUsed, 'room');
+	  return request('POST', rootUrl + '/' + slug + '?' + Date.now(), getData('inventory').itemsUsed, 'room');
 	};
 
 	module.exports = {
