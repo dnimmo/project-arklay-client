@@ -23,7 +23,8 @@ function processItem (item) {
 }
 
 function processDirections (directions) {
-  return component('ul', ['direction-options'], [{key: 'id', value: 'directions'}],   directions.map(direction => addButton(direction)), false)
+  const buttons = directions.map(direction => addButton(direction))
+  return component('ul', ['direction-options'], [{key: 'id', value: 'directions'}], buttons), false)
 }
 
 const updateRoomUI = () => {
