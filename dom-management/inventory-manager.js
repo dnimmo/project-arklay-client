@@ -76,18 +76,15 @@ const updateInventoryUI = () => {
     classes: ['inventory-icon'],
     attributes: [{
       key: 'alt',
-      value: 'Inventory'
+      value: 'Inventory',
     }],
-    children: [component({
-      type: 'image',
+    children:[component({
+      type: 'use',
       attributes: [{
         key: 'xlink:href',
         value: '/images/defs.svg#inventory'
-      }, {
-        key: 'xmlns:xlink',
-        value: 'http://www.w3.org/1999/xlink'
       }]
-    })]
+    })],
   })
 
   const inventoryCount = component({

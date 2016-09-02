@@ -394,6 +394,18 @@
 	    switch (type) {
 	      case 'none':
 	        break;
+	      case 'use':
+	        var elementNS = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+	        elementNS.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink');
+	        if (attributes) attributes.forEach(function (attribute) {
+	          return elementNS.setAttribute(attribute.key, attribute.value);
+	        });
+
+	        return {
+	          v: elementNS
+	        };
+	        break;
+
 	      default:
 	        var element = document.createElement(type);
 	        if (classes) classes.forEach(function (classToAdd) {
@@ -524,13 +536,10 @@
 	      value: 'Inventory'
 	    }],
 	    children: [(0, _commonFunctions.component)({
-	      type: 'image',
+	      type: 'use',
 	      attributes: [{
 	        key: 'xlink:href',
 	        value: '/images/defs.svg#inventory'
-	      }, {
-	        key: 'xmlns:xlink',
-	        value: 'http://www.w3.org/1999/xlink'
 	      }]
 	    })]
 	  });

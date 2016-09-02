@@ -3,6 +3,14 @@ function createElement ({ type, classes, attributes, eventListeners, children, c
   switch(type) {
     case 'none':
       break
+    case 'use':
+      const elementNS = document.createElementNS('http://www.w3.org/2000/svg', 'use')
+      elementNS.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink')
+      if (attributes) attributes.forEach(attribute => elementNS.setAttribute(attribute.key, attribute.value))
+
+      return elementNS
+      break
+
     default:
       const element = document.createElement(type)
       if (classes) classes.forEach(classToAdd => element.classList.add(classToAdd))
