@@ -9,7 +9,7 @@ export const room = getElement('room')
 // Inventory
 export const inventoryToggle = getElement('inventoryToggle')
 export const inventoryCount = getElement('inventoryCount')
-export const inventory = getElement('inventory')
+export const inventoryElement = getElement('inventory')
 export const itemList = getElement('itemList')
 export const closeInventory = getElement('closeInventory')
 

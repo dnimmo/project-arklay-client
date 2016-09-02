@@ -1,60 +1,51 @@
-// // Elements that need to be updated
-// import {
-//   inventoryToggle,
-//   inventoryCount,
-//   inventory,
-//   itemList,
-//   closeInventory
-// } from './elements'
-//
-// import {
-//   updateText,
-//   addClass,
-//   removeClass,
-//   toggleClass,
-//   updateClasses,
-//   clearContents
-// } from './common-functions'
-//
-// import { getData } from '../data-management/store'
-//
-// import {
-//   addItem,
-//   useItem
-// } from '../data-management/inventory'
-//
-// import { updateItemOptionsUI } from './item-options-manager'
-//
+// Elements that need to be updated
+import {
+  inventoryToggle,
+  inventoryCount,
+  inventoryElement,
+  itemList,
+  closeInventory
+} from './elements'
+
+import {
+  component,
+  render,
+  toggleClass
+} from './common-functions'
+
+import { getData } from '../data-management/store'
+
+import {
+  addItem,
+  useItem
+} from '../data-management/inventory'
+
+import { updateItemOptionsUI } from './item-options-manager'
+
 // const toggleInventory = () => toggleClass(inventory, 'hidden')
 //
 // inventoryToggle.addEventListener('click', toggleInventory)
 // closeInventory.addEventListener('click', toggleInventory)
 //
-// function displayInventoryToggle (count) {
-//   return count > 0
-// }
-//
 // function itemCanBeUsed(itemInfo) {
 //   console.log(getData('room'))
 //   return getData('room').slug === itemInfo
 // }
-//
-// function addItemButton (item) {
-//   const button = document.createElement('li')
-//   addClass(button, 'button', 'inv')
-//   const buttonText = createText(item.displayName)
-//   const image = createImage(item.image)
-//   button.appendChild(image)
-//   button.appendChild(buttonText)
-//   button.addEventListener('click', listener)
-//
-//   function listener () {
-//     return updateItemOptionsUI(item)
-//   }
-//
-//   return button
-// }
-//
+
+function createItemButton (item) {
+  const updateItemOptions = () => updateItemOptionsUI(item)
+
+
+  // button.appendChild(image)
+
+  return component({
+    type: 'li',
+    classes: ['button', 'inv'],
+    content: item.displayName,
+    eventListeners: [{event: 'click', function: updateItemOptions}]
+  })
+}
+
 // function createText (displayName) {
 //   const buttonText = document.createElement('p')
 //   updateText(buttonText, displayName)
@@ -72,21 +63,67 @@
 //
 //   return image
 // }
-//
-// const updateInventoryUI = () => {
-//   clearContents(itemList)
-//   const inventory = getData('inventory')
-//   updateText(inventoryCount, inventory.items.length)
-//
-//   inventory.items.forEach(item =>   itemList.appendChild(addItemButton(item)))
-//
-//   if (displayInventoryToggle(inventory.items.length)) {
-//     removeClass(inventoryToggle, 'hidden')
-//   } else {
-//     addClass(inventoryToggle, 'hidden')
-//   }
-// }
-//
-// module.exports = {
-//   updateInventoryUI
-// }
+
+const updateInventoryUI = () => {
+  const inventory = getData('inventory')
+  const itemCount = inventory.items.length
+
+  // Don't bother rendering anything if there are no items
+  if (itemCount === 0) return
+
+  const inventoryImage = component({
+    type: 'svg',
+    classes: ['inventory-icon'],
+    attributes: [{
+      key: 'alt',
+      value: 'Inventory'
+    }],
+    children: [component({
+      type: 'image',
+      attributes: [{
+        key: 'xlink:href',
+        value: '/images/defs.svg#inventory'
+      }, {
+        key: 'xmlns:xlink',
+        value: 'http://www.w3.org/1999/xlink'
+      }]
+    })]
+  })
+
+  const inventoryCount = component({
+    type: 'span',
+    classes: ['inventory-count'],
+    content: inventory.items.length
+  })
+
+  const inventoryToggle = component({
+    type: 'div',
+    classes: ['inventory-toggle'],
+    children: [inventoryImage, inventoryCount]
+  })
+
+  const itemButtons = inventory.items.map(item => createItemButton(item))
+
+  const items = component({
+    type: 'ul',
+    classes: ['itemLIst'],
+    children: itemButtons
+  })
+
+  const inventoryPanel = component({
+    type: 'section',
+    classes: ['inventory', 'hidden'],
+    children: [items]
+  })
+
+  const inventoryObject = component({
+    type: 'div',
+    children: [inventoryToggle, inventoryPanel]
+  })
+
+  render(inventoryElement, inventoryObject)
+}
+
+module.exports = {
+  updateInventoryUI
+}

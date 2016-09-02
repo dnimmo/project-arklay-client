@@ -22,7 +22,7 @@ function addButton ({displayText, rel, link}) {
 }
 
 function processItem (item) {
-  if (!item || hasItemBeenPickedUp(item)) return {}
+  if (!item || hasItemBeenPickedUp(item)) return {type: 'none'}
   addItem(item)
 
   return component({

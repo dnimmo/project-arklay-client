@@ -58,7 +58,7 @@
 
 	var _store = __webpack_require__(3);
 
-	__webpack_require__(10);
+	__webpack_require__(11);
 
 
 	document.addEventListener('data-updated-inventory', _inventoryManager.updateInventoryUI);
@@ -289,7 +289,7 @@
 
 
 	function processItem(item) {
-	  if (!item || (0, _inventory.hasItemBeenPickedUp)(item)) return {};
+	  if (!item || (0, _inventory.hasItemBeenPickedUp)(item)) return { type: 'none' };
 	  (0, _inventory.addItem)(item);
 
 	  return (0, _commonFunctions.component)({
@@ -360,7 +360,7 @@
 	// Inventory
 	var inventoryToggle = exports.inventoryToggle = getElement('inventoryToggle');
 	var inventoryCount = exports.inventoryCount = getElement('inventoryCount');
-	var inventory = exports.inventory = getElement('inventory');
+	var inventoryElement = exports.inventoryElement = getElement('inventory');
 	var itemList = exports.itemList = getElement('itemList');
 	var closeInventory = exports.closeInventory = getElement('closeInventory');
 
@@ -379,6 +379,8 @@
 
 	'use strict';
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 	function createElement(_ref) {
 	  var type = _ref.type;
 	  var classes = _ref.classes;
@@ -387,22 +389,36 @@
 	  var children = _ref.children;
 	  var content = _ref.content;
 
-	  var element = document.createElement(type);
-	  if (classes) classes.forEach(function (classToAdd) {
-	    return element.classList.add(classToAdd);
-	  });
-	  if (attributes) attributes.forEach(function (attribute) {
-	    return element.setAttribute(attribute.key, attribute.value);
-	  });
-	  if (eventListeners) eventListeners.forEach(function (listener) {
-	    return element.addEventListener(listener.event, listener.function);
-	  });
-	  if (children) children.forEach(function (child) {
-	    return element.appendChild(createElement(child));
-	  });
-	  if (content) element.innerText = content;
+	  // Type 'none' is only an option because each room processes whether an item exists automatically - this should be possible to remove once the 'examineRoom' functionality is added
+	  var _ret = function () {
+	    switch (type) {
+	      case 'none':
+	        break;
+	      default:
+	        var element = document.createElement(type);
+	        if (classes) classes.forEach(function (classToAdd) {
+	          return element.classList.add(classToAdd);
+	        });
+	        if (attributes) attributes.forEach(function (attribute) {
+	          return element.setAttribute(attribute.key, attribute.value);
+	        });
+	        if (eventListeners) eventListeners.forEach(function (listener) {
+	          return element.addEventListener(listener.event, listener.function);
+	        });
+	        if (children) children.filter(function (child) {
+	          return child.type !== 'none';
+	        }).forEach(function (child) {
+	          return element.appendChild(createElement(child));
+	        });
+	        if (content) element.innerText = content;
 
-	  return element;
+	        return {
+	          v: element
+	        };
+	    }
+	  }();
+
+	  if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
 	}
 
 	var component = function component(_ref2) {
@@ -435,65 +451,45 @@
 
 /***/ },
 /* 9 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// // Elements that need to be updated
-	// import {
-	//   inventoryToggle,
-	//   inventoryCount,
-	//   inventory,
-	//   itemList,
-	//   closeInventory
-	// } from './elements'
-	//
-	// import {
-	//   updateText,
-	//   addClass,
-	//   removeClass,
-	//   toggleClass,
-	//   updateClasses,
-	//   clearContents
-	// } from './common-functions'
-	//
-	// import { getData } from '../data-management/store'
-	//
-	// import {
-	//   addItem,
-	//   useItem
-	// } from '../data-management/inventory'
-	//
-	// import { updateItemOptionsUI } from './item-options-manager'
-	//
+	'use strict';
+
+	var _elements = __webpack_require__(7);
+
+	var _commonFunctions = __webpack_require__(8);
+
+	var _store = __webpack_require__(3);
+
+	var _inventory = __webpack_require__(1);
+
+	var _itemOptionsManager = __webpack_require__(10);
+
 	// const toggleInventory = () => toggleClass(inventory, 'hidden')
 	//
 	// inventoryToggle.addEventListener('click', toggleInventory)
 	// closeInventory.addEventListener('click', toggleInventory)
 	//
-	// function displayInventoryToggle (count) {
-	//   return count > 0
-	// }
-	//
 	// function itemCanBeUsed(itemInfo) {
 	//   console.log(getData('room'))
 	//   return getData('room').slug === itemInfo
 	// }
-	//
-	// function addItemButton (item) {
-	//   const button = document.createElement('li')
-	//   addClass(button, 'button', 'inv')
-	//   const buttonText = createText(item.displayName)
-	//   const image = createImage(item.image)
-	//   button.appendChild(image)
-	//   button.appendChild(buttonText)
-	//   button.addEventListener('click', listener)
-	//
-	//   function listener () {
-	//     return updateItemOptionsUI(item)
-	//   }
-	//
-	//   return button
-	// }
-	//
+
+	function createItemButton(item) {
+	  var updateItemOptions = function updateItemOptions() {
+	    return (0, _itemOptionsManager.updateItemOptionsUI)(item);
+	  };
+
+	  // button.appendChild(image)
+
+	  return (0, _commonFunctions.component)({
+	    type: 'li',
+	    classes: ['button', 'inv'],
+	    content: item.displayName,
+	    eventListeners: [{ event: 'click', function: updateItemOptions }]
+	  });
+	}
+
 	// function createText (displayName) {
 	//   const buttonText = document.createElement('p')
 	//   updateText(buttonText, displayName)
@@ -511,37 +507,152 @@
 	//
 	//   return image
 	// }
+
+	// Elements that need to be updated
+	var updateInventoryUI = function updateInventoryUI() {
+	  var inventory = (0, _store.getData)('inventory');
+	  var itemCount = inventory.items.length;
+
+	  // Don't bother rendering anything if there are no items
+	  if (itemCount === 0) return;
+
+	  var inventoryImage = (0, _commonFunctions.component)({
+	    type: 'svg',
+	    classes: ['inventory-icon'],
+	    attributes: [{
+	      key: 'alt',
+	      value: 'Inventory'
+	    }],
+	    children: [(0, _commonFunctions.component)({
+	      type: 'image',
+	      attributes: [{
+	        key: 'xlink:href',
+	        value: '/images/defs.svg#inventory'
+	      }, {
+	        key: 'xmlns:xlink',
+	        value: 'http://www.w3.org/1999/xlink'
+	      }]
+	    })]
+	  });
+
+	  var inventoryCount = (0, _commonFunctions.component)({
+	    type: 'span',
+	    classes: ['inventory-count'],
+	    content: inventory.items.length
+	  });
+
+	  var inventoryToggle = (0, _commonFunctions.component)({
+	    type: 'div',
+	    classes: ['inventory-toggle'],
+	    children: [inventoryImage, inventoryCount]
+	  });
+
+	  var itemButtons = inventory.items.map(function (item) {
+	    return createItemButton(item);
+	  });
+
+	  var items = (0, _commonFunctions.component)({
+	    type: 'ul',
+	    classes: ['itemLIst'],
+	    children: itemButtons
+	  });
+
+	  var inventoryPanel = (0, _commonFunctions.component)({
+	    type: 'section',
+	    classes: ['inventory', 'hidden'],
+	    children: [items]
+	  });
+
+	  var inventoryObject = (0, _commonFunctions.component)({
+	    type: 'div',
+	    children: [inventoryToggle, inventoryPanel]
+	  });
+
+	  (0, _commonFunctions.render)(_elements.inventoryElement, inventoryObject);
+	};
+
+	module.exports = {
+	  updateInventoryUI: updateInventoryUI
+	};
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	// import {
+	//   itemOptions,
+	//   itemList,
+	//   itemName,
+	//   closeInventory,
+	//   itemDescription,
+	//   useItemButton,
+	//   cancelItemButton,
+	//   itemUsedMessage,
+	//   itemNotUsedMessage
+	// } from './elements'
 	//
-	// const updateInventoryUI = () => {
-	//   clearContents(itemList)
-	//   const inventory = getData('inventory')
-	//   updateText(inventoryCount, inventory.items.length)
+	// import {
+	//   updateText,
+	//   toggleClass,
+	//   clearContents
+	// } from './common-functions'
 	//
-	//   inventory.items.forEach(item =>   itemList.appendChild(addItemButton(item)))
+	// import { getRoom } from '../data-management/room'
+	// import { getData } from '../data-management/store'
+	// import { useItem } from '../data-management/inventory'
 	//
-	//   if (displayInventoryToggle(inventory.items.length)) {
-	//     removeClass(inventoryToggle, 'hidden')
-	//   } else {
-	//     addClass(inventoryToggle, 'hidden')
+	// function canItemBeUsed (item, slug) {
+	//   return item === slug
+	// }
+	//
+	// function toggleItemOptions () {
+	//   toggleClass(itemOptions, 'hidden')
+	//   toggleClass(itemList, 'hidden')
+	//   toggleClass(closeInventory, 'hidden')
+	//   clearContents(itemNotUsedMessage)
+	// }
+	//
+	// // Cancel button always does the same thing, no need to assign this inside the updateItemOptionsUI function
+	// cancelItemButton.addEventListener('click', toggleItemOptions)
+	//
+	// const updateItemOptionsUI = ({name, displayName, description, canBeUsedIn, messageWhenNotUsed, messageWhenUsed}) => {
+	//   updateText(itemName, displayName)
+	//   updateText(itemDescription, description)
+	//   toggleItemOptions()
+	//
+	//   function listener () {
+	//     if (canItemBeUsed(canBeUsedIn, getData('room').slug)) {
+	//       useItem(name)
+	//       // update room now that item has been used
+	//       getRoom(getData('room').slug)
+	//       // close the inventory
+	//       toggleItemOptions()
+	//       toggleClass(inventory, 'hidden')
+	//     } else {
+	//       updateText(itemNotUsedMessage, `==${messageWhenNotUsed}==`)
+	//     }
 	//   }
+	//
+	//   // Override onclick event with whichever item has been selected
+	//   useItemButton.onclick = listener
 	// }
 	//
 	// module.exports = {
-	//   updateInventoryUI
+	//   updateItemOptionsUI
 	// }
 	"use strict";
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(11);
+	var content = __webpack_require__(12);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(13)(content, {});
+	var update = __webpack_require__(14)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -558,10 +669,10 @@
 	}
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(12)();
+	exports = module.exports = __webpack_require__(13)();
 	// imports
 
 
@@ -572,7 +683,7 @@
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -627,7 +738,7 @@
 	};
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
