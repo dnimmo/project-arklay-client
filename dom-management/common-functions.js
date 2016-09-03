@@ -2,8 +2,10 @@ function createElement ({ type, classes, attributes, eventListeners, children, c
   // Type 'none' is only an option because each room processes whether an item exists automatically - this should be possible to remove once the 'examineRoom' functionality is added
   switch(type) {
     case 'none':
+      // Don't return anything
       break
     case 'use':
+      // This does not work - SVGs are not rendered
       const elementNS = document.createElementNS('http://www.w3.org/2000/svg', 'use')
       elementNS.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink')
       if (attributes) attributes.forEach(attribute => elementNS.setAttribute(attribute.key, attribute.value))
@@ -23,6 +25,7 @@ function createElement ({ type, classes, attributes, eventListeners, children, c
   }
 }
 
+// This function does nothing except make the code the rest of the code more readable
 const component = ({ type, classes, attributes, eventListeners, children, content }) => {
   return {
     type, classes, attributes, eventListeners, children, content

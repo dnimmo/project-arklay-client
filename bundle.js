@@ -393,8 +393,10 @@
 	  var _ret = function () {
 	    switch (type) {
 	      case 'none':
+	        // Don't return anything
 	        break;
 	      case 'use':
+	        // This does not work - SVGs are not rendered
 	        var elementNS = document.createElementNS('http://www.w3.org/2000/svg', 'use');
 	        elementNS.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink');
 	        if (attributes) attributes.forEach(function (attribute) {
@@ -433,6 +435,7 @@
 	  if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
 	}
 
+	// This function does nothing except make the code the rest of the code more readable
 	var component = function component(_ref2) {
 	  var type = _ref2.type;
 	  var classes = _ref2.classes;
@@ -477,6 +480,17 @@
 
 	var _itemOptionsManager = __webpack_require__(10);
 
+	var getInventoryUI = function getInventoryUI() {
+	  return document.getElementById('inventoryPanel');
+	}; // Elements that need to be updated
+
+	var openInventoryUI = function openInventoryUI() {
+	  return getInventoryUI().classList.remove('hidden');
+	};
+	var closeInventoryUI = function closeInventoryUI() {
+	  return getInventoryUI().classList.add('hidden');
+	};
+
 	// const toggleInventory = () => toggleClass(inventory, 'hidden')
 	//
 	// inventoryToggle.addEventListener('click', toggleInventory)
@@ -520,7 +534,6 @@
 	//   return image
 	// }
 
-	// Elements that need to be updated
 	var updateInventoryUI = function updateInventoryUI() {
 	  var inventory = (0, _store.getData)('inventory');
 	  var itemCount = inventory.items.length;
@@ -541,7 +554,8 @@
 	        key: 'xlink:href',
 	        value: '/images/defs.svg#inventory'
 	      }]
-	    })]
+	    })],
+	    eventListeners: [{ event: 'click', function: openInventoryUI }]
 	  });
 
 	  var inventoryCount = (0, _commonFunctions.component)({
@@ -566,10 +580,21 @@
 	    children: itemButtons
 	  });
 
+	  var closeButton = (0, _commonFunctions.component)({
+	    type: 'p',
+	    classes: ['button'],
+	    content: 'Close Inventory',
+	    eventListeners: [{ event: 'click', function: closeInventoryUI }]
+	  });
+
 	  var inventoryPanel = (0, _commonFunctions.component)({
 	    type: 'section',
 	    classes: ['inventory', 'hidden'],
-	    children: [items]
+	    attributes: [{
+	      key: 'id',
+	      value: 'inventoryPanel'
+	    }],
+	    children: [items, closeButton]
 	  });
 
 	  var inventoryObject = (0, _commonFunctions.component)({

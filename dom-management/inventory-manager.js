@@ -22,6 +22,10 @@ import {
 
 import { updateItemOptionsUI } from './item-options-manager'
 
+const getInventoryUI = () => document.getElementById('inventoryPanel')
+const openInventoryUI = () => getInventoryUI().classList.remove('hidden')
+const closeInventoryUI = () => getInventoryUI().classList.add('hidden')
+
 // const toggleInventory = () => toggleClass(inventory, 'hidden')
 //
 // inventoryToggle.addEventListener('click', toggleInventory)
@@ -85,6 +89,7 @@ const updateInventoryUI = () => {
         value: '/images/defs.svg#inventory'
       }]
     })],
+    eventListeners:[{event: 'click', function: openInventoryUI}]
   })
 
   const inventoryCount = component({
@@ -107,10 +112,21 @@ const updateInventoryUI = () => {
     children: itemButtons
   })
 
+  const closeButton = component({
+    type: 'p',
+    classes: ['button'],
+    content: 'Close Inventory',
+    eventListeners: [{event: 'click', function: closeInventoryUI}]
+  })
+
   const inventoryPanel = component({
     type: 'section',
     classes: ['inventory', 'hidden'],
-    children: [items]
+    attributes: [{
+      key: 'id',
+      value: 'inventoryPanel'
+    }],
+    children: [items, closeButton]
   })
 
   const inventoryObject = component({
