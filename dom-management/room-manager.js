@@ -59,6 +59,7 @@ const updateRoomUI = () => {
 
   const roomObject = component({
     type: 'div',
+    classes: ['room'],
     children: [description, surroundings, directions, itemMessage]
   })
 

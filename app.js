@@ -1,10 +1,8 @@
 require('./style/main.scss')
-import {
-  initialiseInventory
-} from './data-management/inventory'
+import { initialiseInventory } from './data-management/inventory'
 import { getRoom } from './data-management/room'
 import { updateRoomUI } from './dom-management/room-manager'
-import { updateInventoryUI } from './dom-management/inventory-manager'
+import updateInventoryUI from './dom-management/inventory-manager'
 import { loadGame as load } from './data-management/save-game'
 import { updateData } from './data-management/store'
 
