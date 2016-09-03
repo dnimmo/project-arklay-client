@@ -67,6 +67,10 @@
     transform: translateX(100vw);
   }
 
+  .item-list {
+    @include animation(fadeIn .5s);
+  }
+
   .inventory-contents {
     @include animation(fadeIn .5s);
     padding: 2rem 2rem 0;
