@@ -23,21 +23,22 @@ body {
 }
 
 main {
+  .room {
+    @include animation(fadeIn .3s);
+    margin-top: 6rem;
+    overflow: hidden;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    text-align: center;
 
-  @include animation(fadeIn .5s);
-  margin-top: 6rem;
-  overflow: hidden;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  text-align: center;
+    @include bp(m) {
+      margin-top: 8rem;
+      padding: 5%;
+    }
 
-  @include bp(m) {
-    margin-top: 8rem;
-    padding: 5%;
-  }
-
-  &:focus {
-    outline-color: $colour-palette-1;
+    &:focus {
+      outline-color: $colour-palette-1;
+    }
   }
 }
 
