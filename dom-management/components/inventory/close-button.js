@@ -1,4 +1,4 @@
-import { component } from '../../common-functions'
+import { component } from '../../dom-creation'
 import updateInventoryUI from '../../inventory-manager'
 
 const closeInventoryUI = () => updateInventoryUI({

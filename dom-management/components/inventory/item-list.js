@@ -1,4 +1,4 @@
-import { component } from '../../common-functions'
+import { component } from '../../dom-creation'
 import itemButtons from './item-buttons'
 
 const itemList = ({ itemListClasses, items }) => component({

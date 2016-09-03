@@ -1,4 +1,4 @@
-import { component } from '../../common-functions'
+import { component } from '../../dom-creation'
 import itemList from './item-list'
 import itemDetails from './item-details'
 import closeButton from './close-button'

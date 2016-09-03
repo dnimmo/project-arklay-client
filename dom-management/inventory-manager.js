@@ -1,6 +1,6 @@
 // Elements that need to be updated
 import { inventoryElement } from './elements'
-import { component, render } from './common-functions'
+import { component, render } from './dom-creation'
 import { getData } from '../data-management/store'
 import { addItem, useItem } from '../data-management/inventory'
 import { updateItemOptionsUI } from './item-options-manager'

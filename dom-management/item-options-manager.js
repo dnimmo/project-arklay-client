@@ -14,7 +14,7 @@
 //   updateText,
 //   toggleClass,
 //   clearContents
-// } from './common-functions'
+// } from './dom-creation'
 //
 // import { getRoom } from '../data-management/room'
 // import { getData } from '../data-management/store'

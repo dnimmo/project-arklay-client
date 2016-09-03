@@ -4,7 +4,7 @@ import { room } from './elements'
 import {
   component,
   render
-} from './common-functions'
+} from './dom-creation'
 
 import { getRoom } from '../data-management/room'
 import { addItem, hasItemBeenPickedUp } from '../data-management/inventory'

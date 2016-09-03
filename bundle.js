@@ -266,7 +266,7 @@
 
 	var _elements = __webpack_require__(7);
 
-	var _commonFunctions = __webpack_require__(8);
+	var _domCreation = __webpack_require__(8);
 
 	var _room = __webpack_require__(5);
 
@@ -283,7 +283,7 @@
 	    return (0, _room.getRoom)(link);
 	  };
 
-	  return (0, _commonFunctions.component)({
+	  return (0, _domCreation.component)({
 	    type: 'li',
 	    classes: [rel],
 	    eventListeners: [{ event: 'click', function: getNewRoom }],
@@ -296,7 +296,7 @@
 	  if (!item || (0, _inventory.hasItemBeenPickedUp)(item)) return { type: 'none' };
 	  (0, _inventory.addItem)(item);
 
-	  return (0, _commonFunctions.component)({
+	  return (0, _domCreation.component)({
 	    type: 'p',
 	    classes: ['additional-info', 'extra-message'],
 	    content: '== Item added to inventory =='
@@ -308,7 +308,7 @@
 	    return addButton(direction);
 	  });
 
-	  return (0, _commonFunctions.component)({
+	  return (0, _domCreation.component)({
 	    type: 'ul',
 	    classes: ['direction-options'],
 	    attributes: [{ key: 'id', value: 'directions' }],
@@ -319,24 +319,24 @@
 	var updateRoomUI = function updateRoomUI() {
 	  var roomInfo = (0, _store.getData)('room');
 
-	  var description = (0, _commonFunctions.component)({
+	  var description = (0, _domCreation.component)({
 	    type: 'p',
 	    content: roomInfo.description
 	  });
-	  var surroundings = (0, _commonFunctions.component)({
+	  var surroundings = (0, _domCreation.component)({
 	    type: 'p',
 	    content: roomInfo.surroundings
 	  });
 	  var directions = processDirections(roomInfo.directions);
 	  var itemMessage = processItem(roomInfo.item);
 
-	  var roomObject = (0, _commonFunctions.component)({
+	  var roomObject = (0, _domCreation.component)({
 	    type: 'div',
 	    classes: ['room'],
 	    children: [description, surroundings, directions, itemMessage]
 	  });
 
-	  (0, _commonFunctions.render)(_elements.room, roomObject);
+	  (0, _domCreation.render)(_elements.room, roomObject);
 	};
 
 	module.exports = {
@@ -481,7 +481,7 @@
 
 	var _elements = __webpack_require__(7);
 
-	var _commonFunctions = __webpack_require__(8);
+	var _domCreation = __webpack_require__(8);
 
 	var _store = __webpack_require__(3);
 
@@ -512,12 +512,12 @@
 	  // Don't bother rendering anything if there are no items
 	  if (itemCount === 0) return;
 
-	  var inventoryObject = (0, _commonFunctions.component)({
+	  var inventoryObject = (0, _domCreation.component)({
 	    type: 'div',
 	    children: [(0, _inventoryToggle2.default)(inventory), (0, _inventoryPanel2.default)({ inventoryClasses: inventoryClasses, itemListClasses: itemListClasses, itemDetailsClasses: itemDetailsClasses, items: inventory.items, item: item })]
 	  });
 
-	  (0, _commonFunctions.render)(_elements.inventoryElement, inventoryObject);
+	  (0, _domCreation.render)(_elements.inventoryElement, inventoryObject);
 	}; // Elements that need to be updated
 	exports.default = updateInventoryUI;
 
@@ -541,7 +541,7 @@
 	//   updateText,
 	//   toggleClass,
 	//   clearContents
-	// } from './common-functions'
+	// } from './dom-creation'
 	//
 	// import { getRoom } from '../data-management/room'
 	// import { getData } from '../data-management/store'
@@ -598,7 +598,7 @@
 	  value: true
 	});
 
-	var _commonFunctions = __webpack_require__(8);
+	var _domCreation = __webpack_require__(8);
 
 	var _inventoryManager = __webpack_require__(9);
 
@@ -613,14 +613,14 @@
 	};
 
 	var inventoryToggle = function inventoryToggle(inventory) {
-	  var inventoryImage = (0, _commonFunctions.component)({
+	  var inventoryImage = (0, _domCreation.component)({
 	    type: 'svg',
 	    classes: ['inventory-icon'],
 	    attributes: [{
 	      key: 'alt',
 	      value: 'Inventory'
 	    }],
-	    children: [(0, _commonFunctions.component)({
+	    children: [(0, _domCreation.component)({
 	      type: 'use',
 	      attributes: [{
 	        key: 'xlink:href',
@@ -630,13 +630,13 @@
 	    eventListeners: [{ event: 'click', function: openInventoryUI }]
 	  });
 
-	  var inventoryCount = (0, _commonFunctions.component)({
+	  var inventoryCount = (0, _domCreation.component)({
 	    type: 'span',
 	    classes: ['inventory-count'],
 	    content: inventory.items.length
 	  });
 
-	  return (0, _commonFunctions.component)({
+	  return (0, _domCreation.component)({
 	    type: 'div',
 	    classes: ['inventory-toggle'],
 	    children: [inventoryImage, inventoryCount]
@@ -655,7 +655,7 @@
 	  value: true
 	});
 
-	var _commonFunctions = __webpack_require__(8);
+	var _domCreation = __webpack_require__(8);
 
 	var _itemList = __webpack_require__(13);
 
@@ -679,7 +679,7 @@
 	  var item = _ref.item;
 
 
-	  return (0, _commonFunctions.component)({
+	  return (0, _domCreation.component)({
 	    type: 'section',
 	    classes: inventoryClasses || ['hidden'],
 	    attributes: [{
@@ -702,7 +702,7 @@
 	  value: true
 	});
 
-	var _commonFunctions = __webpack_require__(8);
+	var _domCreation = __webpack_require__(8);
 
 	var _itemButtons = __webpack_require__(14);
 
@@ -713,7 +713,7 @@
 	var itemList = function itemList(_ref) {
 	  var itemListClasses = _ref.itemListClasses;
 	  var items = _ref.items;
-	  return (0, _commonFunctions.component)({
+	  return (0, _domCreation.component)({
 	    type: 'ul',
 	    classes: itemListClasses || ['item-list'],
 	    children: (0, _itemButtons2.default)(items)
@@ -732,7 +732,7 @@
 	  value: true
 	});
 
-	var _commonFunctions = __webpack_require__(8);
+	var _domCreation = __webpack_require__(8);
 
 	var _inventoryManager = __webpack_require__(9);
 
@@ -746,7 +746,7 @@
 	      return (0, _inventoryManager2.default)({ inventoryClasses: ['inventory', 'open'], itemListClasses: ['hidden'], itemDetailsClasses: ['item-details'], item: item });
 	    };
 
-	    return (0, _commonFunctions.component)({
+	    return (0, _domCreation.component)({
 	      type: 'li',
 	      classes: ['button', 'inv'],
 	      content: item.displayName,
@@ -771,7 +771,7 @@
 	  value: true
 	});
 
-	var _commonFunctions = __webpack_require__(8);
+	var _domCreation = __webpack_require__(8);
 
 	var _inventoryManager = __webpack_require__(9);
 
@@ -790,32 +790,32 @@
 	  var itemDetailsClasses = _ref.itemDetailsClasses;
 	  var item = _ref.item;
 
-	  var useItemButton = (0, _commonFunctions.component)({
+	  var useItemButton = (0, _domCreation.component)({
 	    type: 'li',
 	    classes: ['button'],
 	    content: 'Use'
 	  });
 
-	  var cancelButton = (0, _commonFunctions.component)({
+	  var cancelButton = (0, _domCreation.component)({
 	    type: 'li',
 	    classes: ['button'],
 	    content: 'Cancel',
 	    eventListeners: [{ event: 'click', function: keepOpenInventoryUI }]
 	  });
 
-	  var itemOptions = (0, _commonFunctions.component)({
+	  var itemOptions = (0, _domCreation.component)({
 	    type: 'ul',
 	    classes: ['itemOptions'],
 	    children: [useItemButton, cancelButton]
 	  });
 
-	  return (0, _commonFunctions.component)({
+	  return (0, _domCreation.component)({
 	    type: 'div',
 	    classes: itemDetailsClasses || ['hidden'],
-	    children: [(0, _commonFunctions.component)({
+	    children: [(0, _domCreation.component)({
 	      type: 'p',
 	      content: item.displayName
-	    }), (0, _commonFunctions.component)({
+	    }), (0, _domCreation.component)({
 	      type: 'p',
 	      content: item.description
 	    }), itemOptions]
@@ -834,7 +834,7 @@
 	  value: true
 	});
 
-	var _commonFunctions = __webpack_require__(8);
+	var _domCreation = __webpack_require__(8);
 
 	var _inventoryManager = __webpack_require__(9);
 
@@ -848,7 +848,7 @@
 	  });
 	};
 
-	var closeButton = (0, _commonFunctions.component)({
+	var closeButton = (0, _domCreation.component)({
 	  type: 'p',
 	  classes: ['button'],
 	  content: 'Close Inventory',
