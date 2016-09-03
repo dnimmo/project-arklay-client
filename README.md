@@ -12,7 +12,8 @@ The way the application updates is as follows:
 + Data is received from the API
 + This data is sent to the data store (found in /data-management) to update the player's state
 + When the data store is updated, an event is emitted stating whether it was the inventory or the room that changed
-+ Event listeners pick up the emitted 'change' event, causing the UI updaters (found in /dom-management) to request the data from the data store, and update the UI with the new data
++ Event listeners pick up the emitted 'change' event, causing the UI updaters (found in /dom-management) to request the data from the data store, and create an object representation of the UI with the new data
++ The UI is created from the object representation that is passed in to the 'render' function
 + Whenever the user presses a button that calls the API for information, this loop starts again
 ```
 

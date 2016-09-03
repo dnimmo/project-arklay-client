@@ -52,7 +52,7 @@
 
 	var _roomManager = __webpack_require__(6);
 
-	var _inventoryManager = __webpack_require__(9);
+	var _inventoryManager = __webpack_require__(12);
 
 	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
 
@@ -62,7 +62,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(17);
+	__webpack_require__(20);
 
 
 	document.addEventListener('data-updated-inventory', _inventoryManager2.default);
@@ -268,75 +268,33 @@
 
 	var _domCreation = __webpack_require__(8);
 
-	var _room = __webpack_require__(5);
-
-	var _inventory = __webpack_require__(1);
-
 	var _store = __webpack_require__(3);
 
-	function addButton(_ref) {
-	  var displayText = _ref.displayText;
-	  var rel = _ref.rel;
-	  var link = _ref.link;
+	var _roomInfo = __webpack_require__(9);
 
-	  var getNewRoom = function getNewRoom() {
-	    return (0, _room.getRoom)(link);
-	  };
+	var _roomInfo2 = _interopRequireDefault(_roomInfo);
 
-	  return (0, _domCreation.component)({
-	    type: 'li',
-	    classes: [rel],
-	    eventListeners: [{ event: 'click', function: getNewRoom }],
-	    content: displayText || rel
-	  });
-	} // Elements that need to be updated
+	var _directions = __webpack_require__(10);
 
+	var _directions2 = _interopRequireDefault(_directions);
 
-	function processItem(item) {
-	  if (!item || (0, _inventory.hasItemBeenPickedUp)(item)) return { type: 'none' };
-	  (0, _inventory.addItem)(item);
+	var _itemMessage = __webpack_require__(11);
 
-	  return (0, _domCreation.component)({
-	    type: 'p',
-	    classes: ['additional-info', 'extra-message'],
-	    content: '== Item added to inventory =='
-	  });
-	}
+	var _itemMessage2 = _interopRequireDefault(_itemMessage);
 
-	function processDirections(directions) {
-	  var buttons = directions.map(function (direction) {
-	    return addButton(direction);
-	  });
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	  return (0, _domCreation.component)({
-	    type: 'ul',
-	    classes: ['direction-options'],
-	    attributes: [{ key: 'id', value: 'directions' }],
-	    children: buttons
-	  });
-	}
-
+	// Elements that need to be updated
 	var updateRoomUI = function updateRoomUI() {
-	  var roomInfo = (0, _store.getData)('room');
-
-	  var description = (0, _domCreation.component)({
-	    type: 'p',
-	    content: roomInfo.description
-	  });
-	  var surroundings = (0, _domCreation.component)({
-	    type: 'p',
-	    content: roomInfo.surroundings
-	  });
-	  var directions = processDirections(roomInfo.directions);
-	  var itemMessage = processItem(roomInfo.item);
+	  var room = (0, _store.getData)('room');
 
 	  var roomObject = (0, _domCreation.component)({
 	    type: 'div',
 	    classes: ['room'],
-	    children: [description, surroundings, directions, itemMessage]
+	    children: [(0, _roomInfo2.default)(room), (0, _directions2.default)(room.directions), (0, _itemMessage2.default)(room.item)]
 	  });
 
-	  (0, _domCreation.render)(_elements.room, roomObject);
+	  (0, _domCreation.render)(_elements.roomElement, roomObject);
 	};
 
 	module.exports = {
@@ -355,28 +313,8 @@
 	var getElement = exports.getElement = function getElement(id) {
 	  return document.getElementById(id);
 	};
-
-	// Room
-	var roomDescription = exports.roomDescription = getElement('roomDescription');
-	var roomDetails = exports.roomDetails = getElement('roomDetails');
-	var directions = exports.directions = getElement('directions');
-	var room = exports.room = getElement('room');
-
-	// Inventory
-	var inventoryToggle = exports.inventoryToggle = getElement('inventoryToggle');
-	var inventoryCount = exports.inventoryCount = getElement('inventoryCount');
+	var roomElement = exports.roomElement = getElement('room');
 	var inventoryElement = exports.inventoryElement = getElement('inventory');
-	var itemList = exports.itemList = getElement('itemList');
-	var closeInventory = exports.closeInventory = getElement('closeInventory');
-
-	// Item
-	var itemOptions = exports.itemOptions = getElement('itemOptions');
-	var useItemButton = exports.useItemButton = getElement('useItemButton');
-	var cancelItemButton = exports.cancelItemButton = getElement('cancelItemButton');
-	var itemDescription = exports.itemDescription = getElement('itemDescription');
-	var itemName = exports.itemName = getElement('itemName');
-	var itemMessage = exports.itemMessage = getElement('itemMessage');
-	var itemNotUsedMessage = exports.itemNotUsedMessage = getElement('itemNotUsedMessage');
 
 /***/ },
 /* 8 */
@@ -479,6 +417,120 @@
 	  value: true
 	});
 
+	var _domCreation = __webpack_require__(8);
+
+	var roomInfo = function roomInfo(_ref) {
+	  var description = _ref.description;
+	  var surroundings = _ref.surroundings;
+
+	  var roomDescription = (0, _domCreation.component)({
+	    type: 'p',
+	    content: description
+	  });
+	  var roomSurroundings = (0, _domCreation.component)({
+	    type: 'p',
+	    content: surroundings
+	  });
+
+	  return (0, _domCreation.component)({
+	    type: 'div',
+	    children: [roomDescription, roomSurroundings]
+	  });
+	};
+
+	exports.default = roomInfo;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _domCreation = __webpack_require__(8);
+
+	var _room = __webpack_require__(5);
+
+	function addButton(_ref) {
+	  var displayText = _ref.displayText;
+	  var rel = _ref.rel;
+	  var link = _ref.link;
+
+	  var getNewRoom = function getNewRoom() {
+	    return (0, _room.getRoom)(link);
+	  };
+
+	  return (0, _domCreation.component)({
+	    type: 'li',
+	    classes: [rel],
+	    eventListeners: [{ event: 'click', function: getNewRoom }],
+	    content: displayText || rel
+	  });
+	}
+
+	function processDirections(directions) {
+	  var buttons = directions.map(function (direction) {
+	    return addButton(direction);
+	  });
+
+	  return (0, _domCreation.component)({
+	    type: 'ul',
+	    classes: ['direction-options'],
+	    attributes: [{ key: 'id', value: 'directions' }],
+	    children: buttons
+	  });
+	}
+
+	var directions = function directions(availableDirections) {
+	  return processDirections(availableDirections);
+	};
+
+	exports.default = directions;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _domCreation = __webpack_require__(8);
+
+	var _inventory = __webpack_require__(1);
+
+	function processItem(item) {
+	  if (!item || (0, _inventory.hasItemBeenPickedUp)(item)) return { type: 'none' };
+	  (0, _inventory.addItem)(item);
+
+	  return (0, _domCreation.component)({
+	    type: 'p',
+	    classes: ['additional-info', 'extra-message'],
+	    content: '== Item added to inventory =='
+	  });
+	}
+
+	var itemMessage = function itemMessage(item) {
+	  return processItem(item);
+	};
+
+	exports.default = itemMessage;
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
 	var _elements = __webpack_require__(7);
 
 	var _domCreation = __webpack_require__(8);
@@ -487,13 +539,13 @@
 
 	var _inventory = __webpack_require__(1);
 
-	var _itemOptionsManager = __webpack_require__(10);
+	var _itemOptionsManager = __webpack_require__(13);
 
-	var _inventoryToggle = __webpack_require__(11);
+	var _inventoryToggle = __webpack_require__(14);
 
 	var _inventoryToggle2 = _interopRequireDefault(_inventoryToggle);
 
-	var _inventoryPanel = __webpack_require__(12);
+	var _inventoryPanel = __webpack_require__(15);
 
 	var _inventoryPanel2 = _interopRequireDefault(_inventoryPanel);
 
@@ -522,7 +574,7 @@
 	exports.default = updateInventoryUI;
 
 /***/ },
-/* 10 */
+/* 13 */
 /***/ function(module, exports) {
 
 	// import {
@@ -589,7 +641,7 @@
 	"use strict";
 
 /***/ },
-/* 11 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -600,7 +652,7 @@
 
 	var _domCreation = __webpack_require__(8);
 
-	var _inventoryManager = __webpack_require__(9);
+	var _inventoryManager = __webpack_require__(12);
 
 	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
 
@@ -646,7 +698,7 @@
 	exports.default = inventoryToggle;
 
 /***/ },
-/* 12 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -657,15 +709,15 @@
 
 	var _domCreation = __webpack_require__(8);
 
-	var _itemList = __webpack_require__(13);
+	var _itemList = __webpack_require__(16);
 
 	var _itemList2 = _interopRequireDefault(_itemList);
 
-	var _itemDetails = __webpack_require__(15);
+	var _itemDetails = __webpack_require__(18);
 
 	var _itemDetails2 = _interopRequireDefault(_itemDetails);
 
-	var _closeButton = __webpack_require__(16);
+	var _closeButton = __webpack_require__(19);
 
 	var _closeButton2 = _interopRequireDefault(_closeButton);
 
@@ -693,7 +745,7 @@
 	exports.default = inventoryPanel;
 
 /***/ },
-/* 13 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -704,7 +756,7 @@
 
 	var _domCreation = __webpack_require__(8);
 
-	var _itemButtons = __webpack_require__(14);
+	var _itemButtons = __webpack_require__(17);
 
 	var _itemButtons2 = _interopRequireDefault(_itemButtons);
 
@@ -723,7 +775,7 @@
 	exports.default = itemList;
 
 /***/ },
-/* 14 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -734,7 +786,7 @@
 
 	var _domCreation = __webpack_require__(8);
 
-	var _inventoryManager = __webpack_require__(9);
+	var _inventoryManager = __webpack_require__(12);
 
 	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
 
@@ -762,7 +814,7 @@
 	exports.default = itemButtons;
 
 /***/ },
-/* 15 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -773,7 +825,7 @@
 
 	var _domCreation = __webpack_require__(8);
 
-	var _inventoryManager = __webpack_require__(9);
+	var _inventoryManager = __webpack_require__(12);
 
 	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
 
@@ -825,7 +877,7 @@
 	exports.default = itemDetails;
 
 /***/ },
-/* 16 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -836,7 +888,7 @@
 
 	var _domCreation = __webpack_require__(8);
 
-	var _inventoryManager = __webpack_require__(9);
+	var _inventoryManager = __webpack_require__(12);
 
 	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
 
@@ -858,16 +910,16 @@
 	exports.default = closeButton;
 
 /***/ },
-/* 17 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(18);
+	var content = __webpack_require__(21);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(20)(content, {});
+	var update = __webpack_require__(23)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -884,10 +936,10 @@
 	}
 
 /***/ },
-/* 18 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(19)();
+	exports = module.exports = __webpack_require__(22)();
 	// imports
 
 
@@ -898,7 +950,7 @@
 
 
 /***/ },
-/* 19 */
+/* 22 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -953,7 +1005,7 @@
 	};
 
 /***/ },
-/* 20 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
