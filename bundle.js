@@ -62,7 +62,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(20);
+	__webpack_require__(19);
 
 
 	document.addEventListener('data-updated-inventory', _inventoryManager2.default);
@@ -91,31 +91,26 @@
 
 	'use strict';
 
-	var _require = __webpack_require__(2);
+	var _apiCaller = __webpack_require__(2);
 
-	var request = _require.request;
-
-	var _require2 = __webpack_require__(3);
-
-	var getData = _require2.getData;
-
+	var _store = __webpack_require__(3);
 
 	var rootUrl = 'http://api.project-arklay.com/inventory';
 
 	var initialiseInventory = function initialiseInventory() {
-	  return request('GET', rootUrl + '/initialise', '', 'inventory');
+	  return (0, _apiCaller.request)('GET', rootUrl + '/initialise', '', 'inventory');
 	};
 
 	var addItem = function addItem(itemName) {
-	  return request('PATCH', rootUrl + '/add/' + itemName, getData('inventory'), 'inventory');
+	  return (0, _apiCaller.request)('PATCH', rootUrl + '/add/' + itemName, (0, _store.getData)('inventory'), 'inventory');
 	};
 
 	var useItem = function useItem(itemName) {
-	  return request('PATCH', rootUrl + '/remove/' + itemName, getData('inventory'), 'inventory');
+	  return (0, _apiCaller.request)('PATCH', rootUrl + '/remove/' + itemName, (0, _store.getData)('inventory'), 'inventory');
 	};
 
 	var hasItemBeenPickedUp = function hasItemBeenPickedUp(itemName) {
-	  var inventory = getData('inventory');
+	  var inventory = (0, _store.getData)('inventory');
 	  var items = inventory.items;
 	  var itemsUsed = inventory.itemsUsed;
 	  // if items is undefined, then the game has just loaded and hasn't had time to insantiate the items - re-call this function
@@ -284,7 +279,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// Elements that need to be updated
 	var updateRoomUI = function updateRoomUI() {
 	  var room = (0, _store.getData)('room');
 
@@ -537,15 +531,11 @@
 
 	var _store = __webpack_require__(3);
 
-	var _inventory = __webpack_require__(1);
-
-	var _itemOptionsManager = __webpack_require__(13);
-
-	var _inventoryToggle = __webpack_require__(14);
+	var _inventoryToggle = __webpack_require__(13);
 
 	var _inventoryToggle2 = _interopRequireDefault(_inventoryToggle);
 
-	var _inventoryPanel = __webpack_require__(15);
+	var _inventoryPanel = __webpack_require__(14);
 
 	var _inventoryPanel2 = _interopRequireDefault(_inventoryPanel);
 
@@ -559,10 +549,8 @@
 	  var item = _ref$item === undefined ? {} : _ref$item;
 
 	  var inventory = (0, _store.getData)('inventory');
-	  var itemCount = inventory.items.length;
-
-	  // Don't bother rendering anything if there are no items
-	  if (itemCount === 0) return;
+	  //
+	  // if (inventory.items.length === 0) inventoryClasses = ['hidden']
 
 	  var inventoryObject = (0, _domCreation.component)({
 	    type: 'div',
@@ -575,73 +563,6 @@
 
 /***/ },
 /* 13 */
-/***/ function(module, exports) {
-
-	// import {
-	//   itemOptions,
-	//   itemList,
-	//   itemName,
-	//   closeInventory,
-	//   itemDescription,
-	//   useItemButton,
-	//   cancelItemButton,
-	//   itemUsedMessage,
-	//   itemNotUsedMessage
-	// } from './elements'
-	//
-	// import {
-	//   updateText,
-	//   toggleClass,
-	//   clearContents
-	// } from './dom-creation'
-	//
-	// import { getRoom } from '../data-management/room'
-	// import { getData } from '../data-management/store'
-	// import { useItem } from '../data-management/inventory'
-	//
-	// function canItemBeUsed (item, slug) {
-	//   return item === slug
-	// }
-	//
-	// function toggleItemOptions () {
-	//   toggleClass(itemOptions, 'hidden')
-	//   toggleClass(itemList, 'hidden')
-	//   toggleClass(closeInventory, 'hidden')
-	//   clearContents(itemNotUsedMessage)
-	// }
-	//
-	// // Cancel button always does the same thing, no need to assign this inside the updateItemOptionsUI function
-	// cancelItemButton.addEventListener('click', toggleItemOptions)
-	//
-	// const updateItemOptionsUI = ({name, displayName, description, canBeUsedIn, messageWhenNotUsed, messageWhenUsed}) => {
-	//   updateText(itemName, displayName)
-	//   updateText(itemDescription, description)
-	//   toggleItemOptions()
-	//
-	//   function listener () {
-	//     if (canItemBeUsed(canBeUsedIn, getData('room').slug)) {
-	//       useItem(name)
-	//       // update room now that item has been used
-	//       getRoom(getData('room').slug)
-	//       // close the inventory
-	//       toggleItemOptions()
-	//       toggleClass(inventory, 'hidden')
-	//     } else {
-	//       updateText(itemNotUsedMessage, `==${messageWhenNotUsed}==`)
-	//     }
-	//   }
-	//
-	//   // Override onclick event with whichever item has been selected
-	//   useItemButton.onclick = listener
-	// }
-	//
-	// module.exports = {
-	//   updateItemOptionsUI
-	// }
-	"use strict";
-
-/***/ },
-/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -665,9 +586,11 @@
 	};
 
 	var inventoryToggle = function inventoryToggle(inventory) {
+	  var inventoryToggleClasses = inventory.items.length > 0 ? ['inventory-icon'] : ['hidden'];
+
 	  var inventoryImage = (0, _domCreation.component)({
 	    type: 'svg',
-	    classes: ['inventory-icon'],
+	    classes: inventoryToggleClasses,
 	    attributes: [{
 	      key: 'alt',
 	      value: 'Inventory'
@@ -698,7 +621,7 @@
 	exports.default = inventoryToggle;
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -709,15 +632,15 @@
 
 	var _domCreation = __webpack_require__(8);
 
-	var _itemList = __webpack_require__(16);
+	var _itemList = __webpack_require__(15);
 
 	var _itemList2 = _interopRequireDefault(_itemList);
 
-	var _itemDetails = __webpack_require__(18);
+	var _itemDetails = __webpack_require__(17);
 
 	var _itemDetails2 = _interopRequireDefault(_itemDetails);
 
-	var _closeButton = __webpack_require__(19);
+	var _closeButton = __webpack_require__(18);
 
 	var _closeButton2 = _interopRequireDefault(_closeButton);
 
@@ -745,7 +668,7 @@
 	exports.default = inventoryPanel;
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -756,7 +679,7 @@
 
 	var _domCreation = __webpack_require__(8);
 
-	var _itemButtons = __webpack_require__(17);
+	var _itemButtons = __webpack_require__(16);
 
 	var _itemButtons2 = _interopRequireDefault(_itemButtons);
 
@@ -775,7 +698,7 @@
 	exports.default = itemList;
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -814,7 +737,7 @@
 	exports.default = itemButtons;
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -824,6 +747,10 @@
 	});
 
 	var _domCreation = __webpack_require__(8);
+
+	var _inventory = __webpack_require__(1);
+
+	var _store = __webpack_require__(3);
 
 	var _inventoryManager = __webpack_require__(12);
 
@@ -838,14 +765,31 @@
 	  });
 	};
 
+	var closeInventoryUI = function closeInventoryUI() {
+	  return (0, _inventoryManager2.default)({
+	    inventoryClasses: ['inventory', 'closed']
+	  });
+	};
+
 	var itemDetails = function itemDetails(_ref) {
 	  var itemDetailsClasses = _ref.itemDetailsClasses;
 	  var item = _ref.item;
 
+	  var tryItem = function tryItem() {
+	    var room = (0, _store.getData)('room');
+	    if (item.canBeUsedIn === room.slug) {
+	      closeInventoryUI();
+	      (0, _inventory.useItem)(item.name);
+	    } else {
+	      console.log(false);
+	    }
+	  };
+
 	  var useItemButton = (0, _domCreation.component)({
 	    type: 'li',
 	    classes: ['button'],
-	    content: 'Use'
+	    content: 'Use',
+	    eventListeners: [{ event: 'click', function: tryItem }]
 	  });
 
 	  var cancelButton = (0, _domCreation.component)({
@@ -877,7 +821,7 @@
 	exports.default = itemDetails;
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -910,16 +854,16 @@
 	exports.default = closeButton;
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(21);
+	var content = __webpack_require__(20);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(23)(content, {});
+	var update = __webpack_require__(22)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -936,10 +880,10 @@
 	}
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(22)();
+	exports = module.exports = __webpack_require__(21)();
 	// imports
 
 
@@ -950,7 +894,7 @@
 
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1005,7 +949,7 @@
 	};
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

@@ -6,9 +6,11 @@ const openInventoryUI = () => updateInventoryUI({
 })
 
 const inventoryToggle = inventory => {
+  const inventoryToggleClasses = inventory.items.length > 0 ? ['inventory-icon'] : ['hidden']
+
   const inventoryImage = component({
     type: 'svg',
-    classes: ['inventory-icon'],
+    classes: inventoryToggleClasses,
     attributes: [{
       key: 'alt',
       value: 'Inventory',
