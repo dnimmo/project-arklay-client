@@ -1,5 +1,5 @@
-const request = require('./api-caller')
-const { getData } = require('./store')
+import request from './api-caller'
+import { getData } from './store'
 
 const rootUrl = 'http://api.project-arklay.com/rooms'
 

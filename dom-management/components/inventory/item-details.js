@@ -4,11 +4,13 @@ import { getData } from '../../../data-management/store'
 import renderApp from '../../app-container'
 
 const keepOpenInventoryUI = () => renderApp({
+  roomClasses: ['disable-animation'],
   inventoryClasses: ['inventory', 'open'],
   itemDetailsClasses: ['hidden']
 })
 
 const closeInventoryUI = () => renderApp({
+  roomClasses: ['disable-animation'],
   inventoryClasses: ['inventory', 'closed']
 })
 

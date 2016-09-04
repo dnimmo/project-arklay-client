@@ -2,6 +2,7 @@ import { component } from '../../dom-creation'
 import renderApp from '../../app-container'
 
 const closeInventoryUI = () => renderApp({
+  roomClasses: ['disable-animation'],
   inventoryClasses: ['inventory', 'closed']
 })
 

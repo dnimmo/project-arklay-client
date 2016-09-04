@@ -1,4 +1,4 @@
-const { updateData } = require('./store')
+import { updateData } from './store'
 
 const request = (type, url, body, dataType) => {
   // 'dataType' refers to either 'inventory' or 'room'

@@ -4,12 +4,13 @@ import roomInfo from './room-info'
 import directions from './directions'
 import itemMessage from './item-message'
 
-const roomContainer = () => {
+const roomContainer = ( {roomClasses} ) => {
   const room = getData('room')
+  const requiredClasses = roomClasses ? ['room'].concat(roomClasses) : ['room']
 
   return component({
     type: 'div',
-    classes: ['room'],
+    classes: requiredClasses,
     children: [roomInfo(room), directions(room.directions), itemMessage(room.item)]
   })
 }

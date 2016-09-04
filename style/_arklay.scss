@@ -31,6 +31,10 @@ main {
     padding-right: 2rem;
     text-align: center;
 
+    &.disable-animation {
+      @include animation(fadeIn 0s);
+    }
+
     @include bp(m) {
       margin-top: 8rem;
       padding: 5%;

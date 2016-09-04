@@ -92,20 +92,24 @@
 
 	var _apiCaller = __webpack_require__(2);
 
+	var _apiCaller2 = _interopRequireDefault(_apiCaller);
+
 	var _store = __webpack_require__(3);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var rootUrl = 'http://api.project-arklay.com/inventory';
 
 	var initialiseInventory = function initialiseInventory() {
-	  return (0, _apiCaller.request)('GET', rootUrl + '/initialise', '', 'inventory');
+	  return (0, _apiCaller2.default)('GET', rootUrl + '/initialise', '', 'inventory');
 	};
 
 	var addItem = function addItem(itemName) {
-	  return (0, _apiCaller.request)('PATCH', rootUrl + '/add/' + itemName, (0, _store.getData)('inventory'), 'inventory');
+	  return (0, _apiCaller2.default)('PATCH', rootUrl + '/add/' + itemName, (0, _store.getData)('inventory'), 'inventory');
 	};
 
 	var useItem = function useItem(itemName) {
-	  return (0, _apiCaller.request)('PATCH', rootUrl + '/remove/' + itemName, (0, _store.getData)('inventory'), 'inventory');
+	  return (0, _apiCaller2.default)('PATCH', rootUrl + '/remove/' + itemName, (0, _store.getData)('inventory'), 'inventory');
 	};
 
 	var hasItemBeenPickedUp = function hasItemBeenPickedUp(itemName) {
@@ -132,16 +136,17 @@
 
 	'use strict';
 
-	var _require = __webpack_require__(3);
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
-	var updateData = _require.updateData;
-
+	var _store = __webpack_require__(3);
 
 	var request = function request(type, url, body, dataType) {
 	  // 'dataType' refers to either 'inventory' or 'room'
 	  function listener() {
 	    requester.removeEventListener('load', listener);
-	    updateData(dataType, JSON.parse(this.responseText));
+	    (0, _store.updateData)(dataType, JSON.parse(this.responseText));
 	  }
 
 	  var requester = new XMLHttpRequest();
@@ -155,9 +160,7 @@
 	  requester.send(JSON.stringify(body));
 	};
 
-	module.exports = {
-	  request: request
-	};
+	exports.default = request;
 
 /***/ },
 /* 3 */
@@ -234,19 +237,18 @@
 	  value: true
 	});
 
-	var _require = __webpack_require__(2);
+	var _apiCaller = __webpack_require__(2);
 
-	var request = _require.request;
+	var _apiCaller2 = _interopRequireDefault(_apiCaller);
 
-	var _require2 = __webpack_require__(3);
+	var _store = __webpack_require__(3);
 
-	var getData = _require2.getData;
-
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var rootUrl = 'http://api.project-arklay.com/rooms';
 
 	var getRoom = function getRoom(slug) {
-	  return request('POST', rootUrl + '/' + slug + '?' + Date.now(), getData('inventory').itemsUsed, 'room');
+	  return (0, _apiCaller2.default)('POST', rootUrl + '/' + slug + '?' + Date.now(), (0, _store.getData)('inventory').itemsUsed, 'room');
 	};
 
 	exports.default = getRoom;
@@ -274,6 +276,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var appContainer = function appContainer(_ref) {
+	  var roomClasses = _ref.roomClasses;
 	  var inventoryClasses = _ref.inventoryClasses;
 	  var itemListClasses = _ref.itemListClasses;
 	  var itemDetailsClasses = _ref.itemDetailsClasses;
@@ -283,18 +286,25 @@
 
 	  return (0, _domCreation.component)({
 	    type: 'div',
-	    children: [(0, _roomContainer2.default)(), (0, _inventoryContainer2.default)({ inventoryClasses: inventoryClasses, itemListClasses: itemListClasses, itemDetailsClasses: itemDetailsClasses, item: item })]
+	    children: [(0, _roomContainer2.default)({ roomClasses: roomClasses }), (0, _inventoryContainer2.default)({ inventoryClasses: inventoryClasses, itemListClasses: itemListClasses, itemDetailsClasses: itemDetailsClasses, item: item })]
 	  });
 	};
 
 	var renderApp = function renderApp(_ref2) {
+	  var roomClasses = _ref2.roomClasses;
 	  var inventoryClasses = _ref2.inventoryClasses;
 	  var itemListClasses = _ref2.itemListClasses;
 	  var itemDetailsClasses = _ref2.itemDetailsClasses;
 	  var _ref2$item = _ref2.item;
 	  var item = _ref2$item === undefined ? {} : _ref2$item;
 
-	  var appObject = appContainer({ inventoryClasses: inventoryClasses, itemListClasses: itemListClasses, itemDetailsClasses: itemDetailsClasses, item: item });
+	  var appObject = appContainer({
+	    roomClasses: roomClasses,
+	    inventoryClasses: inventoryClasses,
+	    itemListClasses: itemListClasses,
+	    itemDetailsClasses: itemDetailsClasses,
+	    item: item
+	  });
 
 	  (0, _domCreation.render)(document.getElementById('app'), appObject);
 	};
@@ -415,12 +425,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var roomContainer = function roomContainer() {
+	var roomContainer = function roomContainer(_ref) {
+	  var roomClasses = _ref.roomClasses;
+
 	  var room = (0, _store.getData)('room');
+	  var requiredClasses = roomClasses ? ['room'].concat(roomClasses) : ['room'];
 
 	  return (0, _domCreation.component)({
 	    type: 'div',
-	    classes: ['room'],
+	    classes: requiredClasses,
 	    children: [(0, _roomInfo2.default)(room), (0, _directions2.default)(room.directions), (0, _itemMessage2.default)(room.item)]
 	  });
 	};
@@ -608,6 +621,7 @@
 
 	var openInventoryUI = function openInventoryUI() {
 	  return (0, _appContainer2.default)({
+	    roomClasses: ['disable-animation'],
 	    inventoryClasses: ['inventory']
 	  });
 	};
@@ -745,7 +759,13 @@
 	var itemButtons = function itemButtons(items) {
 	  function createItemButton(item) {
 	    var openItemOptions = function openItemOptions() {
-	      return (0, _appContainer2.default)({ inventoryClasses: ['inventory', 'open'], itemListClasses: ['hidden'], itemDetailsClasses: ['item-details'], item: item });
+	      return (0, _appContainer2.default)({
+	        roomClasses: ['disable-animation'],
+	        inventoryClasses: ['inventory', 'open'],
+	        itemListClasses: ['hidden'],
+	        itemDetailsClasses: ['item-details'],
+	        item: item
+	      });
 	    };
 
 	    return (0, _domCreation.component)({
@@ -787,6 +807,7 @@
 
 	var keepOpenInventoryUI = function keepOpenInventoryUI() {
 	  return (0, _appContainer2.default)({
+	    roomClasses: ['disable-animation'],
 	    inventoryClasses: ['inventory', 'open'],
 	    itemDetailsClasses: ['hidden']
 	  });
@@ -794,6 +815,7 @@
 
 	var closeInventoryUI = function closeInventoryUI() {
 	  return (0, _appContainer2.default)({
+	    roomClasses: ['disable-animation'],
 	    inventoryClasses: ['inventory', 'closed']
 	  });
 	};
@@ -867,6 +889,7 @@
 
 	var closeInventoryUI = function closeInventoryUI() {
 	  return (0, _appContainer2.default)({
+	    roomClasses: ['disable-animation'],
 	    inventoryClasses: ['inventory', 'closed']
 	  });
 	};
@@ -915,7 +938,7 @@
 
 
 	// module
-	exports.push([module.id, "@-webkit-keyframes fadeIn {\n  0% {\n    opacity: 0; }\n  100% {\n    opacity: 1; } }\n\n@-moz-keyframes fadeIn {\n  0% {\n    opacity: 0; }\n  100% {\n    opacity: 1; } }\n\n@-o-keyframes fadeIn {\n  0% {\n    opacity: 0; }\n  100% {\n    opacity: 1; } }\n\n@keyframes fadeIn {\n  0% {\n    opacity: 0; }\n  100% {\n    opacity: 1; } }\n\n@-webkit-keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@-moz-keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@-o-keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@-webkit-keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@-moz-keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@-o-keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@-webkit-keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n@-moz-keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n@-o-keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n@keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0; }\n\nhtml {\n  font-size: 62.5%; }\n\nbody {\n  background-color: #000;\n  color: #fff;\n  font-family: 'PT Serif', serif;\n  font-size: 2rem;\n  line-height: 3.5rem;\n  transition: all linear 0.3s; }\n  @media (min-width: 1000px) {\n    body {\n      font-size: 3rem;\n      line-height: 4.5rem; } }\n\nmain .room {\n  -webkit-animation: fadeIn 0.3s;\n  -moz-animation: fadeIn 0.3s;\n  -o-animation: fadeIn 0.3s;\n  animation: fadeIn 0.3s;\n  margin-top: 6rem;\n  overflow: hidden;\n  padding-left: 2rem;\n  padding-right: 2rem;\n  text-align: center; }\n  @media (min-width: 700px) {\n    main .room {\n      margin-top: 8rem;\n      padding: 5%; } }\n  main .room:focus {\n    outline-color: #000; }\n\nh1 {\n  font-size: 4rem;\n  margin: 2rem 0; }\n\nh2 {\n  margin: 2rem 0; }\n\n.button {\n  border: 0.1rem solid #fff;\n  color: #fff;\n  display: inline-block;\n  font-size: .7em;\n  letter-spacing: .07em;\n  margin: 2rem;\n  min-width: 8rem;\n  padding: .3rem 1rem;\n  text-decoration: none;\n  transition: all linear 0.3s; }\n  .button:hover {\n    background-color: #fff;\n    color: #000;\n    cursor: pointer;\n    transform: scale(1.1); }\n\n.emphasis {\n  font-weight: bold; }\n\n.extra-message {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s; }\n\nlabel {\n  margin: 1rem 0; }\n\ninput {\n  background-color: #000;\n  border-width: 0 0 .1rem;\n  color: #fff;\n  font-size: 2rem;\n  margin-bottom: 5rem;\n  text-align: center; }\n\n.direction-options {\n  border-top: 0.2rem solid #fff;\n  list-style: none;\n  margin: 5rem 0 0;\n  padding-top: 2rem; }\n  .direction-options li {\n    border: 0.2rem solid #000;\n    cursor: pointer;\n    font-size: 2rem;\n    height: 6rem;\n    margin: 1rem auto;\n    min-width: 12rem;\n    padding: 1rem;\n    text-transform: capitalize;\n    transition: all linear 0.3s; }\n    .direction-options li:hover {\n      font-weight: bolder;\n      transform: scale(1.3); }\n  .direction-options .east,\n  .direction-options .west {\n    display: inline-block; }\n  .direction-options .east {\n    margin-left: 12rem; }\n  .direction-options .west {\n    margin-right: 12rem; }\n    .direction-options .west + .east {\n      margin-left: -12rem; }\n  .direction-options .north + .east {\n    margin-left: 12rem; }\n  .direction-options .north + .south {\n    margin-top: 8rem; }\n\n.hidden {\n  display: none; }\n\n#itemMessage {\n  margin-top: 5vh; }\n\n@-webkit-keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n@-moz-keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n@-o-keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n@keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n.credits-container {\n  height: 80vh;\n  overflow: hidden;\n  padding: 5vw; }\n  .credits-container .credits {\n    -webkit-animation: roll-credits 20s linear;\n    -moz-animation: roll-credits 20s linear;\n    -o-animation: roll-credits 20s linear;\n    animation: roll-credits 20s linear;\n    margin: auto;\n    text-align: center;\n    transform: translate3d(0, -10000000rem, 0); }\n    .credits-container .credits li {\n      list-style: none;\n      margin-bottom: 4rem; }\n\n.inventory-icon {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s;\n  right: 1rem;\n  transition: all linear 0.3s; }\n  @media (min-width: 700px) {\n    .inventory-icon {\n      right: .5rem; } }\n  @media (min-width: 1000px) {\n    .inventory-icon {\n      margin-right: 1rem; } }\n  .inventory-icon:hover {\n    transform: scale(1.2); }\n\n.inventory-count {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s;\n  border-radius: .5rem;\n  color: #000;\n  cursor: pointer;\n  display: inline-block;\n  font-size: 1.6rem;\n  font-weight: bold;\n  padding: .2rem .8rem 0;\n  pointer-events: none;\n  position: fixed;\n  right: 2.1rem;\n  top: 2.8rem; }\n  @media (min-width: 700px) {\n    .inventory-count {\n      font-size: 1.8rem;\n      right: 2.1rem;\n      top: 3.3rem; } }\n  @media (min-width: 1000px) {\n    .inventory-count {\n      font-size: 2.5rem;\n      right: 3.7rem;\n      top: 5.3rem; } }\n\n.inventory {\n  border-left: 0.1rem solid #fff;\n  right: 0;\n  width: 90%; }\n  @media (min-width: 700px) {\n    .inventory {\n      width: 45%; }\n      .inventory p {\n        color: #fff; } }\n  .inventory.open {\n    animation: none; }\n  .inventory.closed {\n    -webkit-animation: slideOut 0.2s;\n    -moz-animation: slideOut 0.2s;\n    -o-animation: slideOut 0.2s;\n    animation: slideOut 0.2s;\n    transform: translateX(100vw); }\n  .inventory .item-list {\n    -webkit-animation: fadeIn 0.5s;\n    -moz-animation: fadeIn 0.5s;\n    -o-animation: fadeIn 0.5s;\n    animation: fadeIn 0.5s; }\n  .inventory .inventory-contents {\n    -webkit-animation: fadeIn 0.5s;\n    -moz-animation: fadeIn 0.5s;\n    -o-animation: fadeIn 0.5s;\n    animation: fadeIn 0.5s;\n    padding: 2rem 2rem 0; }\n  .inventory .item-options {\n    border-bottom: 0; }\n  .inventory .item-details {\n    -webkit-animation: fadeIn 0.5s;\n    -moz-animation: fadeIn 0.5s;\n    -o-animation: fadeIn 0.5s;\n    animation: fadeIn 0.5s;\n    padding: 2rem; }\n    .inventory .item-details p:first-of-type {\n      text-decoration: underline; }\n  .inventory .inventory-toggle {\n    color: #fff;\n    cursor: pointer;\n    display: block;\n    font-size: 2.2rem;\n    margin: 0;\n    transition: all linear 0.3s; }\n  .inventory li.inv {\n    border: 0; }\n  .inventory li .item {\n    height: 7rem;\n    transition: all linear 0.3s;\n    width: 7rem; }\n  .inventory li p {\n    transition: all linear 0.3s; }\n  .inventory li:hover, .inventory li.selected {\n    background-color: #fff;\n    border-radius: .1rem;\n    color: #323232;\n    transform: scale(1.1); }\n    .inventory li:hover svg, .inventory li.selected svg {\n      background-color: #323232;\n      border-radius: 50rem; }\n    .inventory li:hover p, .inventory li.selected p {\n      color: #323232; }\n\n.inventory-icon {\n  background-color: #000;\n  border-radius: 5rem;\n  cursor: pointer;\n  height: 7rem;\n  position: fixed;\n  top: 0;\n  width: 5rem; }\n  @media (min-width: 700px) {\n    .inventory-icon {\n      height: 8rem;\n      position: fixed;\n      top: 0;\n      width: 6rem; } }\n  @media (min-width: 1000px) {\n    .inventory-icon {\n      height: 10rem;\n      margin-top: 1rem;\n      width: 8rem; } }\n\n.inventory {\n  -webkit-animation: slideIn 0.2s;\n  -moz-animation: slideIn 0.2s;\n  -o-animation: slideIn 0.2s;\n  animation: slideIn 0.2s;\n  background-color: #323232;\n  min-height: 100vh;\n  position: fixed;\n  right: 0;\n  text-align: center;\n  top: 0;\n  z-index: 1340; }\n", ""]);
+	exports.push([module.id, "@-webkit-keyframes fadeIn {\n  0% {\n    opacity: 0; }\n  100% {\n    opacity: 1; } }\n\n@-moz-keyframes fadeIn {\n  0% {\n    opacity: 0; }\n  100% {\n    opacity: 1; } }\n\n@-o-keyframes fadeIn {\n  0% {\n    opacity: 0; }\n  100% {\n    opacity: 1; } }\n\n@keyframes fadeIn {\n  0% {\n    opacity: 0; }\n  100% {\n    opacity: 1; } }\n\n@-webkit-keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@-moz-keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@-o-keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@keyframes fadeOut {\n  0% {\n    opacity: 1; }\n  100% {\n    opacity: 0; } }\n\n@-webkit-keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@-moz-keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@-o-keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@keyframes slideIn {\n  0% {\n    transform: translateX(100vw); }\n  100% {\n    transform: translateX(0); } }\n\n@-webkit-keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n@-moz-keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n@-o-keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n@keyframes slideOut {\n  0% {\n    transform: translateX(0); }\n  100% {\n    transform: translateX(100vw); } }\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0; }\n\nhtml {\n  font-size: 62.5%; }\n\nbody {\n  background-color: #000;\n  color: #fff;\n  font-family: 'PT Serif', serif;\n  font-size: 2rem;\n  line-height: 3.5rem;\n  transition: all linear 0.3s; }\n  @media (min-width: 1000px) {\n    body {\n      font-size: 3rem;\n      line-height: 4.5rem; } }\n\nmain .room {\n  -webkit-animation: fadeIn 0.3s;\n  -moz-animation: fadeIn 0.3s;\n  -o-animation: fadeIn 0.3s;\n  animation: fadeIn 0.3s;\n  margin-top: 6rem;\n  overflow: hidden;\n  padding-left: 2rem;\n  padding-right: 2rem;\n  text-align: center; }\n  main .room.disable-animation {\n    -webkit-animation: fadeIn 0s;\n    -moz-animation: fadeIn 0s;\n    -o-animation: fadeIn 0s;\n    animation: fadeIn 0s; }\n  @media (min-width: 700px) {\n    main .room {\n      margin-top: 8rem;\n      padding: 5%; } }\n  main .room:focus {\n    outline-color: #000; }\n\nh1 {\n  font-size: 4rem;\n  margin: 2rem 0; }\n\nh2 {\n  margin: 2rem 0; }\n\n.button {\n  border: 0.1rem solid #fff;\n  color: #fff;\n  display: inline-block;\n  font-size: .7em;\n  letter-spacing: .07em;\n  margin: 2rem;\n  min-width: 8rem;\n  padding: .3rem 1rem;\n  text-decoration: none;\n  transition: all linear 0.3s; }\n  .button:hover {\n    background-color: #fff;\n    color: #000;\n    cursor: pointer;\n    transform: scale(1.1); }\n\n.emphasis {\n  font-weight: bold; }\n\n.extra-message {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s; }\n\nlabel {\n  margin: 1rem 0; }\n\ninput {\n  background-color: #000;\n  border-width: 0 0 .1rem;\n  color: #fff;\n  font-size: 2rem;\n  margin-bottom: 5rem;\n  text-align: center; }\n\n.direction-options {\n  border-top: 0.2rem solid #fff;\n  list-style: none;\n  margin: 5rem 0 0;\n  padding-top: 2rem; }\n  .direction-options li {\n    border: 0.2rem solid #000;\n    cursor: pointer;\n    font-size: 2rem;\n    height: 6rem;\n    margin: 1rem auto;\n    min-width: 12rem;\n    padding: 1rem;\n    text-transform: capitalize;\n    transition: all linear 0.3s; }\n    .direction-options li:hover {\n      font-weight: bolder;\n      transform: scale(1.3); }\n  .direction-options .east,\n  .direction-options .west {\n    display: inline-block; }\n  .direction-options .east {\n    margin-left: 12rem; }\n  .direction-options .west {\n    margin-right: 12rem; }\n    .direction-options .west + .east {\n      margin-left: -12rem; }\n  .direction-options .north + .east {\n    margin-left: 12rem; }\n  .direction-options .north + .south {\n    margin-top: 8rem; }\n\n.hidden {\n  display: none; }\n\n#itemMessage {\n  margin-top: 5vh; }\n\n@-webkit-keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n@-moz-keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n@-o-keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n@keyframes roll-credits {\n  0% {\n    transform: translate3d(0, 60vh, 0); }\n  100% {\n    transform: translate3d(0, -100vh, 0); } }\n\n.credits-container {\n  height: 80vh;\n  overflow: hidden;\n  padding: 5vw; }\n  .credits-container .credits {\n    -webkit-animation: roll-credits 20s linear;\n    -moz-animation: roll-credits 20s linear;\n    -o-animation: roll-credits 20s linear;\n    animation: roll-credits 20s linear;\n    margin: auto;\n    text-align: center;\n    transform: translate3d(0, -10000000rem, 0); }\n    .credits-container .credits li {\n      list-style: none;\n      margin-bottom: 4rem; }\n\n.inventory-icon {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s;\n  right: 1rem;\n  transition: all linear 0.3s; }\n  @media (min-width: 700px) {\n    .inventory-icon {\n      right: .5rem; } }\n  @media (min-width: 1000px) {\n    .inventory-icon {\n      margin-right: 1rem; } }\n  .inventory-icon:hover {\n    transform: scale(1.2); }\n\n.inventory-count {\n  -webkit-animation: fadeIn 0.5s;\n  -moz-animation: fadeIn 0.5s;\n  -o-animation: fadeIn 0.5s;\n  animation: fadeIn 0.5s;\n  border-radius: .5rem;\n  color: #000;\n  cursor: pointer;\n  display: inline-block;\n  font-size: 1.6rem;\n  font-weight: bold;\n  padding: .2rem .8rem 0;\n  pointer-events: none;\n  position: fixed;\n  right: 2.1rem;\n  top: 2.8rem; }\n  @media (min-width: 700px) {\n    .inventory-count {\n      font-size: 1.8rem;\n      right: 2.1rem;\n      top: 3.3rem; } }\n  @media (min-width: 1000px) {\n    .inventory-count {\n      font-size: 2.5rem;\n      right: 3.7rem;\n      top: 5.3rem; } }\n\n.inventory {\n  border-left: 0.1rem solid #fff;\n  right: 0;\n  width: 90%; }\n  @media (min-width: 700px) {\n    .inventory {\n      width: 45%; }\n      .inventory p {\n        color: #fff; } }\n  .inventory.open {\n    animation: none; }\n  .inventory.closed {\n    -webkit-animation: slideOut 0.2s;\n    -moz-animation: slideOut 0.2s;\n    -o-animation: slideOut 0.2s;\n    animation: slideOut 0.2s;\n    transform: translateX(100vw); }\n  .inventory .item-list {\n    -webkit-animation: fadeIn 0.5s;\n    -moz-animation: fadeIn 0.5s;\n    -o-animation: fadeIn 0.5s;\n    animation: fadeIn 0.5s; }\n  .inventory .inventory-contents {\n    -webkit-animation: fadeIn 0.5s;\n    -moz-animation: fadeIn 0.5s;\n    -o-animation: fadeIn 0.5s;\n    animation: fadeIn 0.5s;\n    padding: 2rem 2rem 0; }\n  .inventory .item-options {\n    border-bottom: 0; }\n  .inventory .item-details {\n    -webkit-animation: fadeIn 0.5s;\n    -moz-animation: fadeIn 0.5s;\n    -o-animation: fadeIn 0.5s;\n    animation: fadeIn 0.5s;\n    padding: 2rem; }\n    .inventory .item-details p:first-of-type {\n      text-decoration: underline; }\n  .inventory .inventory-toggle {\n    color: #fff;\n    cursor: pointer;\n    display: block;\n    font-size: 2.2rem;\n    margin: 0;\n    transition: all linear 0.3s; }\n  .inventory li.inv {\n    border: 0; }\n  .inventory li .item {\n    height: 7rem;\n    transition: all linear 0.3s;\n    width: 7rem; }\n  .inventory li p {\n    transition: all linear 0.3s; }\n  .inventory li:hover, .inventory li.selected {\n    background-color: #fff;\n    border-radius: .1rem;\n    color: #323232;\n    transform: scale(1.1); }\n    .inventory li:hover svg, .inventory li.selected svg {\n      background-color: #323232;\n      border-radius: 50rem; }\n    .inventory li:hover p, .inventory li.selected p {\n      color: #323232; }\n\n.inventory-icon {\n  background-color: #000;\n  border-radius: 5rem;\n  cursor: pointer;\n  height: 7rem;\n  position: fixed;\n  top: 0;\n  width: 5rem; }\n  @media (min-width: 700px) {\n    .inventory-icon {\n      height: 8rem;\n      position: fixed;\n      top: 0;\n      width: 6rem; } }\n  @media (min-width: 1000px) {\n    .inventory-icon {\n      height: 10rem;\n      margin-top: 1rem;\n      width: 8rem; } }\n\n.inventory {\n  -webkit-animation: slideIn 0.2s;\n  -moz-animation: slideIn 0.2s;\n  -o-animation: slideIn 0.2s;\n  animation: slideIn 0.2s;\n  background-color: #323232;\n  min-height: 100vh;\n  position: fixed;\n  right: 0;\n  text-align: center;\n  top: 0;\n  z-index: 1340; }\n", ""]);
 
 	// exports
 
