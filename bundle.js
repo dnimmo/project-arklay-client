@@ -50,11 +50,11 @@
 
 	var _room = __webpack_require__(5);
 
-	var _roomManager = __webpack_require__(6);
+	var _room2 = _interopRequireDefault(_room);
 
-	var _inventoryManager = __webpack_require__(11);
+	var _appContainer = __webpack_require__(6);
 
-	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
+	var _appContainer2 = _interopRequireDefault(_appContainer);
 
 	var _saveGame = __webpack_require__(4);
 
@@ -62,15 +62,14 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(18);
+	__webpack_require__(19);
 
 
-	document.addEventListener('data-updated-inventory', _inventoryManager2.default);
-	document.addEventListener('data-updated-room', _roomManager.updateRoomUI);
+	document.addEventListener('data-updated', _appContainer2.default);
 
 	function startNewGame() {
 	  (0, _inventory.initialiseInventory)();
-	  (0, _room.getRoom)('start');
+	  (0, _room2.default)('start');
 	}
 
 	function loadGame(_ref) {
@@ -173,13 +172,10 @@
 	  room: {}
 	};
 
-	var dataUpdated = {
-	  inventory: new Event('data-updated-inventory'),
-	  room: new Event('data-updated-room')
-	};
+	var dataUpdatedEvent = new Event('data-updated');
 
-	var emitUpdateEvent = function emitUpdateEvent(type) {
-	  return document.dispatchEvent(dataUpdated[type]);
+	var emitUpdateEvent = function emitUpdateEvent() {
+	  return document.dispatchEvent(dataUpdatedEvent);
 	};
 
 	var getData = function getData(type) {
@@ -188,7 +184,7 @@
 
 	var updateData = function updateData(type, data) {
 	  dataStore[type] = data;
-	  emitUpdateEvent(type);
+	  emitUpdateEvent();
 	  (0, _saveGame.saveGame)(dataStore);
 	};
 
@@ -234,6 +230,10 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
 	var _require = __webpack_require__(2);
 
 	var request = _require.request;
@@ -249,9 +249,7 @@
 	  return request('POST', rootUrl + '/' + slug + '?' + Date.now(), getData('inventory').itemsUsed, 'room');
 	};
 
-	module.exports = {
-	  getRoom: getRoom
-	};
+	exports.default = getRoom;
 
 /***/ },
 /* 6 */
@@ -259,39 +257,49 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
 	var _domCreation = __webpack_require__(7);
 
-	var _store = __webpack_require__(3);
+	var _roomContainer = __webpack_require__(8);
 
-	var _roomInfo = __webpack_require__(8);
+	var _roomContainer2 = _interopRequireDefault(_roomContainer);
 
-	var _roomInfo2 = _interopRequireDefault(_roomInfo);
+	var _inventoryContainer = __webpack_require__(12);
 
-	var _directions = __webpack_require__(9);
-
-	var _directions2 = _interopRequireDefault(_directions);
-
-	var _itemMessage = __webpack_require__(10);
-
-	var _itemMessage2 = _interopRequireDefault(_itemMessage);
+	var _inventoryContainer2 = _interopRequireDefault(_inventoryContainer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var updateRoomUI = function updateRoomUI() {
-	  var room = (0, _store.getData)('room');
+	var appContainer = function appContainer(_ref) {
+	  var inventoryClasses = _ref.inventoryClasses;
+	  var itemListClasses = _ref.itemListClasses;
+	  var itemDetailsClasses = _ref.itemDetailsClasses;
+	  var _ref$item = _ref.item;
+	  var item = _ref$item === undefined ? {} : _ref$item;
 
-	  var roomObject = (0, _domCreation.component)({
+
+	  return (0, _domCreation.component)({
 	    type: 'div',
-	    classes: ['room'],
-	    children: [(0, _roomInfo2.default)(room), (0, _directions2.default)(room.directions), (0, _itemMessage2.default)(room.item)]
+	    children: [(0, _roomContainer2.default)(), (0, _inventoryContainer2.default)({ inventoryClasses: inventoryClasses, itemListClasses: itemListClasses, itemDetailsClasses: itemDetailsClasses, item: item })]
 	  });
-
-	  (0, _domCreation.render)(document.getElementById('room'), roomObject);
 	};
 
-	module.exports = {
-	  updateRoomUI: updateRoomUI
+	var renderApp = function renderApp(_ref2) {
+	  var inventoryClasses = _ref2.inventoryClasses;
+	  var itemListClasses = _ref2.itemListClasses;
+	  var itemDetailsClasses = _ref2.itemDetailsClasses;
+	  var _ref2$item = _ref2.item;
+	  var item = _ref2$item === undefined ? {} : _ref2$item;
+
+	  var appObject = appContainer({ inventoryClasses: inventoryClasses, itemListClasses: itemListClasses, itemDetailsClasses: itemDetailsClasses, item: item });
+
+	  (0, _domCreation.render)(document.getElementById('app'), appObject);
 	};
+
+	exports.default = renderApp;
 
 /***/ },
 /* 7 */
@@ -374,18 +382,53 @@
 	  target.appendChild(createElement(htmlObject));
 	};
 
-	var toggleClass = function toggleClass(element, classToToggle) {
-	  return element.classList.toggle(classToToggle);
-	};
-
 	module.exports = {
 	  component: component,
-	  render: render,
-	  toggleClass: toggleClass
+	  render: render
 	};
 
 /***/ },
 /* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _domCreation = __webpack_require__(7);
+
+	var _store = __webpack_require__(3);
+
+	var _roomInfo = __webpack_require__(9);
+
+	var _roomInfo2 = _interopRequireDefault(_roomInfo);
+
+	var _directions = __webpack_require__(10);
+
+	var _directions2 = _interopRequireDefault(_directions);
+
+	var _itemMessage = __webpack_require__(11);
+
+	var _itemMessage2 = _interopRequireDefault(_itemMessage);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var roomContainer = function roomContainer() {
+	  var room = (0, _store.getData)('room');
+
+	  return (0, _domCreation.component)({
+	    type: 'div',
+	    classes: ['room'],
+	    children: [(0, _roomInfo2.default)(room), (0, _directions2.default)(room.directions), (0, _itemMessage2.default)(room.item)]
+	  });
+	};
+
+	exports.default = roomContainer;
+
+/***/ },
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -418,7 +461,7 @@
 	exports.default = roomInfo;
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -431,13 +474,17 @@
 
 	var _room = __webpack_require__(5);
 
+	var _room2 = _interopRequireDefault(_room);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function addButton(_ref) {
 	  var displayText = _ref.displayText;
 	  var rel = _ref.rel;
 	  var link = _ref.link;
 
 	  var getNewRoom = function getNewRoom() {
-	    return (0, _room.getRoom)(link);
+	    return (0, _room2.default)(link);
 	  };
 
 	  return (0, _domCreation.component)({
@@ -448,7 +495,9 @@
 	  });
 	}
 
-	function processDirections(directions) {
+	function processDirections() {
+	  var directions = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+
 	  var buttons = directions.map(function (direction) {
 	    return addButton(direction);
 	  });
@@ -468,7 +517,7 @@
 	exports.default = directions;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -499,7 +548,7 @@
 	exports.default = itemMessage;
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -512,17 +561,17 @@
 
 	var _store = __webpack_require__(3);
 
-	var _inventoryToggle = __webpack_require__(12);
+	var _inventoryToggle = __webpack_require__(13);
 
 	var _inventoryToggle2 = _interopRequireDefault(_inventoryToggle);
 
-	var _inventoryPanel = __webpack_require__(13);
+	var _inventoryPanel = __webpack_require__(14);
 
 	var _inventoryPanel2 = _interopRequireDefault(_inventoryPanel);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var updateInventoryUI = function updateInventoryUI(_ref) {
+	var inventoryContainer = function inventoryContainer(_ref) {
 	  var inventoryClasses = _ref.inventoryClasses;
 	  var itemListClasses = _ref.itemListClasses;
 	  var itemDetailsClasses = _ref.itemDetailsClasses;
@@ -530,21 +579,17 @@
 	  var item = _ref$item === undefined ? {} : _ref$item;
 
 	  var inventory = (0, _store.getData)('inventory');
-	  //
-	  // if (inventory.items.length === 0) inventoryClasses = ['hidden']
 
-	  var inventoryObject = (0, _domCreation.component)({
+	  return (0, _domCreation.component)({
 	    type: 'div',
 	    children: [(0, _inventoryToggle2.default)(inventory), (0, _inventoryPanel2.default)({ inventoryClasses: inventoryClasses, itemListClasses: itemListClasses, itemDetailsClasses: itemDetailsClasses, items: inventory.items, item: item })]
 	  });
-
-	  (0, _domCreation.render)(document.getElementById('inventory'), inventoryObject);
 	};
 
-	exports.default = updateInventoryUI;
+	exports.default = inventoryContainer;
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -555,14 +600,14 @@
 
 	var _domCreation = __webpack_require__(7);
 
-	var _inventoryManager = __webpack_require__(11);
+	var _appContainer = __webpack_require__(6);
 
-	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
+	var _appContainer2 = _interopRequireDefault(_appContainer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var openInventoryUI = function openInventoryUI() {
-	  return (0, _inventoryManager2.default)({
+	  return (0, _appContainer2.default)({
 	    inventoryClasses: ['inventory']
 	  });
 	};
@@ -603,7 +648,7 @@
 	exports.default = inventoryToggle;
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -614,15 +659,15 @@
 
 	var _domCreation = __webpack_require__(7);
 
-	var _itemList = __webpack_require__(14);
+	var _itemList = __webpack_require__(15);
 
 	var _itemList2 = _interopRequireDefault(_itemList);
 
-	var _itemDetails = __webpack_require__(16);
+	var _itemDetails = __webpack_require__(17);
 
 	var _itemDetails2 = _interopRequireDefault(_itemDetails);
 
-	var _closeButton = __webpack_require__(17);
+	var _closeButton = __webpack_require__(18);
 
 	var _closeButton2 = _interopRequireDefault(_closeButton);
 
@@ -650,7 +695,7 @@
 	exports.default = inventoryPanel;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -661,7 +706,7 @@
 
 	var _domCreation = __webpack_require__(7);
 
-	var _itemButtons = __webpack_require__(15);
+	var _itemButtons = __webpack_require__(16);
 
 	var _itemButtons2 = _interopRequireDefault(_itemButtons);
 
@@ -680,7 +725,7 @@
 	exports.default = itemList;
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -691,16 +736,16 @@
 
 	var _domCreation = __webpack_require__(7);
 
-	var _inventoryManager = __webpack_require__(11);
+	var _appContainer = __webpack_require__(6);
 
-	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
+	var _appContainer2 = _interopRequireDefault(_appContainer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var itemButtons = function itemButtons(items) {
 	  function createItemButton(item) {
 	    var openItemOptions = function openItemOptions() {
-	      return (0, _inventoryManager2.default)({ inventoryClasses: ['inventory', 'open'], itemListClasses: ['hidden'], itemDetailsClasses: ['item-details'], item: item });
+	      return (0, _appContainer2.default)({ inventoryClasses: ['inventory', 'open'], itemListClasses: ['hidden'], itemDetailsClasses: ['item-details'], item: item });
 	    };
 
 	    return (0, _domCreation.component)({
@@ -719,7 +764,7 @@
 	exports.default = itemButtons;
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -734,21 +779,21 @@
 
 	var _store = __webpack_require__(3);
 
-	var _inventoryManager = __webpack_require__(11);
+	var _appContainer = __webpack_require__(6);
 
-	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
+	var _appContainer2 = _interopRequireDefault(_appContainer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var keepOpenInventoryUI = function keepOpenInventoryUI() {
-	  return (0, _inventoryManager2.default)({
+	  return (0, _appContainer2.default)({
 	    inventoryClasses: ['inventory', 'open'],
 	    itemDetailsClasses: ['hidden']
 	  });
 	};
 
 	var closeInventoryUI = function closeInventoryUI() {
-	  return (0, _inventoryManager2.default)({
+	  return (0, _appContainer2.default)({
 	    inventoryClasses: ['inventory', 'closed']
 	  });
 	};
@@ -803,7 +848,7 @@
 	exports.default = itemDetails;
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -814,14 +859,14 @@
 
 	var _domCreation = __webpack_require__(7);
 
-	var _inventoryManager = __webpack_require__(11);
+	var _appContainer = __webpack_require__(6);
 
-	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
+	var _appContainer2 = _interopRequireDefault(_appContainer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var closeInventoryUI = function closeInventoryUI() {
-	  return (0, _inventoryManager2.default)({
+	  return (0, _appContainer2.default)({
 	    inventoryClasses: ['inventory', 'closed']
 	  });
 	};
@@ -836,16 +881,16 @@
 	exports.default = closeButton;
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(19);
+	var content = __webpack_require__(20);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(21)(content, {});
+	var update = __webpack_require__(22)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -862,10 +907,10 @@
 	}
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(20)();
+	exports = module.exports = __webpack_require__(21)();
 	// imports
 
 
@@ -876,7 +921,7 @@
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -931,7 +976,7 @@
 	};
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

@@ -1,14 +1,14 @@
 import { component } from '../../dom-creation'
 import { useItem } from '../../../data-management/inventory'
 import { getData } from '../../../data-management/store'
-import updateInventoryUI from '../../inventory-manager'
+import renderApp from '../../app-container'
 
-const keepOpenInventoryUI = () => updateInventoryUI({
+const keepOpenInventoryUI = () => renderApp({
   inventoryClasses: ['inventory', 'open'],
   itemDetailsClasses: ['hidden']
 })
 
-const closeInventoryUI = () => updateInventoryUI({
+const closeInventoryUI = () => renderApp({
   inventoryClasses: ['inventory', 'closed']
 })
 

@@ -1,5 +1,5 @@
 import { component } from '../../dom-creation'
-import { getRoom } from '../../../data-management/room'
+import getRoom from '../../../data-management/room'
 
 function addButton ({displayText, rel, link}) {
   const getNewRoom = () => getRoom(link)
@@ -12,7 +12,7 @@ function addButton ({displayText, rel, link}) {
   })
 }
 
-function processDirections (directions) {
+function processDirections (directions = []) {
   const buttons = directions.map(direction => addButton(direction))
 
   return component({

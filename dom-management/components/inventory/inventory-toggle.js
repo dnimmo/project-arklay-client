@@ -1,7 +1,7 @@
 import { component } from '../../dom-creation'
-import updateInventoryUI from '../../inventory-manager'
+import renderApp from '../../app-container'
 
-const openInventoryUI = () => updateInventoryUI({
+const openInventoryUI = () => renderApp({
   inventoryClasses: ['inventory']
 })
 

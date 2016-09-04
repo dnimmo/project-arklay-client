@@ -1,22 +1,19 @@
-import { saveGame } from './save-game.js'
+import { saveGame } from './save-game'
 
 const dataStore = {
   inventory: {},
   room: {}
 }
 
-const dataUpdated = {
-  inventory: new Event('data-updated-inventory'),
-  room: new Event('data-updated-room')
-}
+const dataUpdatedEvent = new Event('data-updated')
 
-const emitUpdateEvent = type => document.dispatchEvent(dataUpdated[type])
+const emitUpdateEvent = () => document.dispatchEvent(dataUpdatedEvent)
 
 const getData = type => dataStore[type]
 
 const updateData = (type, data) => {
   dataStore[type] = data
-  emitUpdateEvent(type)
+  emitUpdateEvent()
   saveGame(dataStore)
 }
 

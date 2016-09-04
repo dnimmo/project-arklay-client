@@ -37,10 +37,7 @@ const render = (target, htmlObject) => {
   target.appendChild(createElement(htmlObject))
 }
 
-const toggleClass = (element, classToToggle) => element.classList.toggle(classToToggle)
-
 module.exports = {
   component,
-  render,
-  toggleClass
+  render
 }

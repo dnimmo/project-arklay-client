@@ -1,9 +1,9 @@
 import { component } from '../../dom-creation'
-import updateInventoryUI from '../../inventory-manager'
+import renderApp from '../../app-container'
 
 const itemButtons = items => {
   function createItemButton (item) {
-    const openItemOptions = () => updateInventoryUI({inventoryClasses: ['inventory', 'open'], itemListClasses: ['hidden'], itemDetailsClasses: ['item-details'], item})
+    const openItemOptions = () => renderApp({inventoryClasses: ['inventory', 'open'], itemListClasses: ['hidden'], itemDetailsClasses: ['item-details'], item})
 
     return component({
       type: 'li',
