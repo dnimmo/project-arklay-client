@@ -52,7 +52,7 @@
 
 	var _roomManager = __webpack_require__(6);
 
-	var _inventoryManager = __webpack_require__(12);
+	var _inventoryManager = __webpack_require__(11);
 
 	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
 
@@ -62,7 +62,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(19);
+	__webpack_require__(18);
 
 
 	document.addEventListener('data-updated-inventory', _inventoryManager2.default);
@@ -259,21 +259,19 @@
 
 	'use strict';
 
-	var _elements = __webpack_require__(7);
-
-	var _domCreation = __webpack_require__(8);
+	var _domCreation = __webpack_require__(7);
 
 	var _store = __webpack_require__(3);
 
-	var _roomInfo = __webpack_require__(9);
+	var _roomInfo = __webpack_require__(8);
 
 	var _roomInfo2 = _interopRequireDefault(_roomInfo);
 
-	var _directions = __webpack_require__(10);
+	var _directions = __webpack_require__(9);
 
 	var _directions2 = _interopRequireDefault(_directions);
 
-	var _itemMessage = __webpack_require__(11);
+	var _itemMessage = __webpack_require__(10);
 
 	var _itemMessage2 = _interopRequireDefault(_itemMessage);
 
@@ -288,7 +286,7 @@
 	    children: [(0, _roomInfo2.default)(room), (0, _directions2.default)(room.directions), (0, _itemMessage2.default)(room.item)]
 	  });
 
-	  (0, _domCreation.render)(_elements.roomElement, roomObject);
+	  (0, _domCreation.render)(document.getElementById('room'), roomObject);
 	};
 
 	module.exports = {
@@ -297,21 +295,6 @@
 
 /***/ },
 /* 7 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var getElement = exports.getElement = function getElement(id) {
-	  return document.getElementById(id);
-	};
-	var roomElement = exports.roomElement = getElement('room');
-	var inventoryElement = exports.inventoryElement = getElement('inventory');
-
-/***/ },
-/* 8 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -402,7 +385,7 @@
 	};
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -411,7 +394,7 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(8);
+	var _domCreation = __webpack_require__(7);
 
 	var roomInfo = function roomInfo(_ref) {
 	  var description = _ref.description;
@@ -435,7 +418,7 @@
 	exports.default = roomInfo;
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -444,7 +427,7 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(8);
+	var _domCreation = __webpack_require__(7);
 
 	var _room = __webpack_require__(5);
 
@@ -485,7 +468,7 @@
 	exports.default = directions;
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -494,7 +477,7 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(8);
+	var _domCreation = __webpack_require__(7);
 
 	var _inventory = __webpack_require__(1);
 
@@ -516,7 +499,7 @@
 	exports.default = itemMessage;
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -525,17 +508,15 @@
 	  value: true
 	});
 
-	var _elements = __webpack_require__(7);
-
-	var _domCreation = __webpack_require__(8);
+	var _domCreation = __webpack_require__(7);
 
 	var _store = __webpack_require__(3);
 
-	var _inventoryToggle = __webpack_require__(13);
+	var _inventoryToggle = __webpack_require__(12);
 
 	var _inventoryToggle2 = _interopRequireDefault(_inventoryToggle);
 
-	var _inventoryPanel = __webpack_require__(14);
+	var _inventoryPanel = __webpack_require__(13);
 
 	var _inventoryPanel2 = _interopRequireDefault(_inventoryPanel);
 
@@ -557,12 +538,13 @@
 	    children: [(0, _inventoryToggle2.default)(inventory), (0, _inventoryPanel2.default)({ inventoryClasses: inventoryClasses, itemListClasses: itemListClasses, itemDetailsClasses: itemDetailsClasses, items: inventory.items, item: item })]
 	  });
 
-	  (0, _domCreation.render)(_elements.inventoryElement, inventoryObject);
-	}; // Elements that need to be updated
+	  (0, _domCreation.render)(document.getElementById('inventory'), inventoryObject);
+	};
+
 	exports.default = updateInventoryUI;
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -571,9 +553,9 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(8);
+	var _domCreation = __webpack_require__(7);
 
-	var _inventoryManager = __webpack_require__(12);
+	var _inventoryManager = __webpack_require__(11);
 
 	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
 
@@ -621,7 +603,7 @@
 	exports.default = inventoryToggle;
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -630,17 +612,17 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(8);
+	var _domCreation = __webpack_require__(7);
 
-	var _itemList = __webpack_require__(15);
+	var _itemList = __webpack_require__(14);
 
 	var _itemList2 = _interopRequireDefault(_itemList);
 
-	var _itemDetails = __webpack_require__(17);
+	var _itemDetails = __webpack_require__(16);
 
 	var _itemDetails2 = _interopRequireDefault(_itemDetails);
 
-	var _closeButton = __webpack_require__(18);
+	var _closeButton = __webpack_require__(17);
 
 	var _closeButton2 = _interopRequireDefault(_closeButton);
 
@@ -668,7 +650,7 @@
 	exports.default = inventoryPanel;
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -677,9 +659,9 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(8);
+	var _domCreation = __webpack_require__(7);
 
-	var _itemButtons = __webpack_require__(16);
+	var _itemButtons = __webpack_require__(15);
 
 	var _itemButtons2 = _interopRequireDefault(_itemButtons);
 
@@ -698,7 +680,7 @@
 	exports.default = itemList;
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -707,9 +689,9 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(8);
+	var _domCreation = __webpack_require__(7);
 
-	var _inventoryManager = __webpack_require__(12);
+	var _inventoryManager = __webpack_require__(11);
 
 	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
 
@@ -737,7 +719,7 @@
 	exports.default = itemButtons;
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -746,13 +728,13 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(8);
+	var _domCreation = __webpack_require__(7);
 
 	var _inventory = __webpack_require__(1);
 
 	var _store = __webpack_require__(3);
 
-	var _inventoryManager = __webpack_require__(12);
+	var _inventoryManager = __webpack_require__(11);
 
 	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
 
@@ -821,7 +803,7 @@
 	exports.default = itemDetails;
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -830,9 +812,9 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(8);
+	var _domCreation = __webpack_require__(7);
 
-	var _inventoryManager = __webpack_require__(12);
+	var _inventoryManager = __webpack_require__(11);
 
 	var _inventoryManager2 = _interopRequireDefault(_inventoryManager);
 
@@ -854,16 +836,16 @@
 	exports.default = closeButton;
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(20);
+	var content = __webpack_require__(19);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(22)(content, {});
+	var update = __webpack_require__(21)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -880,10 +862,10 @@
 	}
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(21)();
+	exports = module.exports = __webpack_require__(20)();
 	// imports
 
 
@@ -894,7 +876,7 @@
 
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -949,7 +931,7 @@
 	};
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

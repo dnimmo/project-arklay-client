@@ -1,5 +1,3 @@
-// Elements that need to be updated
-import { inventoryElement } from './elements'
 import { component, render } from './dom-creation'
 import { getData } from '../data-management/store'
 import inventoryToggle from './components/inventory/inventory-toggle'
@@ -15,7 +13,7 @@ const updateInventoryUI = ( {inventoryClasses, itemListClasses, itemDetailsClass
     children: [inventoryToggle(inventory), inventoryPanel( {inventoryClasses, itemListClasses, itemDetailsClasses, items: inventory.items, item})]
   })
 
-  render(inventoryElement, inventoryObject)
+  render(document.getElementById('inventory'), inventoryObject)
 }
 
 export default updateInventoryUI

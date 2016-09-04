@@ -1,4 +1,3 @@
-import { roomElement } from './elements'
 import { component, render } from './dom-creation'
 import { getData } from '../data-management/store'
 import roomInfo from './components/room/room-info'
@@ -14,7 +13,7 @@ const updateRoomUI = () => {
     children: [roomInfo(room), directions(room.directions), itemMessage(room.item)]
   })
 
-  render(roomElement, roomObject)
+  render(document.getElementById('room'), roomObject)
 }
 
 module.exports = {
