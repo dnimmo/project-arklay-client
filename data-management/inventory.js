@@ -1,4 +1,4 @@
-import { request } from './api-caller'
+import request from './api-caller'
 import { getData } from './store'
 
 const rootUrl = 'http://api.project-arklay.com/inventory'

@@ -18,6 +18,4 @@ const request = (type, url, body, dataType) => {
   requester.send(JSON.stringify(body))
 }
 
-module.exports = {
-  request
-}
+export default request

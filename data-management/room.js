@@ -1,4 +1,4 @@
-const { request } = require('./api-caller')
+const request = require('./api-caller')
 const { getData } = require('./store')
 
 const rootUrl = 'http://api.project-arklay.com/rooms'
