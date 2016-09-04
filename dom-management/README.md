@@ -1,3 +1,1 @@
-Everything in this directory is responsible for updating the UI. The UI Update methods for 'room' and 'inventory' are triggered by event listeners that are fired whenever the data in the data store changes, and following this they will get the latest data from the data store, and update the UI accordingly.
-
-The 'item options' update method is applied when an item in the inventory is selected; this updates the 'use' item button to call the API with the selected item.
+Everything in this directory is responsible for updating the UI. The "Render App" method (in app-container.js) is triggered by an event listener that is fired whenever the data in the data store changes, and following this the app will be re-rendered with the latest data from the data store.
