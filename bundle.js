@@ -48,15 +48,15 @@
 
 	var _inventory = __webpack_require__(1);
 
-	var _room = __webpack_require__(5);
+	var _room = __webpack_require__(9);
 
 	var _room2 = _interopRequireDefault(_room);
 
-	var _appContainer = __webpack_require__(6);
+	var _appContainer = __webpack_require__(4);
 
 	var _appContainer2 = _interopRequireDefault(_appContainer);
 
-	var _saveGame = __webpack_require__(4);
+	var _saveGame = __webpack_require__(18);
 
 	var _store = __webpack_require__(3);
 
@@ -168,7 +168,13 @@
 
 	'use strict';
 
-	var _saveGame = __webpack_require__(4);
+	var _appContainer = __webpack_require__(4);
+
+	var _appContainer2 = _interopRequireDefault(_appContainer);
+
+	var _saveGame = __webpack_require__(18);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var dataStore = {
 	  inventory: {},
@@ -198,37 +204,6 @@
 
 /***/ },
 /* 4 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var saveGame = function saveGame(data) {
-	  if (typeof localStorage !== 'undefined') {
-	    localStorage.setItem('dataStore', JSON.stringify(data));
-	    return true;
-	  } else {
-	    // Can't save
-	    return false;
-	  }
-	};
-
-	var loadGame = function loadGame() {
-	  if (typeof localStorage !== 'undefined') {
-	    var saveData = JSON.parse(localStorage.getItem('dataStore'));
-	    return saveData !== null ? saveData : false;
-	  } else {
-	    // Can't load
-	    return false;
-	  }
-	};
-
-	module.exports = {
-	  saveGame: saveGame,
-	  loadGame: loadGame
-	};
-
-/***/ },
-/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -237,39 +212,13 @@
 	  value: true
 	});
 
-	var _apiCaller = __webpack_require__(2);
+	var _domCreation = __webpack_require__(5);
 
-	var _apiCaller2 = _interopRequireDefault(_apiCaller);
-
-	var _store = __webpack_require__(3);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var rootUrl = 'http://api.project-arklay.com/rooms';
-
-	var getRoom = function getRoom(slug) {
-	  return (0, _apiCaller2.default)('POST', rootUrl + '/' + slug + '?' + Date.now(), (0, _store.getData)('inventory').itemsUsed, 'room');
-	};
-
-	exports.default = getRoom;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _domCreation = __webpack_require__(7);
-
-	var _roomContainer = __webpack_require__(8);
+	var _roomContainer = __webpack_require__(6);
 
 	var _roomContainer2 = _interopRequireDefault(_roomContainer);
 
-	var _inventoryContainer = __webpack_require__(12);
+	var _inventoryContainer = __webpack_require__(11);
 
 	var _inventoryContainer2 = _interopRequireDefault(_inventoryContainer);
 
@@ -277,6 +226,7 @@
 
 	var appContainer = function appContainer(_ref) {
 	  var roomClasses = _ref.roomClasses;
+	  var itemName = _ref.itemName;
 	  var inventoryClasses = _ref.inventoryClasses;
 	  var itemListClasses = _ref.itemListClasses;
 	  var itemDetailsClasses = _ref.itemDetailsClasses;
@@ -286,12 +236,13 @@
 
 	  return (0, _domCreation.component)({
 	    type: 'div',
-	    children: [(0, _roomContainer2.default)({ roomClasses: roomClasses }), (0, _inventoryContainer2.default)({ inventoryClasses: inventoryClasses, itemListClasses: itemListClasses, itemDetailsClasses: itemDetailsClasses, item: item })]
+	    children: [(0, _roomContainer2.default)({ roomClasses: roomClasses, itemName: itemName }), (0, _inventoryContainer2.default)({ inventoryClasses: inventoryClasses, itemListClasses: itemListClasses, itemDetailsClasses: itemDetailsClasses, item: item })]
 	  });
 	};
 
 	var renderApp = function renderApp(_ref2) {
 	  var roomClasses = _ref2.roomClasses;
+	  var itemName = _ref2.itemName;
 	  var inventoryClasses = _ref2.inventoryClasses;
 	  var itemListClasses = _ref2.itemListClasses;
 	  var itemDetailsClasses = _ref2.itemDetailsClasses;
@@ -312,7 +263,7 @@
 	exports.default = renderApp;
 
 /***/ },
-/* 7 */
+/* 5 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -398,7 +349,7 @@
 	};
 
 /***/ },
-/* 8 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -407,19 +358,19 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(7);
+	var _domCreation = __webpack_require__(5);
 
 	var _store = __webpack_require__(3);
 
-	var _roomInfo = __webpack_require__(9);
+	var _roomInfo = __webpack_require__(7);
 
 	var _roomInfo2 = _interopRequireDefault(_roomInfo);
 
-	var _directions = __webpack_require__(10);
+	var _directions = __webpack_require__(8);
 
 	var _directions2 = _interopRequireDefault(_directions);
 
-	var _itemMessage = __webpack_require__(11);
+	var _itemMessage = __webpack_require__(10);
 
 	var _itemMessage2 = _interopRequireDefault(_itemMessage);
 
@@ -427,6 +378,7 @@
 
 	var roomContainer = function roomContainer(_ref) {
 	  var roomClasses = _ref.roomClasses;
+	  var itemName = _ref.itemName;
 
 	  var room = (0, _store.getData)('room');
 	  var requiredClasses = roomClasses ? ['room'].concat(roomClasses) : ['room'];
@@ -434,14 +386,14 @@
 	  return (0, _domCreation.component)({
 	    type: 'div',
 	    classes: requiredClasses,
-	    children: [(0, _roomInfo2.default)(room), (0, _directions2.default)(room.directions), (0, _itemMessage2.default)(room.item)]
+	    children: [(0, _roomInfo2.default)(room), (0, _directions2.default)(room.directions), (0, _itemMessage2.default)(room.item, itemName)]
 	  });
 	};
 
 	exports.default = roomContainer;
 
 /***/ },
-/* 9 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -450,7 +402,7 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(7);
+	var _domCreation = __webpack_require__(5);
 
 	var roomInfo = function roomInfo(_ref) {
 	  var description = _ref.description;
@@ -474,7 +426,7 @@
 	exports.default = roomInfo;
 
 /***/ },
-/* 10 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -483,9 +435,9 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(7);
+	var _domCreation = __webpack_require__(5);
 
-	var _room = __webpack_require__(5);
+	var _room = __webpack_require__(9);
 
 	var _room2 = _interopRequireDefault(_room);
 
@@ -530,7 +482,7 @@
 	exports.default = directions;
 
 /***/ },
-/* 11 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -539,18 +491,44 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(7);
+	var _apiCaller = __webpack_require__(2);
+
+	var _apiCaller2 = _interopRequireDefault(_apiCaller);
+
+	var _store = __webpack_require__(3);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var rootUrl = 'http://api.project-arklay.com/rooms';
+
+	var getRoom = function getRoom(slug) {
+	  return (0, _apiCaller2.default)('POST', rootUrl + '/' + slug + '?' + Date.now(), (0, _store.getData)('inventory').itemsUsed, 'room');
+	};
+
+	exports.default = getRoom;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _domCreation = __webpack_require__(5);
 
 	var _inventory = __webpack_require__(1);
 
-	function processItem(item) {
+	function processItem(item, itemName) {
 	  if (!item || (0, _inventory.hasItemBeenPickedUp)(item)) return { type: 'none' };
 	  (0, _inventory.addItem)(item);
 
 	  return (0, _domCreation.component)({
 	    type: 'p',
 	    classes: ['additional-info', 'extra-message'],
-	    content: '== Item added to inventory =='
+	    content: '== ' + itemName + ' added to inventory =='
 	  });
 	}
 
@@ -561,7 +539,7 @@
 	exports.default = itemMessage;
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -570,15 +548,15 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(7);
+	var _domCreation = __webpack_require__(5);
 
 	var _store = __webpack_require__(3);
 
-	var _inventoryToggle = __webpack_require__(13);
+	var _inventoryToggle = __webpack_require__(12);
 
 	var _inventoryToggle2 = _interopRequireDefault(_inventoryToggle);
 
-	var _inventoryPanel = __webpack_require__(14);
+	var _inventoryPanel = __webpack_require__(13);
 
 	var _inventoryPanel2 = _interopRequireDefault(_inventoryPanel);
 
@@ -602,7 +580,7 @@
 	exports.default = inventoryContainer;
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -611,9 +589,9 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(7);
+	var _domCreation = __webpack_require__(5);
 
-	var _appContainer = __webpack_require__(6);
+	var _appContainer = __webpack_require__(4);
 
 	var _appContainer2 = _interopRequireDefault(_appContainer);
 
@@ -662,7 +640,7 @@
 	exports.default = inventoryToggle;
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -671,17 +649,17 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(7);
+	var _domCreation = __webpack_require__(5);
 
-	var _itemList = __webpack_require__(15);
+	var _itemList = __webpack_require__(14);
 
 	var _itemList2 = _interopRequireDefault(_itemList);
 
-	var _itemDetails = __webpack_require__(17);
+	var _itemDetails = __webpack_require__(16);
 
 	var _itemDetails2 = _interopRequireDefault(_itemDetails);
 
-	var _closeButton = __webpack_require__(18);
+	var _closeButton = __webpack_require__(17);
 
 	var _closeButton2 = _interopRequireDefault(_closeButton);
 
@@ -709,7 +687,7 @@
 	exports.default = inventoryPanel;
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -718,9 +696,9 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(7);
+	var _domCreation = __webpack_require__(5);
 
-	var _itemButtons = __webpack_require__(16);
+	var _itemButtons = __webpack_require__(15);
 
 	var _itemButtons2 = _interopRequireDefault(_itemButtons);
 
@@ -739,7 +717,7 @@
 	exports.default = itemList;
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -748,9 +726,9 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(7);
+	var _domCreation = __webpack_require__(5);
 
-	var _appContainer = __webpack_require__(6);
+	var _appContainer = __webpack_require__(4);
 
 	var _appContainer2 = _interopRequireDefault(_appContainer);
 
@@ -784,7 +762,7 @@
 	exports.default = itemButtons;
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -793,13 +771,13 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(7);
+	var _domCreation = __webpack_require__(5);
 
 	var _inventory = __webpack_require__(1);
 
 	var _store = __webpack_require__(3);
 
-	var _appContainer = __webpack_require__(6);
+	var _appContainer = __webpack_require__(4);
 
 	var _appContainer2 = _interopRequireDefault(_appContainer);
 
@@ -870,7 +848,7 @@
 	exports.default = itemDetails;
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -879,9 +857,9 @@
 	  value: true
 	});
 
-	var _domCreation = __webpack_require__(7);
+	var _domCreation = __webpack_require__(5);
 
-	var _appContainer = __webpack_require__(6);
+	var _appContainer = __webpack_require__(4);
 
 	var _appContainer2 = _interopRequireDefault(_appContainer);
 
@@ -902,6 +880,37 @@
 	});
 
 	exports.default = closeButton;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var saveGame = function saveGame(data) {
+	  if (typeof localStorage !== 'undefined') {
+	    localStorage.setItem('dataStore', JSON.stringify(data));
+	    return true;
+	  } else {
+	    // Can't save
+	    return false;
+	  }
+	};
+
+	var loadGame = function loadGame() {
+	  if (typeof localStorage !== 'undefined') {
+	    var saveData = JSON.parse(localStorage.getItem('dataStore'));
+	    return saveData !== null ? saveData : false;
+	  } else {
+	    // Can't load
+	    return false;
+	  }
+	};
+
+	module.exports = {
+	  saveGame: saveGame,
+	  loadGame: loadGame
+	};
 
 /***/ },
 /* 19 */
