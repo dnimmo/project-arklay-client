@@ -2,8 +2,10 @@
   "name": "project-arklay-client",
   "version": "2.0.0",
   "description": "A web-based text adventure game",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "build": "webpack ./app.js ./bundle.js --config ./config/webpack.config.js",
+    "check-standards": "standard",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +17,18 @@
   "bugs": {
     "url": "https://github.com/dnimmo/project-arklay-client/issues"
   },
-  "homepage": "https://github.com/dnimmo/project-arklay-client#readme"
+  "homepage": "https://github.com/dnimmo/project-arklay-client#readme",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-core": "^6.13.2",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-react": "^6.11.1",
+    "css-loader": "^0.23.1",
+    "file-loader": "^0.9.0",
+    "node-sass": "^3.8.0",
+    "sass-loader": "^4.0.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.2"
+  }
 }

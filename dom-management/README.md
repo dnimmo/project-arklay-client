@@ -1,0 +1,1 @@
+Everything in this directory is responsible for updating the UI. The "Render App" method (in app-container.js) is triggered by an event listener that is fired whenever the data in the data store changes, and following this the app will be re-rendered with the latest data from the data store.
