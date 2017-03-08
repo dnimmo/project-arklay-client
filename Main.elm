@@ -27,6 +27,11 @@ type Msg
     = StartGame
 
 
+displayNothing : Html Msg
+displayNothing =
+    text ""
+
+
 update : Msg -> Model -> Model
 update msg model =
     case msg of
@@ -54,7 +59,7 @@ view model =
                     [ class "Button", onClick StartGame ]
                     [ text "Get started" ]
                else
-                span [] []
+                displayNothing
               )
             ]
 
