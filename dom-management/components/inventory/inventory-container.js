@@ -1,10 +1,10 @@
 import { component } from '../../dom-creation'
-import { getData } from '../../../data-management/store'
+import { getInventory } from '../../../data-management/store'
 import inventoryToggle from './inventory-toggle'
 import inventoryPanel from  './inventory-panel'
 
 const inventoryContainer = ( {inventoryClasses, itemListClasses, itemDetailsClasses, item = {}} ) => {
-  const inventory = getData('inventory')
+  const inventory = getInventory ? getInventory() : { items: [], itemsUsed: [] }
 
   return component({
     type: 'div',

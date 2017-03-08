@@ -7,42 +7,19 @@ const dataStore = {
 }
 
 const dataUpdatedEvent = new Event('data-updated')
-
 const emitUpdateEvent = () => document.dispatchEvent(dataUpdatedEvent)
-
 const getData = type => dataStore[type]
-
+const getRoom = () => getData('room')
+const getInventory = () => getData('inventory')
 const updateData = (type, data) => {
+  console.log(data)
   dataStore[type] = data
   emitUpdateEvent()
-  saveGame(dataStore)
-}
-
-const createStore = reducer => {
-  let state
-  let listeners = []
-
-  const getState = () => state
-
-  const dispatch = action => {
-    state = reducer(state, action)
-  }
-
-  const subscribe = listener => {
-    listeners.push(listener)
-  }
-
-  // dispatch to initialise state
-  dispatch({})
-
-  return {
-    getState,
-    dispatch,
-    subscribe
-  }
+  // saveGame(dataStore)
 }
 
 module.exports = {
-  getData,
+  getRoom,
+  getInventory,
   updateData
 }

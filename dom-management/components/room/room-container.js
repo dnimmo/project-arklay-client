@@ -1,11 +1,11 @@
 import { component } from '../../dom-creation'
-import { getData } from '../../../data-management/store'
+import { getRoom } from '../../../data-management/store'
 import roomInfo from './room-info'
 import directions from './directions'
 import itemMessage from './item-message'
 
 const roomContainer = ( {roomClasses, itemName} ) => {
-  const room = getData('room')
+  const room = getRoom ? getRoom() : {}
   const requiredClasses = roomClasses ? ['room'].concat(roomClasses) : ['room']
 
   return component({

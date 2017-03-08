@@ -1,6 +1,7 @@
 import { updateData } from './store'
 
 const request = (type, url, body, dataType) => {
+  console.log('requesting', dataType)
   // 'dataType' refers to either 'inventory' or 'room'
   function listener () {
     requester.removeEventListener('load', listener)
