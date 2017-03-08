@@ -2,37 +2,37 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (..)
 import Intro
+import Game
 
 
 type Page
     = IntroPage
+    | GamePage
 
 
 type alias Model =
     { page : Page
-    , intro : Intro.Model
     }
 
 
 initModel : Model
 initModel =
     { page = IntroPage
-    , intro = Intro.initModel
     }
 
 
 type Msg
-    = IntroMsg Intro.Msg
+    = StartGame
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        IntroMsg introMsg ->
+        StartGame ->
             { model
-                | intro =
-                    Intro.update introMsg model.intro
+                | page = GamePage
             }
 
 
@@ -42,10 +42,21 @@ view model =
         page =
             case model.page of
                 IntroPage ->
-                    Html.map IntroMsg
-                        (Intro.view model.intro)
+                    Intro.view
+
+                GamePage ->
+                    Game.view
     in
-        page
+        section []
+            [ page
+            , (if model.page == IntroPage then
+                a
+                    [ class "Button", onClick StartGame ]
+                    [ text "Get started" ]
+               else
+                span [] []
+              )
+            ]
 
 
 main : Program Never Model Msg

@@ -7,6 +7,7 @@ import Constants
 
 type CssClasses
     = Button
+    | Hidden
 
 
 css =
@@ -41,6 +42,8 @@ css =
             [ marginBottom (Css.rem 2)
             , marginTop (Css.rem 2)
             ]
+        , class Hidden
+            [ display none ]
         , class Button
             [ border (Css.rem 0.1)
             , borderColor Constants.colourPalette2
