@@ -4,21 +4,29 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import List
+import Directions
 
 
 type alias Model =
-    { availableDirections : List Direction }
+    { room : String
+    , surroundings : String
+    , availableDirections : List Direction
+    }
 
 
 type alias Direction =
-    { text : String
-    , destination : String
-    }
+    Directions.Direction
+
+
+type Msg
+    = ChangeRoom
 
 
 initModel : Model
 initModel =
-    { availableDirections =
+    { room = "You are in the foyer of what appears to be a mansion."
+    , surroundings = "A vast, dimly-lit foyer, with a grand staircase and a couple of doors."
+    , availableDirections =
         [ { text = "North"
           , destination = "Some Room"
           }
@@ -26,27 +34,21 @@ initModel =
     }
 
 
-renderDirectionOptions : Direction -> Html msg
-renderDirectionOptions direction =
-    li [] [ text direction.text ]
+update : Msg -> Model -> Model
+update msg model =
+    case msg of
+        ChangeRoom ->
+            { model
+                | room = "Room changed"
+            }
 
 
-directions : List Direction -> Html msg
-directions availableDirections =
-    ul [ class "DirectionOptions" ]
-        (availableDirections
-            |> List.map renderDirectionOptions
-        )
-
-
-view : Html msg
-view =
+view : Model -> Html Msg
+view model =
     div []
-        [ p []
-            [ text "You are in the foyer of what appears to be a mansion.\nA vast, dimly-lit foyer, with a grand staircase and a couple of doors." ]
-        , directions
-            [ { text = "North"
-              , destination = "Some Room"
-              }
-            ]
+        [ p [ onClick ChangeRoom ]
+            [ text model.room ]
+        , p []
+            [ text model.surroundings ]
+        , Directions.renderDirections model.availableDirections
         ]

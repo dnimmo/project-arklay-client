@@ -3,6 +3,7 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import SiteText
 import Intro
 import Game
 
@@ -14,17 +15,20 @@ type Page
 
 type alias Model =
     { page : Page
+    , game : Game.Model
     }
 
 
 initModel : Model
 initModel =
     { page = IntroPage
+    , game = Game.initModel
     }
 
 
 type Msg
     = StartGame
+    | GameMsg Game.Msg
 
 
 displayNothing : Html Msg
@@ -40,6 +44,11 @@ update msg model =
                 | page = GamePage
             }
 
+        GameMsg gameMsg ->
+            { model
+                | game = Game.update gameMsg model.game
+            }
+
 
 view : Model -> Html Msg
 view model =
@@ -50,14 +59,14 @@ view model =
                     Intro.view
 
                 GamePage ->
-                    Game.view
+                    Html.map GameMsg (Game.view model.game)
     in
         section []
             [ page
             , (if model.page == IntroPage then
                 a
                     [ class "Button", onClick StartGame ]
-                    [ text "Get started" ]
+                    [ text SiteText.startButton ]
                else
                 displayNothing
               )
