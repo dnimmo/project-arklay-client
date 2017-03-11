@@ -26,6 +26,7 @@ type alias Item =
 type Msg
     = ChangeRoom String
     | ExamineRoom Room
+    | InventoryMsg Inventory.Msg
 
 
 initModel : Model
@@ -52,7 +53,7 @@ renderDirectionOptions direction =
             li [ class "LockedRoom" ] [ text direction.text ]
 
         Nothing ->
-            li [ onClick (ChangeRoom direction.destination) ] [ text direction.text ]
+            li [ class "Direction", onClick (ChangeRoom direction.destination) ] [ text direction.text ]
 
 
 renderDirections : List Map.Direction -> Html Msg
@@ -75,11 +76,14 @@ update msg model =
             case currentRoom.item of
                 Just item ->
                     { model
-                        | inventory = Inventory.addItem item model.inventory
+                        | inventory = Inventory.update (Inventory.AddItem item) model.inventory
                     }
 
                 Nothing ->
                     model
+
+        _ ->
+            model
 
 
 view : Model -> Html Msg
@@ -89,13 +93,5 @@ view model =
         , renderDirections model.room.availableDirections
         , p [ onClick (ExamineRoom model.room) ]
             [ text SiteText.examine ]
-        , p []
-            [ (case (List.head model.inventory) of
-                Just item ->
-                    text item.name
-
-                Nothing ->
-                    text ""
-              )
-            ]
+        , Html.map InventoryMsg (Inventory.view model.inventory)
         ]

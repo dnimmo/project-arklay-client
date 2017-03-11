@@ -1,8 +1,13 @@
 module Inventory exposing (..)
 
+import Html exposing (..)
+import List
+
 
 type alias Model =
-    List Item
+    { items : List Item
+    , itemsUsed : List Item
+    }
 
 
 type alias Item =
@@ -13,21 +18,56 @@ type alias Item =
     }
 
 
+type Msg
+    = AddItem String
+    | UseItem Item
+
+
 initModel : Model
 initModel =
-    []
+    { items = []
+    , itemsUsed = []
+    }
 
 
-addItem : String -> Model -> Model
-addItem itemToAdd inventory =
-    (getItem itemToAdd) :: inventory
+update : Msg -> Model -> Model
+update msg model =
+    case msg of
+        AddItem itemName ->
+            { model
+                | items = addItem itemName model.items
+            }
+
+        UseItem item ->
+            { model
+                | itemsUsed = item :: model.itemsUsed
+            }
+
+
+checkForItem : String -> List Item -> Maybe Item
+checkForItem itemToCheck itemsList =
+    List.head (List.filter (\item -> item.name == itemToCheck) itemsList)
+
+
+addItem : String -> List Item -> List Item
+addItem itemToAdd inventoryItems =
+    let
+        itemAlreadyHeld =
+            checkForItem itemToAdd inventoryItems
+    in
+        case itemAlreadyHeld of
+            Just item ->
+                inventoryItems
+
+            Nothing ->
+                (getItem itemToAdd) :: inventoryItems
 
 
 getItem : String -> Item
 getItem itemName =
     let
         itemToReturn =
-            List.head (List.filter (\item -> item.name == itemName) items)
+            checkForItem itemName items
     in
         case itemToReturn of
             Just item ->
@@ -35,6 +75,25 @@ getItem itemName =
 
             Nothing ->
                 errorItem
+
+
+renderItem : Item -> Html Msg
+renderItem item =
+    li [] [ text item.name ]
+
+
+renderItems : List Item -> Html Msg
+renderItems items =
+    ul []
+        (List.map
+            renderItem
+            items
+        )
+
+
+view : Model -> Html Msg
+view model =
+    div [] [ renderItems model.items ]
 
 
 errorItem : Item

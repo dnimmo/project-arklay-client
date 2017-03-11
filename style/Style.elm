@@ -6,7 +6,8 @@ import Constants
 
 
 type CssClasses
-    = LockedRoom
+    = Direction
+    | LockedRoom
     | Button
     | Hidden
 
@@ -43,6 +44,8 @@ css =
             [ marginBottom (Css.rem 2)
             , marginTop (Css.rem 2)
             ]
+        , class Direction
+            [ cursor pointer ]
         , class LockedRoom
             [ textDecoration lineThrough ]
         , class Hidden
