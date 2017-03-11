@@ -6,7 +6,7 @@ import Constants
 
 
 type CssClasses
-    = Direction
+    = Selectable
     | LockedRoom
     | Button
     | Hidden
@@ -44,7 +44,7 @@ css =
             [ marginBottom (Css.rem 2)
             , marginTop (Css.rem 2)
             ]
-        , class Direction
+        , class Selectable
             [ cursor pointer ]
         , class LockedRoom
             [ textDecoration lineThrough ]

@@ -53,7 +53,7 @@ renderDirectionOptions direction =
             li [ class "LockedRoom" ] [ text direction.text ]
 
         Nothing ->
-            li [ class "Direction", onClick (ChangeRoom direction.destination) ] [ text direction.text ]
+            li [ class "Selectable", onClick (ChangeRoom direction.destination) ] [ text direction.text ]
 
 
 renderDirections : List Map.Direction -> Html Msg
@@ -82,8 +82,10 @@ update msg model =
                 Nothing ->
                     model
 
-        _ ->
-            model
+        InventoryMsg msg ->
+            { model
+                | inventory = Inventory.update (msg) model.inventory
+            }
 
 
 view : Model -> Html Msg
@@ -91,7 +93,7 @@ view model =
     div []
         [ renderRoomInfo model
         , renderDirections model.room.availableDirections
-        , p [ onClick (ExamineRoom model.room) ]
+        , p [ class "Selectable", onClick (ExamineRoom model.room) ]
             [ text SiteText.examine ]
         , Html.map InventoryMsg (Inventory.view model.inventory)
         ]
