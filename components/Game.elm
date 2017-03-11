@@ -51,6 +51,10 @@ roomIsUnlocked unlockRequirements itemsUsed =
     True
 
 
+
+-- ^ This obviously should not always return true! Sort this out
+
+
 roomIsOpen : Map.Direction -> List Item -> Bool
 roomIsOpen direction itemsUsed =
     case direction.unlockedWith of

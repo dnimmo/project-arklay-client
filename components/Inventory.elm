@@ -58,7 +58,7 @@ addItem : String -> Model -> List Item
 addItem itemToAdd model =
     let
         itemAlreadyHeld =
-            checkForItem itemToAdd (List.concat [ model.items, model.itemsUsed ])
+            checkForItem itemToAdd (model.items ++ model.itemsUsed)
     in
         case itemAlreadyHeld of
             Just item ->
