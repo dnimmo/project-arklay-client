@@ -411,4 +411,493 @@ rooms =
               }
             ]
       }
+    , { name = "Dining Hall"
+      , intro = "A large dining hall."
+      , surroundings = "A grandfather clock is steadily ticking, its sound echoing through the room."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Hallway Two"
+              , unlockedWith = Nothing
+              }
+            , { text = "East"
+              , destination = "Entrance"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Hallway Two"
+      , intro = "A hallway"
+      , surroundings = "The stench in here is pretty bad. Like rotten food. There are doors in every direction, but the door to the East is locked"
+      , surroundingsWhenItemUsed = Just "The stench in here is almost overwhelming now."
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Kitchen"
+              , unlockedWith = Nothing
+              }
+            , { text = "West"
+              , destination = "Hallway Four"
+              , unlockedWith = Nothing
+              }
+            , { text = "East"
+              , destination = "Utility Room"
+              , unlockedWith = Just [ "Utility Key" ]
+              }
+            , { text = "South"
+              , destination = "Dining Hall"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Utility Room"
+      , intro = "A small, grey, utility room. It feels very cold in here."
+      , surroundings = "There's a staircase that goes down a long way. There's a faint light from the bottom."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "West"
+              , destination = "Hallway Two"
+              , unlockedWith = Nothing
+              }
+            , { text = "Downstairs"
+              , destination = "Basement Stairway"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Kitchen"
+      , intro = "The kitchen."
+      , surroundings = "Flies buzz around piles of black, rotten, fruit and meat. It looks like this has been here for a long time. And it smells like it's been here even longer."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Waste Disposal"
+              , unlockedWith = Nothing
+              }
+            , { text = "East"
+              , destination = "Freezer"
+              , unlockedWith = Nothing
+              }
+            , { text = "South"
+              , destination = "Hallway Two"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Freezer"
+      , intro = "A large walk-in freezer."
+      , surroundings = "It's full of mountains of meat. And...there's a moose head on the floor."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Just "It's full of mountains of meat. Why was there a moose head in here?"
+      , item = Just "Moose Head"
+      , availableDirections =
+            [ { text = "West"
+              , destination = "Kitchen"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Waste Disposal"
+      , intro = "A room that is completely empty, except for a hatch at the back, that appears to be a waste disposal chute."
+      , surroundings = "Unfortunately it doesn't have a handle, and can't be opened."
+      , surroundingsWhenItemUsed = Just "What could be at the bottom?"
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "Jump in"
+              , destination = "Basement Waste Disposal"
+              , unlockedWith = Just [ "Handle" ]
+              }
+            , { text = "South"
+              , destination = "Kitchen"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Hallway Four"
+      , intro = "A long hallway."
+      , surroundings = "There are a few doors leading from this hallway. The carpet appears to have been torn up in a number of places."
+      , surroundingsWhenItemUsed = Just "What could be at the bottom?"
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Stairway Three"
+              , unlockedWith = Nothing
+              }
+            , { text = "West"
+              , destination = "Music Room"
+              , unlockedWith = Nothing
+              }
+            , { text = "East"
+              , destination = "Hallway Two"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Stairway Three"
+      , intro = "A large, wooden stairway"
+      , surroundings = "You can't see all the way to the top in this darkness"
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Upstairs Stairway Three"
+              , unlockedWith = Nothing
+              }
+            , { text = "South"
+              , destination = "Hallway Four"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Music Room"
+      , intro = "A music room"
+      , surroundings = "A very pleasant-looking music room, with a grand piano in the center."
+      , surroundingsWhenItemUsed = Just "A wall has moved, revealing a hidden room behind it."
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Hallway Five"
+              , unlockedWith = Nothing
+              }
+            , { text = "East"
+              , destination = "Hallway Four"
+              , unlockedWith = Nothing
+              }
+            , { text = "South"
+              , destination = "Secret Room One"
+              , unlockedWith = Just [ "Sheet Music" ]
+              }
+            ]
+      }
+    , { name = "Hallway Five"
+      , intro = "A small hallway"
+      , surroundings = "There seem to be a lot of hallways in this place."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Gym"
+              , unlockedWith = Nothing
+              }
+            , { text = "South"
+              , destination = "Music Room"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Gym"
+      , intro = "A home gym"
+      , surroundings = "There is a piece of paper on the floor."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Just "This is nicer than any gym I've ever been to."
+      , item = Just "Keycode"
+      , availableDirections =
+            [ { text = "East"
+              , destination = "Swimming Pool"
+              , unlockedWith = Nothing
+              }
+            , { text = "South"
+              , destination = "Hallway Five"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Simming Pool"
+      , intro = "An olympic-sized swimming pool"
+      , surroundings = "This really is incredible. The smell of chlorine fills the air, and the warmth of the pool can be felt against your skin."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "West"
+              , destination = "Gym"
+              , unlockedWith = Nothing
+              }
+            , { text = "East"
+              , destination = "Showers"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Showers"
+      , intro = "A row of showers"
+      , surroundings = "There are a row of showers here, as you'd find in a public simming pool. I wonder how many people live here?"
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "West"
+              , destination = "Swimming Pool"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Secret Room One"
+      , intro = "A well-hidden room."
+      , surroundings = "A room that is completely empty, save for a stone podium with a crest on top of it."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Just "The room is completely empty, except for the podium in the middle, where you found a crest."
+      , item = Just "Eagle Crest"
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Music Room"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Hallway One"
+      , intro = "A short hallway."
+      , surroundings = "You get a strange feeling. Are you alone? It's quiet, but this place is so big, it's hard to be sure."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Statue Room"
+              , unlockedWith = Nothing
+              }
+            , { text = "West"
+              , destination = "Entrance"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Statue Room"
+      , intro = "A room full of statues."
+      , surroundings = "One of them appears to have been beheaded."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Just "At least they aren't mannequins, but statues aren't much better. One of them has moved aside, revealing a hidden doorway."
+      , item = Nothing
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Secret Room Two"
+              , unlockedWith = Just [ "Statue Head" ]
+              }
+            , { text = "East"
+              , destination = "Hallway Three"
+              , unlockedWith = Nothing
+              }
+            , { text = "South"
+              , destination = "Hallway One"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Secret Room Two"
+      , intro = "A hidden room."
+      , surroundings = "The room is cold, and empty, except for a podium in the middle. On it, sits a crest."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Just "An empty room, except for a lonely looking concrete podium in the middle."
+      , item = Just "Wolf Crest"
+      , availableDirections =
+            [ { text = "South"
+              , destination = "Statue Room"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Hallway Three"
+      , intro = "A hallway."
+      , surroundings = "This hallway is quite large. There's a locked door to the North with a plaque that reads \"Servants' Quarters\"."
+      , surroundingsWhenItemUsed = Just "This hallway is quite large. The door to the servants' quarters is unlocked."
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Servants' Quarters"
+              , unlockedWith = Just [ "Small Key" ]
+              }
+            , { text = "West"
+              , destination = "Statue Room"
+              , unlockedWith = Nothing
+              }
+            , { text = "East"
+              , destination = "Stairway Two"
+              , unlockedWith = Nothing
+              }
+            , { text = "South"
+              , destination = "Garage"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Garage"
+      , intro = "A large garage."
+      , surroundings = "The garage is empty, apart from a few tools. Perhaps one of them could be of some use."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Just "The garage is empty, apart from a few tools."
+      , item = Just "Crowbar"
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Hallway Three"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Servants' Quarters"
+      , intro = "The servants' quarters"
+      , surroundings = "It's actually pretty nice in here. For some reason, the head of a statue is sitting on a table in the corner."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Just "It's actaully pretty nice in here. But who were these people serving?"
+      , item = Nothing
+      , availableDirections =
+            [ { text = "West"
+              , destination = "Servants' Bathroom"
+              , unlockedWith = Nothing
+              }
+            , { text = "South"
+              , destination = "Hallway Three"
+              , unlockedWith = Just [ "Small Key" ]
+              }
+            ]
+      }
+    , { name = "Servants' Bathroom"
+      , intro = "The servants' bathroom"
+      , surroundings = "There's not a lot to see in here."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "East"
+              , destination = "Servants' Quarters"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Stairway Two"
+      , intro = "A stairway."
+      , surroundings = "A sturdy-looking staircase sits in a dimly-lit room."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "Upstairs"
+              , destination = "Upstairs Stairway Two"
+              , unlockedWith = Nothing
+              }
+            , { text = "West"
+              , destination = "Hallway Three"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Basement Stairway"
+      , intro = "The basement."
+      , surroundings = "It's cold. And dark."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "Upstairs"
+              , destination = "Utility Room"
+              , unlockedWith = Nothing
+              }
+            , { text = "West"
+              , destination = "Basement Storage"
+              , unlockedWith = Nothing
+              }
+            , { text = "East"
+              , destination = "Basement Storage Two"
+              , unlockedWith = Nothing
+              }
+            , { text = "South"
+              , destination = "Basement Wine Cellar"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Basement Storage"
+      , intro = "A storage room."
+      , surroundings = "There are a few crates down here. Probably nothing too important in them though. There's a door to the North, but it doesn't seem to open from this side."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "East"
+              , destination = "Basement Stairway"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Basement Storage Two"
+      , intro = "A small storage room."
+      , surroundings = "There's a metal handle on the ground"
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Just "There's nothing to see here."
+      , item = Just "Handle"
+      , availableDirections =
+            [ { text = "West"
+              , destination = "Basement Stairway"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Basement Item Room"
+      , intro = "A room full of boxes."
+      , surroundings = "Amongst the boxes lies a small key."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Just "There's nothing interesting in here any more."
+      , item = Just "Small Key"
+      , availableDirections =
+            [ { text = "South"
+              , destination = "Basement Storage"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Basement Waste Disposal"
+      , intro = "Ugh, it stinks down here!"
+      , surroundings = "The ground is covered in a slimy, horrible, sludge. There is a door to the East."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "East"
+              , destination = "Basement Item Room"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Basement Wine Cellar"
+      , intro = "A gigantic wine cellar."
+      , surroundings = "Amazingly, every space is filled, except for one."
+      , surroundingsWhenItemUsed = Just "One of the racks has moved, revealing a hidden doorway."
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "North"
+              , destination = "Basement Stairway"
+              , unlockedWith = Nothing
+              }
+            , { text = "West"
+              , destination = "Basement Lab Entrance"
+              , unlockedWith = Just [ "Wine Bottle" ]
+              }
+            ]
+      }
+    , { name = "Basement Lab Entrance"
+      , intro = "An entrance...to a laboratory? This is very unusual. There appears to be an entrance to a laboratory here! Unfortunately, as you enter, you succumb to a strange feeling. You're losing conciousness. As you fall to your knees, you can almost make out a voice nearby..."
+      , surroundings = "To be continued."
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "Roll Credits"
+              , destination = "Credits"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
     ]
