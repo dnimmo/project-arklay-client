@@ -6,7 +6,8 @@ import Constants
 
 
 type CssClasses
-    = Button
+    = LockedRoom
+    | Button
     | Hidden
 
 
@@ -42,6 +43,8 @@ css =
             [ marginBottom (Css.rem 2)
             , marginTop (Css.rem 2)
             ]
+        , class LockedRoom
+            [ textDecoration lineThrough ]
         , class Hidden
             [ display none ]
         , class Button

@@ -1,7 +1,7 @@
 module Inventory exposing (..)
 
 
-type alias Inventory =
+type alias Model =
     List Item
 
 
@@ -13,7 +13,12 @@ type alias Item =
     }
 
 
-addItem : String -> Inventory -> Inventory
+initModel : Model
+initModel =
+    []
+
+
+addItem : String -> Model -> Model
 addItem itemToAdd inventory =
     (getItem itemToAdd) :: inventory
 

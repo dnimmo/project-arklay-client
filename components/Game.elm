@@ -11,7 +11,7 @@ import Inventory
 
 type alias Model =
     { room : Room
-    , inventory : List Item
+    , inventory : Inventory.Model
     }
 
 
@@ -31,7 +31,7 @@ type Msg
 initModel : Model
 initModel =
     { room = Map.startingRoom
-    , inventory = []
+    , inventory = Inventory.initModel
     }
 
 
@@ -47,7 +47,12 @@ renderRoomInfo model =
 
 renderDirectionOptions : Map.Direction -> Html Msg
 renderDirectionOptions direction =
-    li [ onClick (ChangeRoom direction.destination) ] [ text direction.text ]
+    case direction.unlockedWith of
+        Just requiredItems ->
+            li [ class "LockedRoom" ] [ text direction.text ]
+
+        Nothing ->
+            li [ onClick (ChangeRoom direction.destination) ] [ text direction.text ]
 
 
 renderDirections : List Map.Direction -> Html Msg
