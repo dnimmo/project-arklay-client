@@ -46,21 +46,34 @@ renderRoomInfo model =
         ]
 
 
-renderDirectionOptions : Map.Direction -> Html Msg
-renderDirectionOptions direction =
+roomIsUnlocked : List String -> List Item -> Bool
+roomIsUnlocked unlockRequirements itemsUsed =
+    True
+
+
+roomIsOpen : Map.Direction -> List Item -> Bool
+roomIsOpen direction itemsUsed =
     case direction.unlockedWith of
         Just requiredItems ->
-            li [ class "LockedRoom" ] [ text direction.text ]
+            roomIsUnlocked requiredItems itemsUsed
 
         Nothing ->
-            li [ class "Selectable", onClick (ChangeRoom direction.destination) ] [ text direction.text ]
+            True
 
 
-renderDirections : List Map.Direction -> Html Msg
-renderDirections availableDirections =
+renderDirectionOptions : Map.Direction -> List Item -> Html Msg
+renderDirectionOptions direction itemsUsed =
+    if roomIsOpen direction itemsUsed then
+        li [ class "Selectable", onClick (ChangeRoom direction.destination) ] [ text direction.text ]
+    else
+        li [ class "LockedRoom" ] [ text direction.text ]
+
+
+renderDirections : List Map.Direction -> List Item -> Html Msg
+renderDirections availableDirections itemsUsed =
     ul [ class "DirectionOptions" ]
         (availableDirections
-            |> List.map renderDirectionOptions
+            |> List.map (\direction -> renderDirectionOptions direction itemsUsed)
         )
 
 
@@ -84,7 +97,7 @@ update msg model =
 
         InventoryMsg msg ->
             { model
-                | inventory = Inventory.update (msg) model.inventory
+                | inventory = Inventory.update msg model.inventory
             }
 
 
@@ -92,7 +105,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ renderRoomInfo model
-        , renderDirections model.room.availableDirections
+        , renderDirections model.room.availableDirections model.inventory.itemsUsed
         , p [ class "Selectable", onClick (ExamineRoom model.room) ]
             [ text SiteText.examine ]
         , Html.map InventoryMsg (Inventory.view model.inventory)
