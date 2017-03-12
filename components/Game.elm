@@ -48,11 +48,11 @@ renderRoomInfo model =
 
 roomIsUnlocked : List String -> List Item -> Bool
 roomIsUnlocked unlockRequirements itemsUsed =
-    True
-
-
-
--- ^ This obviously should not always return true! Sort this out
+    let
+        requirementsMet =
+            List.map (\requiredItem -> List.member requiredItem (List.map (\item -> item.name) itemsUsed)) unlockRequirements
+    in
+        List.all (\result -> result == True) requirementsMet
 
 
 roomIsOpen : Map.Direction -> List Item -> Bool
