@@ -59,11 +59,16 @@ list =
     , { name = "Handle"
       , description = "A metal handle. It looks like it's for some sort of trap door."
       , messageWhenUsed = "You have attached the handle"
-      , messageWhenNotUsed = "I'm not sure where I could put this"
+      , messageWhenNotUsed = "I'm not sure where I could put this."
       }
     , { name = "Small Key"
       , description = "A small key, with a tag that reads \"S.Q.\""
       , messageWhenUsed = "You unlock the door"
-      , messageWhenNotUsed = "It doesn't look like this can be used here"
+      , messageWhenNotUsed = "It doesn't look like this can be used here."
+      }
+    , { name = "Wolf Crest"
+      , description = "A crest with a wolf on it. Very unusual."
+      , messageWhenUsed = "You place the crest into the door"
+      , messageWhenNotUsed = "What could this be for?"
       }
     ]
