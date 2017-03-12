@@ -6,7 +6,10 @@ import Constants
 
 
 type CssClasses
-    = Selectable
+    = DirectionOptions
+    | West
+    | East
+    | Selectable
     | LockedRoom
     | Button
     | Hidden
@@ -43,6 +46,26 @@ css =
         , h2
             [ marginBottom (Css.rem 2)
             , marginTop (Css.rem 2)
+            ]
+        , li
+            [ listStyle none ]
+        , class DirectionOptions
+            [ borderBottom (Css.rem 0)
+            , borderColor (Css.hex "ffffff")
+            , borderLeft (Css.rem 0)
+            , borderRight (Css.rem 0)
+            , borderStyle solid
+            , marginTop (Css.rem 5)
+            , paddingRight (Css.rem 4)
+            , paddingTop (Css.rem 2)
+            ]
+        , class West
+            [ display inlineBlock
+            , marginRight (Css.rem 12)
+            ]
+        , class East
+            [ display inlineBlock
+            , marginLeft (Css.rem 12)
             ]
         , class Selectable
             [ cursor pointer ]

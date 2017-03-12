@@ -68,9 +68,9 @@ roomIsOpen direction itemsUsed =
 renderDirectionOptions : Map.Direction -> List Item -> Html Msg
 renderDirectionOptions direction itemsUsed =
     if roomIsOpen direction itemsUsed then
-        li [ class "Selectable", onClick (ChangeRoom direction.destination) ] [ text direction.text ]
+        li [ class direction.text, class "Selectable", onClick (ChangeRoom direction.destination) ] [ text direction.text ]
     else
-        li [ class "LockedRoom" ] [ text direction.text ]
+        li [ class direction.text, class "LockedRoom" ] [ text direction.text ]
 
 
 renderDirections : List Map.Direction -> List Item -> Html Msg
@@ -110,7 +110,10 @@ view model =
     div []
         [ renderRoomInfo model
         , renderDirections model.room.availableDirections model.inventory.itemsUsed
-        , p [ class "Selectable", onClick (ExamineRoom model.room) ]
-            [ text SiteText.examine ]
+        , if not (model.room.name == "Start") then
+            p [ class "Selectable", onClick (ExamineRoom model.room) ]
+                [ text SiteText.examine ]
+          else
+            span [] []
         , Html.map InventoryMsg (Inventory.view model.inventory)
         ]

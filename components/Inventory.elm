@@ -112,6 +112,4 @@ items =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ renderItems model.items
-        ]
+    renderItems model.items
