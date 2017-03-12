@@ -332,7 +332,7 @@ list =
       }
     , { name = "Upstairs Third Bedroom"
       , intro = "A bedroom."
-      , surroundings = "It's surprisingly messy. It looksl ike something terrible happened in here."
+      , surroundings = "It's surprisingly messy. It looks like something terrible happened in here."
       , surroundingsWhenItemUsed = Nothing
       , surroundingsWhenItemPickedUp = Nothing
       , item = Nothing
