@@ -233,7 +233,7 @@ list =
       , availableDirections =
             [ { text = "North"
               , destination = "Upstairs Aquarium"
-              , unlockedWith = Just [ "crowbar" ]
+              , unlockedWith = Just [ "Crowbar" ]
               }
             , { text = "West"
               , destination = "Upstairs Art Gallery"
