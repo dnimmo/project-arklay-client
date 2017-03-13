@@ -6,11 +6,17 @@ import Constants
 
 
 type CssClasses
-    = DirectionOptions
+    = RoomDescription
+    | DirectionOptions
+    | North
+    | South
+    | Upstairs
+    | Downstairs
     | West
     | East
     | Selectable
     | LockedRoom
+    | Examine
     | Button
     | Hidden
 
@@ -49,6 +55,8 @@ css =
             ]
         , li
             [ listStyle none ]
+        , class RoomDescription
+            [ minHeight (Css.vh 25) ]
         , class DirectionOptions
             [ borderBottom (Css.rem 0)
             , borderColor (Css.hex "ffffff")
@@ -59,9 +67,33 @@ css =
             , paddingRight (Css.rem 4)
             , paddingTop (Css.rem 2)
             ]
+        , class North
+            [ adjacentSiblings
+                [ class East
+                    [ marginLeft (Css.rem 12) ]
+                , class South
+                    [ marginTop (Css.rem 4) ]
+                , class Downstairs
+                    [ marginTop (Css.rem 4) ]
+                ]
+            ]
+        , class Upstairs
+            [ adjacentSiblings
+                [ class East
+                    [ marginLeft (Css.rem 12) ]
+                , class South
+                    [ marginTop (Css.rem 4) ]
+                , class Downstairs
+                    [ marginTop (Css.rem 4) ]
+                ]
+            ]
         , class West
             [ display inlineBlock
             , marginRight (Css.rem 12)
+            , adjacentSiblings
+                [ class East
+                    [ marginLeft (Css.rem 0) ]
+                ]
             ]
         , class East
             [ display inlineBlock
@@ -71,6 +103,8 @@ css =
             [ cursor pointer ]
         , class LockedRoom
             [ textDecoration lineThrough ]
+        , class Examine
+            [ marginTop (Css.rem 4) ]
         , class Hidden
             [ display none ]
         , class Button
