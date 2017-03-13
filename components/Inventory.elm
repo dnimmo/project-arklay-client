@@ -29,6 +29,11 @@ initModel =
     }
 
 
+itemsAlreadyTouched : Model -> List String
+itemsAlreadyTouched inventory =
+    List.map (\item -> item.name) inventory.items ++ List.map (\item -> item.name) inventory.itemsUsed
+
+
 update : Msg -> Model -> Model
 update msg model =
     case msg of
