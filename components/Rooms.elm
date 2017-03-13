@@ -563,7 +563,7 @@ list =
               }
             ]
       }
-    , { name = "Simming Pool"
+    , { name = "Swimming Pool"
       , intro = "An olympic-sized swimming pool"
       , surroundings = "This really is incredible. The smell of chlorine fills the air, and the warmth of the pool can be felt against your skin."
       , surroundingsWhenItemUsed = Nothing
@@ -626,8 +626,8 @@ list =
     , { name = "Statue Room"
       , intro = "A room full of statues."
       , surroundings = "One of them appears to have been beheaded."
-      , surroundingsWhenItemUsed = Nothing
-      , surroundingsWhenItemPickedUp = Just "At least they aren't mannequins, but statues aren't much better. One of them has moved aside, revealing a hidden doorway."
+      , surroundingsWhenItemUsed = Just "At least they aren't mannequins, but statues aren't much better. One of them has moved aside, revealing a hidden doorway."
+      , surroundingsWhenItemPickedUp = Nothing
       , item = Nothing
       , availableDirections =
             [ { text = "North"
