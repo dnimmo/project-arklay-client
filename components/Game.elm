@@ -222,7 +222,7 @@ view model =
           else
             Html.map InventoryMsg (Inventory.view model.inventory)
         , if (not (model.room.name == "Start") && model.inventory.open == False) then
-            div []
+            div [ class "Separate" ]
                 [ p [ class "Selectable Examine", onClick (ExamineRoom model.room) ]
                     [ text SiteText.examine ]
                 , Html.map InventoryMsg (Inventory.view model.inventory)

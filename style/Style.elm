@@ -19,6 +19,7 @@ type CssClasses
     | Examine
     | Button
     | Hidden
+    | Separate
 
 
 css =
@@ -132,4 +133,6 @@ css =
                 , transform (scale 1.1)
                 ]
             ]
+        , class Separate
+            [ marginTop (Css.rem 10) ]
         ]

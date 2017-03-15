@@ -136,7 +136,7 @@ view model =
     if model.open == True then
         div [ class "UserOptions" ]
             [ renderItems model.items
-            , p [ class "Selectable Inventory", onClick CloseInventory ]
+            , p [ class "Selectable Inventory Separate", onClick CloseInventory ]
                 [ text SiteText.closeInventory ]
             ]
     else
