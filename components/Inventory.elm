@@ -5,11 +5,13 @@ import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 import List
 import Items
+import SiteText
 
 
 type alias Model =
     { items : List Item
     , itemsUsed : List Item
+    , open : Bool
     }
 
 
@@ -20,12 +22,15 @@ type alias Item =
 type Msg
     = AddItem String
     | UseItem Item
+    | OpenInventory
+    | CloseInventory
 
 
 initModel : Model
 initModel =
     { items = []
     , itemsUsed = []
+    , open = False
     }
 
 
@@ -45,12 +50,23 @@ update msg model =
         UseItem item ->
             useItem item model
 
+        OpenInventory ->
+            { model
+                | open = True
+            }
+
+        CloseInventory ->
+            { model
+                | open = False
+            }
+
 
 useItem : Item -> Model -> Model
 useItem itemUsed model =
     { model
         | items = List.filter (\item -> item /= itemUsed) model.items
         , itemsUsed = itemUsed :: model.itemsUsed
+        , open = False
     }
 
 
@@ -117,4 +133,12 @@ items =
 
 view : Model -> Html Msg
 view model =
-    renderItems model.items
+    if model.open == True then
+        div [ class "UserOptions" ]
+            [ renderItems model.items
+            , p [ class "Selectable Inventory", onClick CloseInventory ]
+                [ text SiteText.closeInventory ]
+            ]
+    else
+        p [ class "Selectable Inventory", onClick OpenInventory ]
+            [ text SiteText.openInventory ]

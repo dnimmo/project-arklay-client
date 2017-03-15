@@ -171,7 +171,7 @@ renderDirectionOptions direction itemsUsed =
 
 renderDirections : List Map.Direction -> List Item -> Html Msg
 renderDirections availableDirections itemsUsed =
-    ul [ class "DirectionOptions" ]
+    ul [ class "UserOptions" ]
         (availableDirections
             |> List.map (\direction -> renderDirectionOptions direction itemsUsed)
         )
@@ -217,11 +217,16 @@ view : Model -> Html Msg
 view model =
     div []
         [ renderRoomInfo model
-        , renderDirections model.room.availableDirections model.inventory.itemsUsed
-        , if not (model.room.name == "Start") then
-            p [ class "Selectable Examine", onClick (ExamineRoom model.room) ]
-                [ text SiteText.examine ]
+        , if model.inventory.open == False then
+            renderDirections model.room.availableDirections model.inventory.itemsUsed
+          else
+            Html.map InventoryMsg (Inventory.view model.inventory)
+        , if (not (model.room.name == "Start") && model.inventory.open == False) then
+            div []
+                [ p [ class "Selectable Examine", onClick (ExamineRoom model.room) ]
+                    [ text SiteText.examine ]
+                , Html.map InventoryMsg (Inventory.view model.inventory)
+                ]
           else
             span [] []
-        , Html.map InventoryMsg (Inventory.view model.inventory)
         ]

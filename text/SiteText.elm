@@ -15,3 +15,11 @@ startButton =
 
 examine =
     "Examine room"
+
+
+openInventory =
+    "Inventory"
+
+
+closeInventory =
+    "Close"
