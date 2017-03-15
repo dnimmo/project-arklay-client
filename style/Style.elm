@@ -7,7 +7,7 @@ import Constants
 
 type CssClasses
     = RoomDescription
-    | DirectionOptions
+    | UserOptions
     | North
     | South
     | Upstairs
@@ -34,6 +34,8 @@ css =
             , fontSize (Css.rem 2)
             , letterSpacing (Css.rem 0.04)
             , lineHeight (Css.rem 3.5)
+            , margin (px 0)
+            , padding (px 0)
             , property "transition" Constants.transition
             ]
         , main_
@@ -53,18 +55,19 @@ css =
             [ marginBottom (Css.rem 2)
             , marginTop (Css.rem 2)
             ]
+        , ul [ padding (px 0) ]
         , li
             [ listStyle none ]
         , class RoomDescription
             [ minHeight (Css.vh 25) ]
-        , class DirectionOptions
+        , class UserOptions
             [ borderBottom (Css.rem 0)
             , borderColor (Css.hex "ffffff")
             , borderLeft (Css.rem 0)
             , borderRight (Css.rem 0)
             , borderStyle solid
             , marginTop (Css.rem 5)
-            , paddingRight (Css.rem 4)
+            , paddingLeft (px 0)
             , paddingTop (Css.rem 2)
             ]
         , class North
