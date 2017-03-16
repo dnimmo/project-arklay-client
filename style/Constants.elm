@@ -9,7 +9,11 @@ colourPalette1 =
 
 
 colourPalette2 =
-    (hex "abb2bf")
+    hex "abb2bf"
+
+
+colourPalette3 =
+    hex "67707b"
 
 
 transition =

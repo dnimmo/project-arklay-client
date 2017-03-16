@@ -15,7 +15,7 @@ type CssClasses
     | West
     | East
     | Selectable
-    | LockedRoom
+    | NotSelectable
     | Examine
     | Button
     | Hidden
@@ -105,8 +105,10 @@ css =
             ]
         , class Selectable
             [ cursor pointer ]
-        , class LockedRoom
-            [ textDecoration lineThrough ]
+        , class NotSelectable
+            [ color Constants.colourPalette3
+            , textDecoration lineThrough
+            ]
         , class Examine
             [ marginTop (Css.rem 4) ]
         , class Hidden
