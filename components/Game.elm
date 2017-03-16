@@ -196,10 +196,19 @@ update msg model =
                             { model
                                 | inventory = Inventory.update (Inventory.AddItem item) model.inventory
                             }
+
+                        itemAlreadyPickedUp =
+                            itemHasBeenPickedUp (Just item) model.inventory
+
+                        messageToDisplay =
+                            if not itemAlreadyPickedUp then
+                                Just (item ++ " has been added to your inventory")
+                            else
+                                Just ("This was where I found the " ++ item)
                     in
                         { modelWithNewItem
                             | room = getLatestRoomInfo modelWithNewItem.room modelWithNewItem.inventory
-                            , displayedMessage = Just (item ++ " has been added to your inventory")
+                            , displayedMessage = messageToDisplay
                         }
 
                 Nothing ->

@@ -6,7 +6,8 @@ import Constants
 
 
 type CssClasses
-    = RoomDescription
+    = IntroAnimation
+    | RoomDescription
     | UserOptions
     | North
     | South
@@ -59,8 +60,16 @@ css =
         , ul [ padding (px 0) ]
         , li
             [ listStyle none ]
+        , class IntroAnimation
+            [ property "animation" "fadeIn 0.3s linear" ]
         , class RoomDescription
-            [ minHeight (Css.vh 25) ]
+            [ minHeight (Css.vh 25)
+            , children
+                [ p
+                    [ property "animation" "fadeIn 0.3s linear"
+                    ]
+                ]
+            ]
         , class UserOptions
             [ borderBottom (Css.rem 0)
             , borderColor (Css.hex "ffffff")
@@ -70,6 +79,7 @@ css =
             , marginTop (Css.rem 5)
             , paddingLeft (px 0)
             , paddingTop (Css.rem 2)
+            , property "animation" "fadeIn 0.3s linear"
             ]
         , class North
             [ adjacentSiblings

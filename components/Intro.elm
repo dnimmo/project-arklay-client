@@ -9,7 +9,7 @@ import Style exposing (..)
 view : Html msg
 view =
     div
-        []
+        [ class "IntroAnimation" ]
         [ h1 []
             [ text SiteText.header
             ]
