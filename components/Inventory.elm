@@ -133,12 +133,14 @@ items =
 
 view : Model -> Html Msg
 view model =
-    if model.open == True then
+    if model.open == True && (List.length model.items) > 0 then
         div [ class "UserOptions" ]
             [ renderItems model.items
             , p [ class "Selectable Inventory Separate", onClick CloseInventory ]
                 [ text SiteText.closeInventory ]
             ]
+    else if (List.length model.items) == 0 then
+        p [ class "NotSelectable Inventory" ] [ text SiteText.openInventory ]
     else
         p [ class "Selectable Inventory", onClick OpenInventory ]
             [ text SiteText.openInventory ]

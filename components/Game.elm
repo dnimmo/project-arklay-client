@@ -12,6 +12,7 @@ import Inventory
 type alias Model =
     { room : Room
     , inventory : Inventory.Model
+    , displayedMessage : Maybe String
     }
 
 
@@ -41,6 +42,7 @@ initModel : Model
 initModel =
     { room = Map.startingRoom
     , inventory = Inventory.initModel
+    , displayedMessage = Nothing
     }
 
 
@@ -166,7 +168,7 @@ renderDirectionOptions direction itemsUsed =
     if roomIsOpen direction itemsUsed then
         li [ class direction.text, class "Selectable", onClick (ChangeRoom direction.destination) ] [ text direction.text ]
     else
-        li [ class direction.text, class "LockedRoom" ] [ text direction.text ]
+        li [ class direction.text, class "NotSelectable" ] [ text direction.text ]
 
 
 renderDirections : List Map.Direction -> List Item -> Html Msg
@@ -183,6 +185,7 @@ update msg model =
         ChangeRoom roomToChangeTo ->
             { model
                 | room = getLatestRoomInfo (Map.getRoom roomToChangeTo) model.inventory
+                , displayedMessage = Nothing
             }
 
         ExamineRoom currentRoom ->
@@ -196,10 +199,13 @@ update msg model =
                     in
                         { modelWithNewItem
                             | room = getLatestRoomInfo modelWithNewItem.room modelWithNewItem.inventory
+                            , displayedMessage = Just (item ++ " has been added to your inventory")
                         }
 
                 Nothing ->
-                    model
+                    { model
+                        | displayedMessage = Just "There is nothing useful here"
+                    }
 
         InventoryMsg msg ->
             let
@@ -223,8 +229,13 @@ view model =
             Html.map InventoryMsg (Inventory.view model.inventory)
         , if (not (model.room.name == "Start") && model.inventory.open == False) then
             div [ class "Separate" ]
-                [ p [ class "Selectable Examine", onClick (ExamineRoom model.room) ]
-                    [ text SiteText.examine ]
+                [ case model.displayedMessage of
+                    Just message ->
+                        p [] [ text message ]
+
+                    Nothing ->
+                        p [ class "Selectable Examine", onClick (ExamineRoom model.room) ]
+                            [ text SiteText.examine ]
                 , Html.map InventoryMsg (Inventory.view model.inventory)
                 ]
           else
