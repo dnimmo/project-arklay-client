@@ -16,9 +16,9 @@
   "author": "David Nimmo <dnimmo@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dnimmo/project-arklay-client/issues"
+    "url": "https://github.com/dnimmo/project-arklay-v2/issues"
   },
-  "homepage": "https://github.com/dnimmo/project-arklay-client#readme",
+  "homepage": "https://github.com/dnimmo/project-arklay-v2#readme",
   "devDependencies": {
     "express": "^4.14.1"
   }
