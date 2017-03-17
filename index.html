@@ -13,6 +13,19 @@
           content='#323232'/>
     <meta name='description'
           content='An old-school text adventure game that you can play in your browser'>
+    <style>
+      @keyframes fadeIn {
+        0% { opacity: 0.25 };
+        100% { opacity: 1 };
+      }
+
+      @webkit-keyframes fadeIn {
+        0% { opacity: 0.25 };
+        100% { opacity: 1 };
+      }
+    </style>
+    <link rel='stylesheet'
+      href='arklay.css'>
     <link rel='author'
           href='https://plus.google.com/+DavidNimmo/posts'/>
     <link href='http://fonts.googleapis.com/css?family=PT+Serif'
@@ -20,8 +33,12 @@
           type='text/css'>
   </head>
   <body>
-    <main id='app'>
+    <main id="elm-placeholder">
     </main>
-    <script src="bundle.js"></script>
+
+    <script src='arklay.js'></script>
+    <script>
+      Elm.Main.embed(document.getElementById('elm-placeholder'))
+    </script>
   </body>
 </html>
