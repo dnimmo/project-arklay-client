@@ -13,7 +13,7 @@ list : List Item
 list =
     [ { name = "Lion Crest"
       , description = "A crest, with a lion's head on the front."
-      , messageWhenUsed = "You place the crest into the door."
+      , messageWhenUsed = "You place the crest into the door"
       , messageWhenNotUsed = "Cool lion, but what could this be for?"
       }
     , { name = "Wine Bottle"
@@ -29,12 +29,12 @@ list =
     , { name = "Sheet Music"
       , description = "Sheet music for Beethoven's Piano Sonata No. 14."
       , messageWhenUsed = "You play the piano"
-      , messageWhenNotUsed = "An excellent piece of music. Though I'm not sure why I decided to steal it."
+      , messageWhenNotUsed = "An excellent piece of music. Though I'm not sure why I decided to steal it"
       }
     , { name = "Moose Head"
       , description = "A moose's head. Its cold, dead eyes stare at you, looking lost and lonely."
       , messageWhenUsed = "Ah, that's better"
-      , messageWhenNotUsed = "I will not rest until this is back where it belongs."
+      , messageWhenNotUsed = "I will not rest until this is back where it belongs"
       }
     , { name = "Keycode"
       , description = "A piece of paper with \"2407\" written on it."
@@ -64,7 +64,7 @@ list =
     , { name = "Small Key"
       , description = "A small key, with a tag that reads \"S.Q.\""
       , messageWhenUsed = "You unlock the door"
-      , messageWhenNotUsed = "It doesn't look like this can be used here."
+      , messageWhenNotUsed = "It doesn't look like this can be used here"
       }
     , { name = "Wolf Crest"
       , description = "A crest with a wolf on it. Very unusual."
