@@ -1,6 +1,6 @@
 {
-  "name": "project-arklay-client",
-  "version": "2.0.0",
+  "name": "project-arklay-v2",
+  "version": "1.0.0",
   "description": "A web-based text adventure game",
   "main": "app.js",
   "scripts": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dnimmo/project-arklay-client.git"
+    "url": "git+https://github.com/dnimmo/project-arklay-v2.git"
   },
   "author": "David Nimmo <dnimmo@gmail.com>",
   "license": "ISC",
