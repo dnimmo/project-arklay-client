@@ -196,9 +196,9 @@ update msg model =
 
                         messageToDisplay =
                             if not itemAlreadyPickedUp then
-                                Just (item ++ " has been added to your inventory")
+                                Just ("== " ++ item ++ " has been added to your inventory ==")
                             else
-                                Just ("This was where I found the " ++ item)
+                                Just ("== This was where I found the " ++ item ++ " ==")
                     in
                         { modelWithNewItem
                             | room = getLatestRoomInfo modelWithNewItem.room modelWithNewItem.inventory
@@ -223,6 +223,7 @@ update msg model =
                             if List.member item.name (Map.getUseableItems model.room.availableDirections) then
                                 { updatedModel
                                     | room = getLatestRoomInfo model.room updatedModel.inventory
+                                    , displayedMessage = Just ("== " ++ item.messageWhenUsed ++ " ==")
                                 }
                             else
                                 { model
