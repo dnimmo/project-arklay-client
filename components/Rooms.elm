@@ -843,10 +843,19 @@ list =
       , surroundingsWhenItemPickedUp = Nothing
       , item = Nothing
       , availableDirections =
-            [ { text = "Roll Credits"
-              , destination = "Credits"
+            [ { text = "End Game"
+              , destination = "End"
               , unlockedWith = Nothing
               }
             ]
+      }
+    , { name = "End"
+      , intro = "Congratulations!"
+      , surroundings = "Thanks for playing; I'm sorry if this is a bit of an anti-climax, but I'm not really expecting anyone to ever see this message to be honest. If you did, then send me a tweet! @_dnimmo"
+      , surroundingsWhenItemUsed = Nothing
+      , surroundingsWhenItemPickedUp = Nothing
+      , item = Nothing
+      , availableDirections =
+            []
       }
     ]
