@@ -83,27 +83,17 @@ itemCanBeUsed directions =
 
 itemHasBeenUsed : List Direction -> List Item -> Bool
 itemHasBeenUsed directions usedItems =
-    let
-        itemsThatCanBeUsed =
-            List.map
-                (\direction ->
-                    case direction.unlockedWith of
-                        Just items ->
-                            items
-
-                        Nothing ->
-                            []
+    if itemCanBeUsed directions then
+        List.any (\x -> x == True)
+            (List.map
+                (\item ->
+                    Map.getUseableItems directions
+                        |> List.member item.name
                 )
-                directions
-    in
-        if itemCanBeUsed directions then
-            let
-                items =
-                    List.concat (List.map (\direction -> Maybe.withDefault [ "" ] direction.unlockedWith) directions)
-            in
-                List.any (\x -> x == True) (List.map (\item -> List.member item.name items) usedItems)
-        else
-            False
+                usedItems
+            )
+    else
+        False
 
 
 getLatestRoomInfo : Room -> Inventory -> Room
@@ -148,7 +138,11 @@ roomIsUnlocked : List String -> List Item -> Bool
 roomIsUnlocked unlockRequirements itemsUsed =
     let
         requirementsMet =
-            List.map (\requiredItem -> List.member requiredItem (List.map (\item -> item.name) itemsUsed)) unlockRequirements
+            unlockRequirements
+                |> List.map
+                    (\requiredItem ->
+                        List.member requiredItem (List.map (\item -> item.name) itemsUsed)
+                    )
     in
         List.all (\result -> result == True) requirementsMet
 
@@ -222,10 +216,25 @@ update msg model =
                     { model
                         | inventory = Inventory.update msg model.inventory
                     }
+
+                modelToReturn =
+                    case msg of
+                        Inventory.UseItem item ->
+                            if List.member item.name (Map.getUseableItems model.room.availableDirections) then
+                                { updatedModel
+                                    | room = getLatestRoomInfo model.room updatedModel.inventory
+                                }
+                            else
+                                { model
+                                    | inventory = Inventory.update (Inventory.UpdateMessage item.messageWhenNotUsed) model.inventory
+                                }
+
+                        _ ->
+                            { updatedModel
+                                | room = getLatestRoomInfo model.room updatedModel.inventory
+                            }
             in
-                { updatedModel
-                    | room = getLatestRoomInfo model.room updatedModel.inventory
-                }
+                modelToReturn
 
 
 view : Model -> Html Msg
@@ -236,7 +245,7 @@ view model =
             renderDirections model.room.availableDirections model.inventory.itemsUsed
           else
             Html.map InventoryMsg (Inventory.view model.inventory)
-        , if (not (model.room.name == "Start") && model.inventory.open == False) then
+        , if (not (model.room.name == "Start" || model.room.name == "End") && model.inventory.open == False) then
             div [ class "Separate" ]
                 [ case model.displayedMessage of
                     Just message ->

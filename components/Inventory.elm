@@ -12,6 +12,7 @@ type alias Model =
     { items : List Item
     , itemsUsed : List Item
     , open : Bool
+    , messageToDisplay : Maybe String
     }
 
 
@@ -24,6 +25,7 @@ type Msg
     | UseItem Item
     | OpenInventory
     | CloseInventory
+    | UpdateMessage String
 
 
 initModel : Model
@@ -31,6 +33,7 @@ initModel =
     { items = []
     , itemsUsed = []
     , open = False
+    , messageToDisplay = Nothing
     }
 
 
@@ -47,8 +50,12 @@ update msg model =
                 | items = addItem itemName model
             }
 
-        UseItem item ->
-            useItem item model
+        UseItem itemUsed ->
+            { model
+                | items = List.filter (\item -> item /= itemUsed) model.items
+                , itemsUsed = itemUsed :: model.itemsUsed
+                , open = False
+            }
 
         OpenInventory ->
             { model
@@ -58,16 +65,13 @@ update msg model =
         CloseInventory ->
             { model
                 | open = False
+                , messageToDisplay = Nothing
             }
 
-
-useItem : Item -> Model -> Model
-useItem itemUsed model =
-    { model
-        | items = List.filter (\item -> item /= itemUsed) model.items
-        , itemsUsed = itemUsed :: model.itemsUsed
-        , open = False
-    }
+        UpdateMessage message ->
+            { model
+                | messageToDisplay = Just message
+            }
 
 
 checkForItem : String -> List Item -> Maybe Item
@@ -135,7 +139,15 @@ view : Model -> Html Msg
 view model =
     if model.open == True && (List.length model.items) > 0 then
         div [ class "UserOptions" ]
-            [ renderItems model.items
+            [ p []
+                [ case model.messageToDisplay of
+                    Just message ->
+                        text ("== " ++ message ++ " ==")
+
+                    Nothing ->
+                        text "== Inventory =="
+                ]
+            , renderItems model.items
             , p [ class "Selectable Inventory Separate", onClick CloseInventory ]
                 [ text SiteText.closeInventory ]
             ]

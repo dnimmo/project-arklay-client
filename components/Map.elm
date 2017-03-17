@@ -26,6 +26,17 @@ getRoom roomName =
                 errorRoom
 
 
+getUseableItems : List Direction -> List String
+getUseableItems directions =
+    List.concat
+        (List.map
+            (\direction ->
+                Maybe.withDefault [ "" ] direction.unlockedWith
+            )
+            directions
+        )
+
+
 startingRoom : Room
 startingRoom =
     { name = "Start"
