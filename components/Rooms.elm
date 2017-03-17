@@ -167,13 +167,13 @@ list =
       }
     , { name = "Upstairs Stairway Two"
       , intro = "The top of a small staircase. It's eerily quiet here."
-      , surroundings = "There's a single door to the North."
+      , surroundings = "There's a single door to the West."
       , surroundingsWhenItemUsed = Nothing
       , surroundingsWhenItemPickedUp = Nothing
       , item = Nothing
       , availableDirections =
-            [ { text = "North"
-              , destination = "Upstairs Hallway Two"
+            [ { text = "West"
+              , destination = "Upstairs Hallway Four"
               , unlockedWith = Nothing
               }
             , { text = "Downstairs"
@@ -282,12 +282,12 @@ list =
       , surroundingsWhenItemPickedUp = Nothing
       , item = Nothing
       , availableDirections =
-            [ { text = "North"
-              , destination = "Upstairs Stairway Two"
+            [ { text = "West"
+              , destination = "Upstairs Hallway Three"
               , unlockedWith = Nothing
               }
-            , { text = "West"
-              , destination = "Upstairs Hallway Three"
+            , { text = "East"
+              , destination = "Upstairs Stairway Two"
               , unlockedWith = Nothing
               }
             , { text = "South"
