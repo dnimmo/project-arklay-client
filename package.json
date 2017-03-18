@@ -4,7 +4,7 @@
   "description": "A web-based text adventure game",
   "main": "Main.elm",
   "scripts": {
-    "build": "elm make Main.elm --output arklay.js && elm-css style/Stylesheets.elm",
+    "build": "elm make Main.elm --yes --output arklay.js && elm-css style/Stylesheets.elm",
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node server",
     "start": "npm run build && npm run serve"
