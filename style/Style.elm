@@ -41,7 +41,7 @@ css =
             , property "transition" Constants.transition
             ]
         , main_
-            [ marginTop (Css.rem 6)
+            [ marginTop (Css.rem 3)
             , overflow hidden
             , paddingLeft (Css.rem 2)
             , paddingRight (Css.rem 2)
