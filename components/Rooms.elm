@@ -498,7 +498,7 @@ list =
       , surroundingsWhenItemPickedUp = Nothing
       , item = Nothing
       , availableDirections =
-            [ { text = "North"
+            [ { text = "Upstairs"
               , destination = "Upstairs Stairway Three"
               , unlockedWith = Nothing
               }
