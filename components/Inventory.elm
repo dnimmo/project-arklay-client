@@ -39,7 +39,12 @@ initModel =
 
 itemsAlreadyTouched : Model -> List String
 itemsAlreadyTouched inventory =
-    List.map (\item -> item.name) inventory.items ++ List.map (\item -> item.name) inventory.itemsUsed
+    (inventory.items
+        |> List.map (\item -> item.name)
+    )
+        ++ (inventory.itemsUsed
+                |> List.map (\item -> item.name)
+           )
 
 
 update : Msg -> Model -> Model
@@ -76,7 +81,9 @@ update msg model =
 
 checkForItem : String -> List Item -> Maybe Item
 checkForItem itemToCheck itemsList =
-    List.head (List.filter (\item -> item.name == itemToCheck) itemsList)
+    itemsList
+        |> List.filter (\item -> item.name == itemToCheck)
+        |> List.head
 
 
 addItem : String -> Model -> List Item
@@ -115,9 +122,8 @@ renderItem item =
 renderItems : List Item -> Html Msg
 renderItems items =
     ul []
-        (List.map
-            renderItem
-            items
+        (items
+            |> List.map renderItem
         )
 
 

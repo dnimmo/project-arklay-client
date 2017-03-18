@@ -16,7 +16,9 @@ getRoom : String -> Room
 getRoom roomName =
     let
         roomToReturn =
-            List.head (List.filter (\room -> room.name == roomName) rooms)
+            rooms
+                |> List.filter (\room -> room.name == roomName)
+                |> List.head
     in
         case roomToReturn of
             Just room ->
@@ -28,13 +30,12 @@ getRoom roomName =
 
 getUseableItems : List Direction -> List String
 getUseableItems directions =
-    List.concat
-        (List.map
+    directions
+        |> List.map
             (\direction ->
                 Maybe.withDefault [ "" ] direction.unlockedWith
             )
-            directions
-        )
+        |> List.concat
 
 
 startingRoom : Room

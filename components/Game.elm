@@ -78,20 +78,20 @@ hasUnlockRequirements direction =
 
 itemCanBeUsed : List Direction -> Bool
 itemCanBeUsed directions =
-    List.any hasUnlockRequirements directions
+    directions
+        |> List.any hasUnlockRequirements
 
 
 itemHasBeenUsed : List Direction -> List Item -> Bool
 itemHasBeenUsed directions usedItems =
     if itemCanBeUsed directions then
-        List.any (\x -> x == True)
-            (List.map
+        usedItems
+            |> List.map
                 (\item ->
                     Map.getUseableItems directions
                         |> List.member item.name
                 )
-                usedItems
-            )
+            |> List.any (\x -> x == True)
     else
         False
 
@@ -144,7 +144,8 @@ roomIsUnlocked unlockRequirements itemsUsed =
                         List.member requiredItem (List.map (\item -> item.name) itemsUsed)
                     )
     in
-        List.all (\result -> result == True) requirementsMet
+        requirementsMet
+            |> List.all (\result -> result == True)
 
 
 roomIsOpen : Map.Direction -> List Item -> Bool
