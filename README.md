@@ -7,4 +7,4 @@ Project Arklay is a simple text adventure game that you can play by visiting htt
 + Node v4+
 
 # Setup
-Run `npm i && npm run start`. You'll have to install the `Elm` dependencies, but you'll be asked if you want to or not. You're not Zammo, so just say yes.
+Run `npm i && npm run start`.
