@@ -208,7 +208,7 @@ update msg model =
 
                 Nothing ->
                     { model
-                        | displayedMessage = Just "There is nothing useful here"
+                        | displayedMessage = Just ("== " ++ SiteText.emptyRoom ++ " ==")
                     }
 
         InventoryMsg msg ->

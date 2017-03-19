@@ -1,13 +1,14 @@
 {
     "version": "1.0.0",
     "summary": "A simple text adventure game you can play in your browser",
-    "repository": "https://github.com/dnimmo/project-arklay-client.git",
+    "repository": "https://github.com/dnimmo/project-arklay-v2.git",
     "license": "BSD3",
     "source-directories": [
         ".",
+        "./main",
         "./components",
-        "./style",
-        "./text"
+        "./assets",
+        "./assets/style"
     ],
     "exposed-modules": [],
     "dependencies": {

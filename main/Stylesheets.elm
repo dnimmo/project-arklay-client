@@ -10,7 +10,7 @@ port files : CssFileStructure -> Cmd msg
 fileStructure : CssFileStructure
 fileStructure =
     Css.File.toFileStructure
-        [ ( "arklay.css", Css.File.compile [ Style.css ] ) ]
+        [ ( "./main/arklay.css", Css.File.compile [ Style.css ] ) ]
 
 
 main =

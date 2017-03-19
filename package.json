@@ -2,9 +2,9 @@
   "name": "project-arklay-v2",
   "version": "1.0.0",
   "description": "A web-based text adventure game",
-  "main": "Main.elm",
+  "main": "main/Main.elm",
   "scripts": {
-    "build": "elm make Main.elm --yes --output arklay.js && elm-css style/Stylesheets.elm",
+    "build": "elm make main/Main.elm --yes --output main/arklay.js && elm-css main/Stylesheets.elm",
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node server",
     "start": "npm run build && npm run serve"

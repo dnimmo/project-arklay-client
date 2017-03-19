@@ -3,6 +3,6 @@ const app = express()
 const server = require('http').createServer(app)
 const port = process.env.PORT || 80
 
-app.use(express.static('./'))
+app.use(express.static('./main'))
 
 server.listen(port, () => console.log(`Server listening at ${port}`))

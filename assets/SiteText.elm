@@ -23,3 +23,7 @@ openInventory =
 
 closeInventory =
     "Close"
+
+
+emptyRoom =
+    "There is nothing useful here"
