@@ -174,6 +174,31 @@ renderDirections availableDirections itemsUsed =
         )
 
 
+showDirectionsOrInventory : Model -> Html Msg
+showDirectionsOrInventory model =
+    if not model.inventory.open then
+        renderDirections model.room.availableDirections model.inventory.itemsUsed
+    else
+        Html.map InventoryMsg (Inventory.view model.inventory)
+
+
+showExtraRoomOptions : Model -> Html Msg
+showExtraRoomOptions model =
+    if (not (model.room.name == "Start" || model.room.name == "End") && model.inventory.open == False) then
+        div [ class "Separate" ]
+            [ case model.displayedMessage of
+                Just message ->
+                    p [] [ text message ]
+
+                Nothing ->
+                    p [ class "Selectable Examine", onClick (ExamineRoom model.room) ]
+                        [ text SiteText.examine ]
+            , Html.map InventoryMsg (Inventory.view model.inventory)
+            ]
+    else
+        span [] []
+
+
 update : Msg -> Model -> Model
 update msg model =
     case msg of
@@ -243,21 +268,6 @@ view : Model -> Html Msg
 view model =
     div []
         [ renderRoomInfo model
-        , if model.inventory.open == False then
-            renderDirections model.room.availableDirections model.inventory.itemsUsed
-          else
-            Html.map InventoryMsg (Inventory.view model.inventory)
-        , if (not (model.room.name == "Start" || model.room.name == "End") && model.inventory.open == False) then
-            div [ class "Separate" ]
-                [ case model.displayedMessage of
-                    Just message ->
-                        p [] [ text message ]
-
-                    Nothing ->
-                        p [ class "Selectable Examine", onClick (ExamineRoom model.room) ]
-                            [ text SiteText.examine ]
-                , Html.map InventoryMsg (Inventory.view model.inventory)
-                ]
-          else
-            span [] []
+        , showDirectionsOrInventory model
+        , showExtraRoomOptions model
         ]
