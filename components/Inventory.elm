@@ -90,7 +90,9 @@ addItem : String -> Model -> List Item
 addItem itemToAdd model =
     let
         itemAlreadyHeld =
-            checkForItem itemToAdd (model.items ++ model.itemsUsed)
+            model.items
+                ++ model.itemsUsed
+                |> checkForItem itemToAdd
     in
         case itemAlreadyHeld of
             Just item ->
@@ -104,7 +106,8 @@ getItem : String -> Item
 getItem itemName =
     let
         itemToReturn =
-            checkForItem itemName items
+            items
+                |> checkForItem itemName
     in
         case itemToReturn of
             Just item ->
@@ -141,24 +144,40 @@ items =
     Items.list
 
 
-view : Model -> Html Msg
-view model =
-    if model.open == True && (List.length model.items) > 0 then
-        div [ class "UserOptions" ]
-            [ p []
-                [ case model.messageToDisplay of
-                    Just message ->
-                        text ("== " ++ message ++ " ==")
+displayMessage : Model -> Html Msg
+displayMessage model =
+    p []
+        [ case model.messageToDisplay of
+            Just message ->
+                text ("== " ++ message ++ " ==")
 
-                    Nothing ->
-                        text "== Inventory =="
-                ]
-            , renderItems model.items
-            , p [ class "Selectable Inventory Separate", onClick CloseInventory ]
-                [ text SiteText.closeInventory ]
-            ]
-    else if (List.length model.items) == 0 then
+            Nothing ->
+                text "== Inventory =="
+        ]
+
+
+closeButton : Html Msg
+closeButton =
+    p [ class "Selectable Inventory Separate", onClick CloseInventory ]
+        [ text SiteText.closeInventory ]
+
+
+inventoryButton : Model -> Html Msg
+inventoryButton model =
+    if (List.length model.items) == 0 then
         p [ class "NotSelectable Inventory" ] [ text SiteText.openInventory ]
     else
         p [ class "Selectable Inventory", onClick OpenInventory ]
             [ text SiteText.openInventory ]
+
+
+view : Model -> Html Msg
+view model =
+    if model.open == True && (List.length model.items) > 0 then
+        div [ class "UserOptions" ]
+            [ displayMessage model
+            , renderItems model.items
+            , closeButton
+            ]
+    else
+        inventoryButton model
