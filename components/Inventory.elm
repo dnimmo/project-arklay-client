@@ -47,38 +47,6 @@ itemsAlreadyTouched inventory =
            )
 
 
-update : Msg -> Model -> Model
-update msg model =
-    case msg of
-        AddItem itemName ->
-            { model
-                | items = addItem itemName model
-            }
-
-        UseItem itemUsed ->
-            { model
-                | items = List.filter (\item -> item /= itemUsed) model.items
-                , itemsUsed = itemUsed :: model.itemsUsed
-                , open = False
-            }
-
-        OpenInventory ->
-            { model
-                | open = True
-            }
-
-        CloseInventory ->
-            { model
-                | open = False
-                , messageToDisplay = Nothing
-            }
-
-        UpdateMessage message ->
-            { model
-                | messageToDisplay = Just message
-            }
-
-
 checkForItem : String -> List Item -> Maybe Item
 checkForItem itemToCheck itemsList =
     itemsList
@@ -169,6 +137,38 @@ inventoryButton model =
     else
         p [ class "Selectable Inventory", onClick OpenInventory ]
             [ text SiteText.openInventory ]
+
+
+update : Msg -> Model -> Model
+update msg model =
+    case msg of
+        AddItem itemName ->
+            { model
+                | items = addItem itemName model
+            }
+
+        UseItem itemUsed ->
+            { model
+                | items = List.filter (\item -> item /= itemUsed) model.items
+                , itemsUsed = itemUsed :: model.itemsUsed
+                , open = False
+            }
+
+        OpenInventory ->
+            { model
+                | open = True
+            }
+
+        CloseInventory ->
+            { model
+                | open = False
+                , messageToDisplay = Nothing
+            }
+
+        UpdateMessage message ->
+            { model
+                | messageToDisplay = Just message
+            }
 
 
 view : Model -> Html Msg
