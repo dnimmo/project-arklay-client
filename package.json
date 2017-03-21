@@ -7,7 +7,8 @@
     "build": "elm make main/Main.elm --yes --output main/arklay.js && elm-css main/Stylesheets.elm",
     "test": "elm-test tests/Inventory.elm && elm-test tests/Map.elm",
     "serve": "node server",
-    "start": "npm run test && npm run build && npm run serve"
+    "start": "npm run test && npm run build && npm run serve",
+    "start-production": "git pull && npm run test && npm run build && forever restart server.js"
   },
   "repository": {
     "type": "git",
