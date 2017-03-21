@@ -7,7 +7,7 @@
     "build": "elm make main/Main.elm --yes --output main/arklay.js && elm-css main/Stylesheets.elm",
     "test": "elm-test tests/*",
     "serve": "node server",
-    "start": "npm run build && npm run serve"
+    "start": "npm run test && npm run build && npm run serve"
   },
   "repository": {
     "type": "git",
