@@ -5,7 +5,7 @@
   "main": "main/Main.elm",
   "scripts": {
     "build": "elm make main/Main.elm --yes --output main/arklay.js && elm-css main/Stylesheets.elm",
-    "test": "elm-test tests/*",
+    "test": "elm-test tests/Inventory.elm && elm-test tests/Map.elm",
     "serve": "node server",
     "start": "npm run test && npm run build && npm run serve"
   },
