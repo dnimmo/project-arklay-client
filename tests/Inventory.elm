@@ -17,25 +17,16 @@ type alias Item =
 
 mockItem : Item
 mockItem =
-    { name = "Test Item"
-    , description = ""
-    , messageWhenNotUsed = ""
-    , messageWhenUsed = ""
-    }
-
-
-mockItem2 : Item
-mockItem2 =
-    { name = "Test Item 2"
-    , description = ""
-    , messageWhenNotUsed = ""
-    , messageWhenUsed = ""
+    { name = "Moose Head"
+    , description = "A moose's head. Its cold, dead eyes stare at you, looking lost and lonely."
+    , messageWhenUsed = "Ah, that's better"
+    , messageWhenNotUsed = "I will not rest until this is back where it belongs"
     }
 
 
 mockItems : List Item
 mockItems =
-    [ mockItem, mockItem2 ]
+    [ mockItem ]
 
 
 mockInventory : Model
@@ -52,15 +43,15 @@ tests =
                     (itemsAlreadyTouched mockInventory)
         , test "itemsAlreadyTouched returns names of items held" <|
             \() ->
-                Expect.equal [ "Test Item" ]
+                Expect.equal [ "Moose Head" ]
                     (itemsAlreadyTouched { mockInventory | items = [ mockItem ] })
         , test "itemsAlreadyTouched returns names of items used" <|
             \() ->
-                Expect.equal [ "Test Item" ]
+                Expect.equal [ "Moose Head" ]
                     (itemsAlreadyTouched { mockInventory | itemsUsed = [ mockItem ] })
         , test "itemsAlreadyTouched returns the names of both items held and items used" <|
             \() ->
-                Expect.equal [ "Test Item", "Test Item" ]
+                Expect.equal [ "Moose Head", "Moose Head" ]
                     (itemsAlreadyTouched
                         { mockInventory
                             | itemsUsed = [ mockItem ]
@@ -74,7 +65,19 @@ tests =
         , test "checkForItem returns item when requested item name exists" <|
             \() ->
                 Expect.equal (Just mockItem)
-                    (checkForItem "Test Item" mockItems)
+                    (checkForItem "Moose Head" mockItems)
+        , test "addItem adds item to inventory" <|
+            \() ->
+                Expect.equal [ mockItem ]
+                    (addItem "Moose Head" mockInventory)
+        , test "addItem will not add a duplicate item to inventory" <|
+            \() ->
+                Expect.equal [ mockItem ] <|
+                    (addItem "Moose Head" { mockInventory | items = [ mockItem ] })
+        , test "addItem will not an item that has been used already to the inventory" <|
+            \() ->
+                Expect.equal []
+                    (addItem "Moose Head" { mockInventory | itemsUsed = [ mockItem ] })
         ]
 
 
