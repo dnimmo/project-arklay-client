@@ -184,7 +184,7 @@ showDirectionsOrInventory model =
 
 showExtraRoomOptions : Model -> Html Msg
 showExtraRoomOptions model =
-    if (not (model.room.name == "Start" || model.room.name == "End") && model.inventory.open == False) then
+    if not (model.room.name == "Start" || model.room.name == "End") && model.inventory.open == False then
         div [ class "Separate" ]
             [ case model.displayedMessage of
                 Just message ->
