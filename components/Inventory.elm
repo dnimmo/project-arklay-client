@@ -64,7 +64,7 @@ addItem itemToAdd model =
                 model.items
 
             Nothing ->
-                (getItem itemToAdd) :: model.items
+                getItem itemToAdd :: model.items
 
 
 getItem : String -> Item
@@ -102,14 +102,18 @@ items =
 
 displayMessage : Model -> Html Msg
 displayMessage model =
-    p []
-        [ case model.messageToDisplay of
-            Just message ->
-                text ("== " ++ message ++ " ==")
+    let
+        displayMessage =
+            case model.messageToDisplay of
+                Just message ->
+                    "== " ++ message ++ " =="
 
-            Nothing ->
-                text "== Inventory =="
-        ]
+                Nothing ->
+                    "== Inventory =="
+    in
+        p []
+            [ text displayMessage
+            ]
 
 
 closeButton : Html Msg
@@ -120,7 +124,7 @@ closeButton =
 
 inventoryButton : Model -> Html Msg
 inventoryButton model =
-    if (List.length model.items) == 0 then
+    if List.length model.items == 0 then
         p [ class "NotSelectable Inventory" ] [ text SiteText.openInventory ]
     else
         p [ class "Selectable Inventory", onClick OpenInventory ]
@@ -161,7 +165,7 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    if model.open == True && (List.length model.items) > 0 then
+    if model.open == True && List.length model.items > 0 then
         div [ class "UserOptions" ]
             [ displayMessage model
             , renderItems model.items
