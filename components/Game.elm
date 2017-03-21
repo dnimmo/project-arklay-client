@@ -196,7 +196,12 @@ showExtraRoomOptions model =
             , Html.map InventoryMsg (Inventory.view model.inventory)
             ]
     else
-        span [] []
+        displayNothing
+
+
+displayNothing : Html Msg
+displayNothing =
+    text ""
 
 
 update : Msg -> Model -> Model
