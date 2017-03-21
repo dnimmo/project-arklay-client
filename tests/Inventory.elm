@@ -37,22 +37,22 @@ mockInventory =
 tests : Test
 tests =
     describe "Inventory functionality"
-        [ test "itemsAlreadyTouched returns empty list for empty inventory" <|
+        [ test "itemsTouched returns empty list for empty inventory" <|
             \() ->
                 Expect.equal []
-                    (itemsAlreadyTouched mockInventory)
-        , test "itemsAlreadyTouched returns names of items held" <|
+                    (itemsTouched mockInventory)
+        , test "itemsTouched returns names of items held" <|
             \() ->
                 Expect.equal [ "Moose Head" ]
-                    (itemsAlreadyTouched { mockInventory | items = [ mockItem ] })
-        , test "itemsAlreadyTouched returns names of items used" <|
+                    (itemsTouched { mockInventory | items = [ mockItem ] })
+        , test "itemsTouched returns names of items used" <|
             \() ->
                 Expect.equal [ "Moose Head" ]
-                    (itemsAlreadyTouched { mockInventory | itemsUsed = [ mockItem ] })
-        , test "itemsAlreadyTouched returns the names of both items held and items used" <|
+                    (itemsTouched { mockInventory | itemsUsed = [ mockItem ] })
+        , test "itemsTouched returns the names of both items held and items used" <|
             \() ->
                 Expect.equal [ "Moose Head", "Moose Head" ]
-                    (itemsAlreadyTouched
+                    (itemsTouched
                         { mockInventory
                             | itemsUsed = [ mockItem ]
                             , items = [ mockItem ]
