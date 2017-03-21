@@ -21,7 +21,33 @@ type alias Direction =
 
 list : List Room
 list =
-    [ { name = "Entrance"
+    [ { name = "Error"
+      , intro = "You shouldn't be able to get here."
+      , surroundings = "If you have, something has gone wrong, and for that I apologise."
+      , surroundingsWhenItemPickedUp = Nothing
+      , surroundingsWhenItemUsed = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "Start again?"
+              , destination = "Start"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Start"
+      , intro = "It's dark, and cold. You're soaked through. You struggle to remember where you are, let alone how you ended up here. What were you doing again?"
+      , surroundings = "There's a large door in front of you."
+      , surroundingsWhenItemPickedUp = Nothing
+      , surroundingsWhenItemUsed = Nothing
+      , item = Nothing
+      , availableDirections =
+            [ { text = "Enter"
+              , destination = "Entrance"
+              , unlockedWith = Nothing
+              }
+            ]
+      }
+    , { name = "Entrance"
       , intro = "You are in the dim foyer of what appears to be a mansion."
       , surroundings = "There is a grand staircase here, as well as a couple of doors."
       , surroundingsWhenItemPickedUp = Nothing

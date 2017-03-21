@@ -40,36 +40,12 @@ getUseableItems directions =
 
 startingRoom : Room
 startingRoom =
-    { name = "Start"
-    , intro = "It's dark, and cold. You're soaked through. You struggle to remember where you are, let alone how you ended up here. What were you doing again?"
-    , surroundings = "There's a large door in front of you."
-    , surroundingsWhenItemPickedUp = Nothing
-    , surroundingsWhenItemUsed = Nothing
-    , item = Nothing
-    , availableDirections =
-        [ { text = "Enter"
-          , destination = "Entrance"
-          , unlockedWith = Nothing
-          }
-        ]
-    }
+    getRoom "Start"
 
 
 errorRoom : Room
 errorRoom =
-    { name = "Error"
-    , intro = "You shouldn't be able to get here."
-    , surroundings = "If you have, something has gone wrong, and for that I apologise."
-    , surroundingsWhenItemPickedUp = Nothing
-    , surroundingsWhenItemUsed = Nothing
-    , item = Nothing
-    , availableDirections =
-        [ { text = "Start again?"
-          , destination = "Start"
-          , unlockedWith = Nothing
-          }
-        ]
-    }
+    getRoom "Error"
 
 
 rooms : List Room
