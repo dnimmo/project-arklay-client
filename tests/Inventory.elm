@@ -24,6 +24,20 @@ mockItem =
     }
 
 
+mockItem2 : Item
+mockItem2 =
+    { name = "Test Item 2"
+    , description = ""
+    , messageWhenNotUsed = ""
+    , messageWhenUsed = ""
+    }
+
+
+mockItems : List Item
+mockItems =
+    [ mockItem, mockItem2 ]
+
+
 mockInventory : Model
 mockInventory =
     Inventory.initModel
@@ -53,6 +67,14 @@ tests =
                             , items = [ mockItem ]
                         }
                     )
+        , test "checkForItem returns Nothing when no item is found" <|
+            \() ->
+                Expect.equal Nothing
+                    (checkForItem "Something" mockItems)
+        , test "checkForItem returns item when requested item name exists" <|
+            \() ->
+                Expect.equal (Just mockItem)
+                    (checkForItem "Test Item" mockItems)
         ]
 
 
