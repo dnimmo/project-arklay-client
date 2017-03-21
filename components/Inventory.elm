@@ -39,12 +39,9 @@ initModel =
 
 itemsAlreadyTouched : Model -> List String
 itemsAlreadyTouched inventory =
-    (inventory.items
+    inventory.items
+        ++ inventory.itemsUsed
         |> List.map (\item -> item.name)
-    )
-        ++ (inventory.itemsUsed
-                |> List.map (\item -> item.name)
-           )
 
 
 checkForItem : String -> List Item -> Maybe Item
