@@ -21,6 +21,7 @@
   "homepage": "https://github.com/dnimmo/project-arklay-v2#readme",
   "devDependencies": {
     "elm-css": "^0.6.0",
+    "elm-test": "^0.18.2",
     "express": "^4.14.1"
   }
 }
