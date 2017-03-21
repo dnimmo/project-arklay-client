@@ -11,7 +11,12 @@ type alias Item =
 
 list : List Item
 list =
-    [ { name = "Lion Crest"
+    [ { name = "Error"
+      , description = "You shouldn't be able to see this. If you can, something has gone wrong."
+      , messageWhenUsed = ""
+      , messageWhenNotUsed = ""
+      }
+    , { name = "Lion Crest"
       , description = "A crest, with a lion's head on the front."
       , messageWhenUsed = "You place the crest into the door"
       , messageWhenNotUsed = "Cool lion, but what could this be for?"

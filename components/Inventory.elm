@@ -79,7 +79,7 @@ getItem itemName =
                 item
 
             Nothing ->
-                errorItem
+                getItem "Error"
 
 
 renderItem : Item -> Html Msg
@@ -93,15 +93,6 @@ renderItems items =
         (items
             |> List.map renderItem
         )
-
-
-errorItem : Item
-errorItem =
-    { name = "You shouldn't be able to see this. If you can, something has gone wrong."
-    , description = ""
-    , messageWhenUsed = ""
-    , messageWhenNotUsed = ""
-    }
 
 
 items : List Item
