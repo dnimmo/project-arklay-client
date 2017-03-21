@@ -28,8 +28,8 @@ list =
       , surroundingsWhenItemUsed = Nothing
       , item = Nothing
       , availableDirections =
-            [ { text = "Start again?"
-              , destination = "Start"
+            [ { text = "Return"
+              , destination = "Entrance"
               , unlockedWith = Nothing
               }
             ]

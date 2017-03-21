@@ -60,7 +60,7 @@ itemHasBeenPickedUp : Maybe String -> Inventory -> Bool
 itemHasBeenPickedUp item inventory =
     case item of
         Just item ->
-            List.member item (Inventory.itemsAlreadyTouched inventory)
+            List.member item (Inventory.itemsTouched inventory)
 
         Nothing ->
             False
@@ -88,7 +88,7 @@ itemHasBeenUsed directions usedItems =
         usedItems
             |> List.map
                 (\item ->
-                    Map.getUseableItems directions
+                    Map.getUsableItems directions
                         |> List.member item.name
                 )
             |> List.any (\x -> x == True)
@@ -251,7 +251,7 @@ update msg model =
                 modelToReturn =
                     case msg of
                         Inventory.UseItem item ->
-                            if List.member item.name (Map.getUseableItems model.room.availableDirections) then
+                            if List.member item.name (Map.getUsableItems model.room.availableDirections) then
                                 { updatedModel
                                     | room = getLatestRoomInfo model.room updatedModel.inventory
                                     , displayedMessage = Just ("== " ++ item.messageWhenUsed ++ " ==")

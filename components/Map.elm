@@ -28,8 +28,8 @@ getRoom roomName =
                 errorRoom
 
 
-getUseableItems : List Direction -> List String
-getUseableItems directions =
+getUsableItems : List Direction -> List String
+getUsableItems directions =
     directions
         |> List.map
             (\direction ->

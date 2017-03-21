@@ -37,8 +37,8 @@ initModel =
     }
 
 
-itemsAlreadyTouched : Model -> List String
-itemsAlreadyTouched inventory =
+itemsTouched : Model -> List String
+itemsTouched inventory =
     inventory.items
         ++ inventory.itemsUsed
         |> List.map (\item -> item.name)
