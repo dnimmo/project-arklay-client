@@ -4,8 +4,8 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import SiteText
-import List
 import Map
+import List exposing (all, any, map, member)
 import Inventory
 
 
@@ -60,7 +60,7 @@ itemHasBeenPickedUp : Maybe String -> Inventory -> Bool
 itemHasBeenPickedUp item inventory =
     case item of
         Just item ->
-            List.member item (Inventory.itemsTouched inventory)
+            member item (Inventory.itemsTouched inventory)
 
         Nothing ->
             False
@@ -79,7 +79,7 @@ hasUnlockRequirements direction =
 itemCanBeUsed : List Direction -> Bool
 itemCanBeUsed directions =
     directions
-        |> List.any hasUnlockRequirements
+        |> any hasUnlockRequirements
 
 
 itemHasBeenUsed : List Direction -> List Item -> Bool
@@ -89,39 +89,35 @@ itemHasBeenUsed directions usedItems =
             |> List.map
                 (\item ->
                     Map.getUsableItems directions
-                        |> List.member item.name
+                        |> member item.name
                 )
-            |> List.any (\x -> x == True)
+            |> any (\x -> x == True)
     else
         False
 
 
 getLatestRoomInfo : Room -> Inventory -> Room
 getLatestRoomInfo room inventory =
-    let
-        updatedRoom =
-            if (roomHasItem room) && (itemHasBeenPickedUp room.item inventory) then
-                case room.surroundingsWhenItemPickedUp of
-                    Just newSurroundings ->
-                        { room
-                            | surroundings = newSurroundings
-                        }
+    if (roomHasItem room) && (itemHasBeenPickedUp room.item inventory) then
+        case room.surroundingsWhenItemPickedUp of
+            Just newSurroundings ->
+                { room
+                    | surroundings = newSurroundings
+                }
 
-                    Nothing ->
-                        room
-            else if (itemCanBeUsed room.availableDirections) && (itemHasBeenUsed room.availableDirections inventory.itemsUsed) then
-                case room.surroundingsWhenItemUsed of
-                    Just newSurroundings ->
-                        { room
-                            | surroundings = newSurroundings
-                        }
-
-                    Nothing ->
-                        room
-            else
+            Nothing ->
                 room
-    in
-        updatedRoom
+    else if (itemCanBeUsed room.availableDirections) && (itemHasBeenUsed room.availableDirections inventory.itemsUsed) then
+        case room.surroundingsWhenItemUsed of
+            Just newSurroundings ->
+                { room
+                    | surroundings = newSurroundings
+                }
+
+            Nothing ->
+                room
+    else
+        room
 
 
 renderRoomInfo : Model -> Html Msg
@@ -141,11 +137,11 @@ roomIsUnlocked unlockRequirements itemsUsed =
             unlockRequirements
                 |> List.map
                     (\requiredItem ->
-                        List.member requiredItem (List.map (\item -> item.name) itemsUsed)
+                        member requiredItem (List.map (\item -> item.name) itemsUsed)
                     )
     in
         requirementsMet
-            |> List.all (\result -> result == True)
+            |> all (\result -> result == True)
 
 
 roomIsOpen : Map.Direction -> List Item -> Bool
@@ -251,7 +247,7 @@ update msg model =
                 modelToReturn =
                     case msg of
                         Inventory.UseItem item ->
-                            if List.member item.name (Map.getUsableItems model.room.availableDirections) then
+                            if member item.name (Map.getUsableItems model.room.availableDirections) then
                                 { updatedModel
                                     | room = getLatestRoomInfo model.room updatedModel.inventory
                                     , displayedMessage = Just ("== " ++ item.messageWhenUsed ++ " ==")
