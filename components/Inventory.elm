@@ -102,18 +102,16 @@ items =
 
 displayMessage : Model -> Html Msg
 displayMessage model =
-    let
-        displayMessage =
-            case model.messageToDisplay of
-                Just message ->
-                    "== " ++ message ++ " =="
+    p []
+        [ (case model.messageToDisplay of
+            Just message ->
+                "== " ++ message ++ " =="
 
-                Nothing ->
-                    "== Inventory =="
-    in
-        p []
-            [ text displayMessage
-            ]
+            Nothing ->
+                "== Inventory =="
+          )
+            |> text
+        ]
 
 
 closeButton : Html Msg
