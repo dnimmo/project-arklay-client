@@ -163,7 +163,7 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    if model.open == True && length model.items > 0 then
+    if model.open == True then
         div [ class "UserOptions" ]
             [ displayMessage model
             , renderItems model.items
