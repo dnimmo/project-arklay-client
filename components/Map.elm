@@ -1,7 +1,7 @@
 module Map exposing (..)
 
 import Rooms
-import List
+import List exposing (concat, filter, head)
 
 
 type alias Room =
@@ -17,8 +17,8 @@ getRoom roomName =
     let
         roomToReturn =
             rooms
-                |> List.filter (\room -> room.name == roomName)
-                |> List.head
+                |> filter (\room -> room.name == roomName)
+                |> head
     in
         case roomToReturn of
             Just room ->
@@ -35,7 +35,7 @@ getUsableItems directions =
             (\direction ->
                 Maybe.withDefault [ "" ] direction.unlockedWith
             )
-        |> List.concat
+        |> concat
 
 
 startingRoom : Room
