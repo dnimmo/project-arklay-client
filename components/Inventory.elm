@@ -3,7 +3,7 @@ module Inventory exposing (..)
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
-import List
+import List exposing (filter, head, length)
 import Items
 import SiteText
 
@@ -47,8 +47,8 @@ itemsTouched inventory =
 checkForItem : String -> List Item -> Maybe Item
 checkForItem itemToCheck itemsList =
     itemsList
-        |> List.filter (\item -> item.name == itemToCheck)
-        |> List.head
+        |> filter (\item -> item.name == itemToCheck)
+        |> head
 
 
 addItem : String -> Model -> List Item
@@ -122,7 +122,7 @@ closeButton =
 
 inventoryButton : Model -> Html Msg
 inventoryButton model =
-    if List.length model.items == 0 then
+    if length model.items == 0 then
         p [ class "NotSelectable Inventory" ] [ text SiteText.openInventory ]
     else
         p [ class "Selectable Inventory", onClick OpenInventory ]
@@ -139,7 +139,7 @@ update msg model =
 
         UseItem itemUsed ->
             { model
-                | items = List.filter (\item -> item /= itemUsed) model.items
+                | items = filter (\item -> item /= itemUsed) model.items
                 , itemsUsed = itemUsed :: model.itemsUsed
                 , open = False
             }
@@ -163,7 +163,7 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    if model.open == True && List.length model.items > 0 then
+    if model.open == True && length model.items > 0 then
         div [ class "UserOptions" ]
             [ displayMessage model
             , renderItems model.items
