@@ -6,7 +6,8 @@ import Constants
 
 
 type CssClasses
-    = IntroAnimation
+    = MainContainer
+    | IntroAnimation
     | RoomDescription
     | UserOptions
     | North
@@ -52,13 +53,6 @@ css =
             , padding (px 0)
             , property "transition" Constants.transition
             ]
-        , main_
-            [ marginTop (Css.rem 3)
-            , overflow hidden
-            , paddingLeft (Css.rem 2)
-            , paddingRight (Css.rem 2)
-            , textAlign center
-            ]
         , h1
             [ fontSize (Css.rem 4)
             , fontWeight lighter
@@ -82,6 +76,16 @@ css =
                     ]
                 ]
             ]
+        , class MainContainer
+            [ alignItems center
+            , displayFlex
+            , justifyContent center
+            , minHeight (Css.vh 100)
+            , overflow hidden
+            , paddingLeft (Css.rem 2)
+            , paddingRight (Css.rem 2)
+            , textAlign center
+            ]
         , class UserOptions
             [ borderBottom (Css.rem 0)
             , borderColor (Css.hex "ffffff")
@@ -89,6 +93,7 @@ css =
             , borderRight (Css.rem 0)
             , borderStyle solid
             , marginTop (Css.rem 5)
+            , minHeight (Css.vh 15)
             , paddingLeft (px 0)
             , paddingTop (Css.rem 2)
             , property "animation" "fadeIn 0.3s linear"
@@ -96,7 +101,7 @@ css =
         , class North
             [ adjacentSiblings
                 [ class East
-                    [ marginLeft (Css.rem 12) ]
+                    [ marginLeft (Css.rem 16) ]
                 , class South
                     [ marginTop (Css.rem 4) ]
                 , class Downstairs
@@ -106,7 +111,7 @@ css =
         , class Upstairs
             [ adjacentSiblings
                 [ class East
-                    [ marginLeft (Css.rem 12) ]
+                    [ marginLeft (Css.rem 16) ]
                 , class South
                     [ marginTop (Css.rem 4) ]
                 , class Downstairs
@@ -115,7 +120,7 @@ css =
             ]
         , class West
             [ display inlineBlock
-            , marginRight (Css.rem 12)
+            , marginRight (Css.rem 16)
             , adjacentSiblings
                 [ class East
                     [ marginLeft (Css.rem 0) ]
@@ -123,7 +128,7 @@ css =
             ]
         , class East
             [ display inlineBlock
-            , marginLeft (Css.rem 12)
+            , marginLeft (Css.rem 16)
             ]
         , class Selectable
             [ cursor pointer ]
