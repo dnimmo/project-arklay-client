@@ -21,6 +21,18 @@ type CssClasses
     | Button
     | Hidden
     | Separate
+    | FromNorth
+    | FromSouth
+    | FromWest
+    | FromEast
+    | FromEnter
+    | FromUpstairs
+    | FromDownstairs
+    | FromStart
+
+
+
+-- Remember: Animations are defined in Index.html until I find a more sensible solution (or elm-css is updated)
 
 
 css =
@@ -147,4 +159,20 @@ css =
             ]
         , class Separate
             [ marginTop (Css.rem 10) ]
+        , class FromNorth
+            [ property "animation" "slideDown 0.1s linear" ]
+        , class FromSouth
+            [ property "animation" "slideUp 0.1s linear" ]
+        , class FromWest
+            [ property "animation" "slideRight 0.1s linear" ]
+        , class FromEast
+            [ property "animation" "slideLeft 0.1s linear" ]
+        , class FromEnter
+            [ property "animation" "scaleIn 0.5s linear" ]
+        , class FromDownstairs
+            [ property "animation" "slideUp 0.3s linear" ]
+        , class FromUpstairs
+            [ property "animation" "slideDown 0.3s linear" ]
+        , class FromStart
+            [ property "animation" "fadeIn 1s linear" ]
         ]

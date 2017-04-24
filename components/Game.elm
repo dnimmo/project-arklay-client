@@ -13,6 +13,7 @@ type alias Model =
     { room : Room
     , inventory : Inventory.Model
     , displayedMessage : Maybe String
+    , previousDirection : String
     }
 
 
@@ -33,7 +34,7 @@ type alias Item =
 
 
 type Msg
-    = ChangeRoom String
+    = ChangeRoom String String
     | ExamineRoom Room
     | InventoryMsg Inventory.Msg
 
@@ -43,6 +44,7 @@ initModel =
     { room = Map.startingRoom
     , inventory = Inventory.initModel
     , displayedMessage = Nothing
+    , previousDirection = "FromStart"
     }
 
 
@@ -122,7 +124,7 @@ getLatestRoomInfo room inventory =
 
 renderRoomInfo : Model -> Html Msg
 renderRoomInfo model =
-    div [ class "RoomDescription" ]
+    div [ class "RoomDescription", class model.previousDirection ]
         [ p []
             [ text model.room.intro ]
         , p []
@@ -157,7 +159,7 @@ roomIsOpen direction itemsUsed =
 renderDirectionOptions : Map.Direction -> List Item -> Html Msg
 renderDirectionOptions direction itemsUsed =
     if roomIsOpen direction itemsUsed then
-        li [ class direction.text, class "Selectable", onClick (ChangeRoom direction.destination) ] [ text direction.text ]
+        li [ class direction.text, class "Selectable", onClick (ChangeRoom direction.destination direction.text) ] [ text direction.text ]
     else
         li [ class direction.text, class "NotSelectable" ] [ text direction.text ]
 
@@ -203,10 +205,11 @@ displayNothing =
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        ChangeRoom roomToChangeTo ->
+        ChangeRoom roomToChangeTo directionFrom ->
             { model
                 | room = getLatestRoomInfo (Map.getRoom roomToChangeTo) model.inventory
                 , displayedMessage = Nothing
+                , previousDirection = "From" ++ directionFrom
             }
 
         ExamineRoom currentRoom ->
