@@ -5,19 +5,11 @@ import Css.Elements exposing (..)
 
 
 colourPalette1 =
-    hex "000000"
-
-
-
---hex "1d2026"
+    hex "141418"
 
 
 colourPalette2 =
-    hex "ffffff"
-
-
-
---hex "abb2bf"
+    hex "fafafa"
 
 
 colourPalette3 =
