@@ -45,8 +45,8 @@ css =
         , body
             [ backgroundColor Constants.colourPalette1
             , color Constants.colourPalette2
-            , fontFamilies [ "VT323", "monospace" ]
-            , fontSize (Css.rem 3)
+            , fontFamilies [ "Special Elite", "cursive" ]
+            , fontSize (Css.rem 2.2)
             , letterSpacing (Css.rem 0.04)
             , lineHeight (Css.rem 3.5)
             , margin (px 0)
