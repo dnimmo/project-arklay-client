@@ -165,19 +165,19 @@ css =
         , class Separate
             [ marginTop (Css.rem 10) ]
         , class FromNorth
-            [ property "animation" "slideDown 0.1s linear" ]
+            [ property "animation" "slideDown 0.2s linear" ]
         , class FromSouth
-            [ property "animation" "slideUp 0.1s linear" ]
+            [ property "animation" "slideUp 0.2s linear" ]
         , class FromWest
-            [ property "animation" "slideRight 0.1s linear" ]
+            [ property "animation" "slideRight 0.2s linear" ]
         , class FromEast
-            [ property "animation" "slideLeft 0.1s linear" ]
+            [ property "animation" "slideLeft 0.2s linear" ]
         , class FromEnter
-            [ property "animation" "scaleIn 0.5s linear" ]
+            [ property "animation" "scaleIn 0.6s linear" ]
         , class FromDownstairs
-            [ property "animation" "slideUp 0.3s linear" ]
+            [ property "animation" "slideUp 0.4s linear" ]
         , class FromUpstairs
-            [ property "animation" "slideDown 0.3s linear" ]
+            [ property "animation" "slideDown 0.4s linear" ]
         , class FromStart
             [ property "animation" "fadeIn 1s linear" ]
         ]
