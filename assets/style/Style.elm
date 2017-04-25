@@ -45,8 +45,8 @@ css =
         , body
             [ backgroundColor Constants.colourPalette1
             , color Constants.colourPalette2
-            , fontFamilies [ "monospace" ]
-            , fontSize (Css.rem 2)
+            , fontFamilies [ "VT323", "monospace" ]
+            , fontSize (Css.rem 3)
             , letterSpacing (Css.rem 0.04)
             , lineHeight (Css.rem 3.5)
             , margin (px 0)
@@ -54,7 +54,7 @@ css =
             , property "transition" Constants.transition
             ]
         , h1
-            [ fontSize (Css.rem 4)
+            [ fontSize (Css.rem 3.8)
             , fontWeight lighter
             , marginBottom (Css.rem 2)
             , marginTop (Css.rem 2)
@@ -146,7 +146,7 @@ css =
             , borderStyle solid
             , color Constants.colourPalette2
             , display inlineBlock
-            , fontSize (Css.rem 1.4)
+            , fontSize (Css.rem 2.4)
             , letterSpacing (Css.rem 0.07)
             , margin (Css.rem 2)
             , minWidth (Css.rem 8)
