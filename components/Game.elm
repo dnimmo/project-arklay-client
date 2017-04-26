@@ -14,6 +14,7 @@ type alias Model =
     , inventory : Inventory.Model
     , displayedMessage : Maybe String
     , previousDirection : String
+    , examinedRooms : List Room
     }
 
 
@@ -45,6 +46,7 @@ initModel =
     , inventory = Inventory.initModel
     , displayedMessage = Nothing
     , previousDirection = "FromStart"
+    , examinedRooms = []
     }
 
 
@@ -189,7 +191,13 @@ showExtraRoomOptions model =
                     p [] [ text message ]
 
                 Nothing ->
-                    p [ class "Selectable Examine", onClick (ExamineRoom model.room) ]
+                    p
+                        [ if not (member model.room model.examinedRooms) then
+                            class "Selectable Examine"
+                          else
+                            class "Selectable Examine AlreadyExamined"
+                        , onClick (ExamineRoom model.room)
+                        ]
                         [ text SiteText.examine ]
             , Html.map InventoryMsg (Inventory.view model.inventory)
             ]
@@ -226,18 +234,28 @@ update msg model =
 
                         messageToDisplay =
                             if not itemAlreadyPickedUp then
-                                Just ("== " ++ item ++ " has been added to your inventory ==")
+                                Just (item ++ " has been added to your inventory")
                             else
-                                Just ("== This was where I found the " ++ item ++ " ==")
+                                Just ("This was where I found the " ++ item)
                     in
                         { modelWithNewItem
                             | room = getLatestRoomInfo modelWithNewItem.room modelWithNewItem.inventory
                             , displayedMessage = messageToDisplay
+                            , examinedRooms =
+                                if member model.room model.examinedRooms then
+                                    model.examinedRooms
+                                else
+                                    model.room :: model.examinedRooms
                         }
 
                 Nothing ->
                     { model
-                        | displayedMessage = Just ("== " ++ SiteText.emptyRoom ++ " ==")
+                        | displayedMessage = Just (SiteText.emptyRoom)
+                        , examinedRooms =
+                            if member model.room model.examinedRooms then
+                                model.examinedRooms
+                            else
+                                model.room :: model.examinedRooms
                     }
 
         InventoryMsg msg ->

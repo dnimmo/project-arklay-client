@@ -30,6 +30,7 @@ type CssClasses
     | FromUpstairs
     | FromDownstairs
     | FromStart
+    | AlreadyExamined
 
 
 
@@ -88,7 +89,7 @@ css =
             ]
         , class UserOptions
             [ borderBottom (Css.rem 0)
-            , borderColor (Css.hex "ffffff")
+            , borderColor (Css.hex "fafafa")
             , borderLeft (Css.rem 0)
             , borderRight (Css.rem 0)
             , borderStyle solid
@@ -141,10 +142,7 @@ css =
         , class Hidden
             [ display none ]
         , class Button
-            [ border (Css.rem 0.1)
-            , borderColor Constants.colourPalette2
-            , borderStyle solid
-            , color Constants.colourPalette2
+            [ color Constants.colourPalette2
             , display inlineBlock
             , fontSize (Css.rem 2.4)
             , letterSpacing (Css.rem 0.07)
@@ -180,4 +178,6 @@ css =
             [ property "animation" "slideDown 0.4s linear" ]
         , class FromStart
             [ property "animation" "fadeIn 1s linear" ]
+        , class AlreadyExamined
+            [ color Constants.colourPalette3 ]
         ]
