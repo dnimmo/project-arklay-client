@@ -249,14 +249,16 @@ update msg model =
                         }
 
                 Nothing ->
-                    { model
-                        | displayedMessage = Just (SiteText.emptyRoom)
-                        , examinedRooms =
-                            if member model.room model.examinedRooms then
-                                model.examinedRooms
-                            else
+                    if not (member model.room model.examinedRooms) then
+                        { model
+                            | displayedMessage = Just (SiteText.emptyRoom)
+                            , examinedRooms =
                                 model.room :: model.examinedRooms
-                    }
+                        }
+                    else
+                        { model
+                            | displayedMessage = Just (SiteText.stillEmptyRoom)
+                        }
 
         InventoryMsg msg ->
             let

@@ -27,3 +27,7 @@ closeInventory =
 
 emptyRoom =
     "There is nothing useful here"
+
+
+stillEmptyRoom =
+    "Nope, there's still nothing here"
