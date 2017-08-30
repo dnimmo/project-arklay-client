@@ -160,5 +160,14 @@
     <script>
       Elm.Main.embed(document.getElementById('elm-placeholder'))
     </script>
+    <script>
+      (function () {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker
+            .register('./sw.js')
+            .catch(err => console.error(`Error: ${err}`));
+        }
+      })()
+    </script>
   </body>
 </html>
