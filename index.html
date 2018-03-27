@@ -1,0 +1,173 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:svg="http://www.w3.org/2000/svg">
+  <head>
+    <title>Project Arklay</title>
+    <meta name='viewport'
+          content='width=device-width, initial-scale=1'/>
+    <meta name="mobile-web-app-capable"
+          content="yes">
+    <meta name="apple-mobile-web-app-capable"
+          content="yes">
+    <meta name='theme-color'
+          content='#323232'/>
+    <meta name='description'
+          content='An old-school text adventure game that you can play in your browser'>
+    <style>
+      @keyframes fadeIn {
+        0% { opacity: 0.25 };
+        100% { opacity: 1 };
+      }
+
+      @webkit-keyframes fadeIn {
+        0% { opacity: 0.25 };
+        100% { opacity: 1 };
+      }
+
+      @keyframes slideDown {
+        0% {
+          transform: translateY(-5vh);
+          opacity: 0.25;
+        };
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        };
+      }
+
+      @webkit-keyframes slideDown {
+        0% {
+          transform: translateY(-5vh);
+          opacity: 0.25;
+        };
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        };
+      }
+
+      @keyframes slideUp {
+        0% {
+          transform: translateY(5vh);
+          opacity: 0.25;
+        };
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        };
+      }
+
+      @webkit-keyframes slideUp {
+        0% {
+          transform: translateY(5vh);
+          opacity: 0.25;
+        };
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        };
+      }
+
+      @keyframes slideLeft {
+        0% {
+          transform: translateX(10vh);
+          opacity: 0.25;
+        };
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        };
+      }
+
+      @webkit-keyframes slideLeft {
+        0% {
+          transform: translateX(10vh);
+          opacity: 0.25;
+        };
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        };
+      }
+
+      @keyframes slideRight {
+        0% {
+          transform: translateX(-10vh);
+          opacity: 0.25;
+        };
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        };
+      }
+
+      @webkit-keyframes slideRight {
+        0% {
+          transform: translateX(-10vh);
+          opacity: 0.25;
+        };
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        };
+      }
+
+      @keyframes scaleIn {
+        0% {
+          transform: scale(0);
+          opacity: 0.25;
+        };
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        };
+      }
+
+      @webkit-keyframes scaleIn {
+        0% {
+          transform: scale(0);
+          opacity: 0.25;
+        };
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        };
+      }
+
+      @media screen and (min-width: 700px) {
+        .MainContainer {
+          width: 60vw;
+          margin-left: 20vw;
+        }
+
+        .UserOptions {
+          width: 60vw;
+        }
+      }
+
+    </style>
+    <link rel='stylesheet'
+      href='arklay.css'>
+    <link rel='author'
+          href='https://plus.google.com/+DavidNimmo/posts'/>
+    <link href="https://fonts.googleapis.com/css?family=Special+Elite" rel="stylesheet">
+  </head>
+  <body>
+    <main id='elm-placeholder' class='MainContainer'>
+    </main>
+
+    <script src='arklay.js'></script>
+    <script>
+      Elm.Main.embed(document.getElementById('elm-placeholder'))
+    </script>
+    <script>
+      (function () {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker
+            .register('./sw.js')
+            .catch(err => console.error(`Error: ${err}`));
+        }
+      })()
+    </script>
+  </body>
+</html>
